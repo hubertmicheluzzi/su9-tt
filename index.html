@@ -100,11 +100,9 @@
   }
   .pane.active { display: block; }
 
-
-  /* ── ARCHIV PANE (kein iframe-in-iframe) ── */
-  --ar:#e2c97e;
+  /* ── ARCHIV PANE ── */
   .ar-pane {
-    display: none; flex-direction: column; overflow: hidden;
+    display: none; overflow: hidden;
     position: absolute; inset: 0; height: 100%;
   }
   .ar-pane.active { display: flex; flex-direction: column; }
@@ -125,7 +123,6 @@
     display: flex; flex-wrap: wrap; gap: 4px;
     padding: 2px 0; align-items: center;
   }
-  .ar-row::-webkit-scrollbar { display: none; }
   .ar-spacer { height: 5px; }
   .ar-label {
     font-family: var(--mono); font-size: 10px; font-weight: 700;
@@ -187,11 +184,11 @@
       <div class="ar-row"><button class="ar-label wttv">2025 W2 FRÜHJAHR</button><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/WTTV/W2/RAF/R1/SU9Ana_W2.html')" class="ar-btn wttv">DOEB3</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/WTTV/W2/RAF/R2/SU9Ana_W2.html')" class="ar-btn wttv">POSW5</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/WTTV/W2/RAF/R3/SU9Ana_W2.html')" class="ar-btn wttv">NFS10</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/WTTV/W2/RAF/R4/SU9Ana_W2.html')" class="ar-btn wttv">UNO2</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/WTTV/W2/RAF/R5/SU9Ana_W2.html')" class="ar-btn wttv">SKFL12</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/WTTV/W2/RAF/R6/SU9Ana_W2.html')" class="ar-btn wttv">HAK4</a><span class="ar-btn wttv pending">LENZ6</span><span class="ar-btn wttv pending">KORN5</span><span class="ar-btn wttv pending">SOK2</span></div>
       <div class="ar-row"><button class="ar-label wttv">2025 W2 HERBST</button><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/WTTV/W2/RAH/R1/SU9Ana_W2.html')" class="ar-btn wttv">DOEB3</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/WTTV/W2/RAH/R2/SU9Ana_W2.html')" class="ar-btn wttv">POSW5</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/WTTV/W2/RAH/R3/SU9Ana_W2.html')" class="ar-btn wttv">NFS10</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/WTTV/W2/RAH/R4/SU9Ana_W2.html')" class="ar-btn wttv">UNO2</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/WTTV/W2/RAH/R5/SU9Ana_W2.html')" class="ar-btn wttv">SKFL12</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/WTTV/W2/RAH/R6/SU9Ana_W2.html')" class="ar-btn wttv">HAK4</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/WTTV/W2/RAH/R7/SU9Ana_W2.html')" class="ar-btn wttv">LENZ6</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/WTTV/W2/RAH/R8/SU9Ana_W2.html')" class="ar-btn wttv">KORN5</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/WTTV/W2/RAH/R9/SU9Ana_W2.html')" class="ar-btn wttv">SOK2</a></div>
       <div class="ar-spacer"></div>
-      <div class="ar-row"><button class="ar-label voeb">2025 V1 FRÜHJAHR</button><span class="ar-btn voeb free"></span><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V1/RAF/R2/SU9Ana_V1.html')" class="ar-btn voeb">HGI2</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V1/RAF/R3/SU9Ana_V1.html')" class="ar-btn voeb">POST2</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V1/RAF/R4/SU9Ana_V1.html')" class="ar-btn voeb">WILI5</a><span class="ar-btn voeb free"></span><span class="ar-btn voeb pending">SKH3</span><span class="ar-btn voeb pending">BRZ2</span><span class="ar-btn voeb pending">FSF1</span><span class="ar-btn voeb pending">BTTC2</span><span class="ar-btn voeb pending">FJB4</span><span class="ar-btn voeb pending">HÄRM1</span></div>
-      <div class="ar-row"><button class="ar-label voeb">2025 V1 HERBST</button><span class="ar-btn voeb free"></span><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V1/RAH/R2/SU9Ana_V1.html')" class="ar-btn voeb">HGI2</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V1/RAH/R3/SU9Ana_V1.html')" class="ar-btn voeb">POST2</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V1/RAH/R4/SU9Ana_V1.html')" class="ar-btn voeb">WILI5</a><span class="ar-btn voeb free"></span><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V1/RAH/R6/SU9Ana_V1.html')" class="ar-btn voeb">SKH3</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V1/RAH/R7/SU9Ana_V1.html')" class="ar-btn voeb">BRZ2</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V1/RAH/R8/SU9Ana_V1.html')" class="ar-btn voeb">FSF1</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V1/RAH/R9/SU9Ana_V1.html')" class="ar-btn voeb">BTTC2</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V1/RAH/R10/SU9Ana_V1.html')" class="ar-btn voeb">FJB4</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V1/RAH/R11/SU9Ana_V1.html')" class="ar-btn voeb">HÄRM1</a></div>
+      <div class="ar-row"><button class="ar-label voeb">2025 V1 FRÜHJAHR</button><span class="ar-btn voeb free"></span><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V1/RAF/R2/SU9Ana_V1.html')" class="ar-btn voeb">HGI2</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V1/RAF/R3/SU9Ana_V1.html')" class="ar-btn voeb">POST2</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V1/RAF/R4/SU9Ana_V1.html')" class="ar-btn voeb">WILI5</a><span class="ar-btn voeb free"></span><span class="ar-btn voeb pending">SKH3</span><span class="ar-btn voeb pending">BRZ2</span><span class="ar-btn voeb pending">FSF1</span><span class="ar-btn voeb pending">BTTC2</span><span class="ar-btn voeb pending">FJB4</span><span class="ar-btn voeb pending">HÄRM1</span></div>
+      <div class="ar-row"><button class="ar-label voeb">2025 V1 HERBST</button><span class="ar-btn voeb free"></span><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V1/RAH/R2/SU9Ana_V1.html')" class="ar-btn voeb">HGI2</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V1/RAH/R3/SU9Ana_V1.html')" class="ar-btn voeb">POST2</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V1/RAH/R4/SU9Ana_V1.html')" class="ar-btn voeb">WILI5</a><span class="ar-btn voeb free"></span><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V1/RAH/R6/SU9Ana_V1.html')" class="ar-btn voeb">SKH3</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V1/RAH/R7/SU9Ana_V1.html')" class="ar-btn voeb">BRZ2</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V1/RAH/R8/SU9Ana_V1.html')" class="ar-btn voeb">FSF1</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V1/RAH/R9/SU9Ana_V1.html')" class="ar-btn voeb">BTTC2</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V1/RAH/R10/SU9Ana_V1.html')" class="ar-btn voeb">FJB4</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V1/RAH/R11/SU9Ana_V1.html')" class="ar-btn voeb">HÄRM1</a></div>
       <div class="ar-spacer"></div>
-      <div class="ar-row"><button class="ar-label voeb">2025 V2 FRÜHJAHR</button><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V2/RAF/R1/SU9Ana_V2.html')" class="ar-btn voeb">SKH4</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V2/RAF/R2/SU9Ana_V2.html')" class="ar-btn voeb">HGI3</a><span class="ar-btn voeb free"></span><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V2/RAF/R4/SU9Ana_V2.html')" class="ar-btn voeb">POST3</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V2/RAF/R5/SU9Ana_V2.html')" class="ar-btn voeb">OLY3</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V2/RAF/R6/SU9Ana_V2.html')" class="ar-btn voeb">BBSV1</a><span class="ar-btn voeb pending">SKH5</span><span class="ar-btn voeb pending">WILI7</span><span class="ar-btn voeb free"></span><span class="ar-btn voeb pending">WILI6</span><span class="ar-btn voeb pending">LENZ2</span></div>
-      <div class="ar-row"><button class="ar-label voeb">2025 V2 HERBST</button><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V2/RAH/R1/SU9Ana_V2.html')" class="ar-btn voeb">SKH4</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V2/RAH/R2/SU9Ana_V2.html')" class="ar-btn voeb">HGI3</a><span class="ar-btn voeb free"></span><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V2/RAH/R4/SU9Ana_V2.html')" class="ar-btn voeb">POST3</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V2/RAH/R5/SU9Ana_V2.html')" class="ar-btn voeb">OLY3</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V2/RAH/R6/SU9Ana_V2.html')" class="ar-btn voeb">BBSV1</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V2/RAH/R7/SU9Ana_V2.html')" class="ar-btn voeb">SKH5</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V2/RAH/R8/SU9Ana_V2.html')" class="ar-btn voeb">WILI7</a><span class="ar-btn voeb free"></span><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V2/RAH/R10/SU9Ana_V2.html')" class="ar-btn voeb">WILI6</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/V%C3%96B/V2/RAH/R11/SU9Ana_V2.html')" class="ar-btn voeb">LENZ2</a></div>
+      <div class="ar-row"><button class="ar-label voeb">2025 V2 FRÜHJAHR</button><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V2/RAF/R1/SU9Ana_V2.html')" class="ar-btn voeb">SKH4</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V2/RAF/R2/SU9Ana_V2.html')" class="ar-btn voeb">HGI3</a><span class="ar-btn voeb free"></span><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V2/RAF/R4/SU9Ana_V2.html')" class="ar-btn voeb">POST3</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V2/RAF/R5/SU9Ana_V2.html')" class="ar-btn voeb">OLY3</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V2/RAF/R6/SU9Ana_V2.html')" class="ar-btn voeb">BBSV1</a><span class="ar-btn voeb pending">SKH5</span><span class="ar-btn voeb pending">WILI7</span><span class="ar-btn voeb free"></span><span class="ar-btn voeb pending">WILI6</span><span class="ar-btn voeb pending">LENZ2</span></div>
+      <div class="ar-row"><button class="ar-label voeb">2025 V2 HERBST</button><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V2/RAH/R1/SU9Ana_V2.html')" class="ar-btn voeb">SKH4</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V2/RAH/R2/SU9Ana_V2.html')" class="ar-btn voeb">HGI3</a><span class="ar-btn voeb free"></span><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V2/RAH/R4/SU9Ana_V2.html')" class="ar-btn voeb">POST3</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V2/RAH/R5/SU9Ana_V2.html')" class="ar-btn voeb">OLY3</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V2/RAH/R6/SU9Ana_V2.html')" class="ar-btn voeb">BBSV1</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V2/RAH/R7/SU9Ana_V2.html')" class="ar-btn voeb">SKH5</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V2/RAH/R8/SU9Ana_V2.html')" class="ar-btn voeb">WILI7</a><span class="ar-btn voeb free"></span><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V2/RAH/R10/SU9Ana_V2.html')" class="ar-btn voeb">WILI6</a><a onclick="arLoad(this,'https://hubertmicheluzzi.github.io/su9-tt/AR/2025/VOB/V2/RAH/R11/SU9Ana_V2.html')" class="ar-btn voeb">LENZ2</a></div>
     </div>
     <iframe id="ar-viewer" src="about:blank"></iframe>
   </div>
@@ -208,29 +205,20 @@
     re: 'Regelwerk · ITTF / ÖTTV · Gastspielregel-Checker'
   };
 
-  // Datum
   const d = new Date();
   document.getElementById('today-date').textContent =
     d.toLocaleDateString('de-AT', {day:'2-digit', month:'2-digit', year:'numeric'});
 
-  // Default subtitle
   document.getElementById('subtitle-text').textContent = subtitles['v1'];
 
-  // Tab switching
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
       const id = tab.dataset.id;
-
-      // Tabs
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-
-      // Panes (iframes)
       document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
       const pane = document.querySelector(`.pane[data-id="${id}"]`);
       if (pane) pane.classList.add('active');
-
-      // Archiv: Viewer-Höhe dynamisch setzen
       if (id === 'ar') {
         requestAnimationFrame(() => {
           const buttons = document.querySelector('.ar-buttons');
@@ -243,13 +231,10 @@
           }
         });
       }
-
-      // Subtitle
       document.getElementById('subtitle-text').textContent = subtitles[id] || '';
     });
   });
 
-  // Archiv viewer
   var arActiveBtn = null;
   function arLoad(btn, url) {
     if (arActiveBtn) arActiveBtn.classList.remove('active');
