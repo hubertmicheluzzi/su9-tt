@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SU9Ana – TT-Übersicht</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap');
+  :root {
+    --bg:#0d0f14; --bg2:#13161e; --bg3:#1a1f2b; --border:#2a3040;
+    --text:#e2e8f0; --dim:#7a8899; --bright:#ffffff;
+    --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans',sans-serif;
+    /* Tab-Farben */
+    --w1:#a78bfa; --w2:#f472b6; --v1:#34d399; --v2:#60a5fa; --re:#fbbf24;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body { background: var(--bg); color: var(--text);
+         font-family: var(--sans); font-size: 14px;
+         display: flex; flex-direction: column; }
+
+  /* ── HEADER ── */
+  #header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px 0;
+    flex-shrink: 0;
+    z-index: 100;
+  }
+  .header-top {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .logo { display: none; }
+  .header-title-main {
+    font-family: var(--sans); font-size: 20px; font-weight: 700;
+    color: var(--bright); letter-spacing: .01em;
+  }
+  .header-title-main .stand {
+    font-family: var(--mono); font-size: 12px; font-weight: 400;
+    color: var(--dim); margin-left: 10px;
+  }
+  .header-title-main .stand span { color: var(--bright); }
+  .live-tag {
+    font-family: var(--mono); font-size: 9px; color: #4ade80;
+    letter-spacing: .1em; display: flex; align-items: center; gap: 4px;
+    margin-left: auto;
+  }
+  .live-dot {
+    width: 5px; height: 5px; background: #4ade80;
+    border-radius: 50%; animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  /* ── TABS ── */
+  .tabs { display: flex; gap: 4px; align-items: flex-end; }
+  .tab {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    letter-spacing: 0; padding: 5px 6px 6px; font-size: 10px;
+    border: 1px solid var(--border); border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    background: var(--bg3); color: var(--dim);
+    cursor: pointer; transition: all .15s;
+    white-space: nowrap; user-select: none;
+  }
+  .tab:hover { color: var(--bright); background: var(--bg2); }
+  .tab.active { background: var(--bg); border-bottom: 1px solid var(--bg); color: var(--bright); }
+  .tab[data-id="w1"] { border-top: 2px solid var(--w1); }
+  .tab[data-id="w2"] { border-top: 2px solid var(--w2); }
+  .tab[data-id="v1"] { border-top: 2px solid var(--v1); }
+  .tab[data-id="v2"] { border-top: 2px solid var(--v2); }
+  .tab[data-id="re"] { border-top: 2px solid var(--re); }
+  .tab[data-id="ar"] { border-top: 2px solid var(--ar); }
+  .tab.active[data-id="w1"] { color: var(--w1); }
+  .tab.active[data-id="w2"] { color: var(--w2); }
+  .tab.active[data-id="v1"] { color: var(--v1); }
+  .tab.active[data-id="v2"] { color: var(--v2); }
+  .tab.active[data-id="re"] { color: var(--re); }
+  .tab.active[data-id="ar"] { color: var(--ar); }
+
+  /* ── SUBTITLE BAR ── */
+  #subtitle-bar {
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    padding: 6px 20px;
+    font-family: var(--mono); font-size: 11px; color: var(--dim);
+    flex-shrink: 0; min-height: 30px;
+  }
+  #subtitle-bar span { color: var(--bright); }
+
+  /* ── IFRAME CONTAINER ── */
+  #content {
+    flex: 1; overflow: hidden; position: relative;
+  }
+  .pane {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    display: none;
+    border: none;
+  }
+  .pane.active { display: block; }
+
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div class="header-top">
+    <span class="header-title-main">
+      SU9 TT-Übersicht<span class="stand"> · Stand: <span id="today-date"></span></span>
+    </span>
+    <span class="live-tag"><span class="live-dot"></span>Live</span>
+  </div>
+  <div class="tabs">
+    <div class="tab" data-id="w1">W1·3b.Kl</div>
+    <div class="tab" data-id="w2">W2·Gr.Ib</div>
+    <div class="tab active" data-id="v1">V1·2.Kl</div>
+    <div class="tab" data-id="v2">V2·3.Kl</div>
+    <div class="tab" data-id="ar">Archiv</div>
+    <div class="tab" data-id="re">Regeln</div>
+  </div>
+</div>
+
+<div id="subtitle-bar">
+  <span id="subtitle-text"></span>
+</div>
+
+<div id="content">
+  <iframe class="pane"        data-id="w1" src="LIVE/SU9Ana_W1.html"></iframe>
+  <iframe class="pane"        data-id="w2" src="LIVE/SU9Ana_W2.html"></iframe>
+  <iframe class="pane active" data-id="v1" src="LIVE/SU9Ana_V1.html"></iframe>
+  <iframe class="pane"        data-id="v2" src="LIVE/SU9Ana_V2.html"></iframe>
+  <iframe class="pane" data-id="ar" src="archiv.html"></iframe>
+  <iframe class="pane" data-id="re" src="REAna.html"></iframe>
+</div>
+
+<script>
+  const subtitles = {
+    w1: 'WTTV · 3. Klasse B · SU9·1 · Rang 9/10 · 11 Punkte',
+    w2: 'WTTV · Gruppe Ib · SU9·2 · Rang 6/10 · 8 Punkte',
+    v1: 'VÖB · 2. Klasse · SU9·1 · Rang 3/10 · 25 Punkte',
+    v2: 'VÖB · 3. Klasse · SU9·2 · Rang 10/10 · 4 Punkte',
+    ar: 'Archiv · Mannschaftssaisons 2022–2026',
+    re: 'Regelwerk · ITTF / ÖTTV · Gastspielregel-Checker'
+  };
+
+  // Datum
+  const d = new Date();
+  document.getElementById('today-date').textContent =
+    d.toLocaleDateString('de-AT', {day:'2-digit', month:'2-digit', year:'numeric'});
+
+  // Default subtitle
+  document.getElementById('subtitle-text').textContent = subtitles['v1'];
+
+  // Tab switching
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const id = tab.dataset.id;
+
+      // Tabs
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      // Panes (iframes)
+      document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+      const pane = document.querySelector(`.pane[data-id="${id}"]`);
+      if (pane) pane.classList.add('active');
+
+      // Subtitle
+      document.getElementById('subtitle-text').textContent = subtitles[id] || '';
+    });
+  });
+</script>
+</body>
+</html>

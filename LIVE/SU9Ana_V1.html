@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SU9Ana_V1 – VÖB Mannschaft 1</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap');
+  :root {
+    --bg:#0d0f14; --bg2:#13161e; --bg3:#1a1f2b; --border:#2a3040;
+    --acc:#34d399; --green:#4ade80; --yellow:#fbbf24; --red:#f87171;
+    --orange:#fb923c; --text:#e2e8f0; --dim:#7a8899; --bright:#ffffff;
+    --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;}
+  .header-title span{color:var(--bright);}50%{opacity:.3}}
+
+  .container{max-width:1100px;margin:0 auto;padding:28px 24px;display:grid;gap:28px;}
+  .section-label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+  .card-header{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .card-title{font-weight:600;font-size:14px;color:var(--bright);}
+  .card-body{padding:18px;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:700px){.two-col{grid-template-columns:1fr;}}
+
+  .big-score{display:flex;align-items:center;justify-content:center;gap:24px;padding:20px 0;}
+  .big-score .team{font-size:15px;font-weight:600;color:var(--bright);text-align:center;flex:1;}
+  .big-score .team.su9{color:var(--acc);}
+  .big-score .score{font-family:var(--mono);font-size:48px;font-weight:600;}
+  .big-score .score.w{color:var(--green);}
+  .big-score .score.d{color:var(--yellow);}
+  .big-score .score.l{color:var(--red);}
+  .big-score .meta{font-family:var(--mono);font-size:11px;color:var(--dim);text-align:center;margin-top:4px;}
+
+  .stat-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .stat-chip{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:8px 14px;font-family:var(--mono);}
+  .stat-chip .n{color:var(--dim);font-size:9px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:3px;}
+  .stat-chip .v{color:var(--bright);font-size:15px;font-weight:600;}
+
+  .analysis{background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.2);border-radius:4px;padding:14px 16px;font-size:13px;line-height:1.8;}
+  .analysis strong{color:var(--acc);}
+  .analysis .warn{color:var(--yellow);font-weight:600;}
+  .analysis .good{color:var(--green);font-weight:600;}
+  .analysis .bad{color:var(--red);font-weight:600;}
+  .analysis .orange{color:var(--orange);font-weight:600;}
+
+  .alert-box{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.4);border-radius:4px;padding:14px 16px;font-size:13px;line-height:1.8;}
+  .alert-box strong{color:var(--red);}
+
+  .games-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:10px;}
+  .game-cell{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:6px 8px;}
+  .game-cell .gid{font-family:var(--mono);color:var(--dim);font-size:9px;display:block;margin-bottom:2px;}
+  .game-cell .gplayer{color:var(--text);font-size:10px;display:block;margin-bottom:3px;line-height:1.3;}
+  .game-cell .gresult{font-family:var(--mono);font-weight:600;font-size:12px;}
+  .game-cell .gresult.w{color:var(--green);}
+  .game-cell .gresult.l{color:var(--red);}
+  .game-cell.doppel{background:rgba(52,211,153,.07);border-color:rgba(52,211,153,.3);}
+
+  .player-card{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:14px;}
+  .player-name{font-weight:600;font-size:14px;color:var(--bright);margin-bottom:2px;}
+  .player-sub{font-family:var(--mono);font-size:10px;color:var(--dim);margin-bottom:10px;}
+  .pstats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px;}
+  .pstat .pn{font-family:var(--mono);font-size:9px;color:var(--dim);display:block;}
+  .pstat .pv{font-family:var(--mono);font-size:16px;font-weight:600;}
+  .pbar{height:4px;border-radius:2px;background:var(--border);overflow:hidden;margin-bottom:6px;}
+  .pbar-fill{height:100%;border-radius:2px;}
+  .perf-detail{font-size:11px;color:var(--dim);line-height:1.5;}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{padding:8px 12px;text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--border);white-space:nowrap;}
+  td{padding:8px 12px;border-bottom:1px solid rgba(42,48,64,.4);vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  tr.su9-row{background:rgba(52,211,153,.08);}
+  tr.su9-row td{color:var(--bright);}
+  tr.hl{background:rgba(251,191,36,.06);}
+  tr.penalty{background:rgba(248,113,113,.07);}
+  tr.penalty td{color:var(--red);}
+
+  .match-list{list-style:none;display:grid;gap:8px;}
+  .match-item{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:12px 16px;}
+  .match-item.penalty-match{border-color:rgba(248,113,113,.4);background:rgba(248,113,113,.04);}
+  .match-header{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+  .match-runde{font-family:var(--mono);font-size:10px;color:var(--dim);}
+  .match-teams{font-weight:600;font-size:13px;color:var(--bright);flex:1;}
+  .match-score{font-family:var(--mono);font-size:17px;font-weight:600;}
+  .match-score.w{color:var(--green);}
+  .match-score.d{color:var(--yellow);}
+  .match-score.l{color:var(--red);}
+  .match-score.pen{color:var(--red);font-size:13px;}
+  .match-note{font-size:11px;color:var(--dim);}
+
+  .next-box{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.3);border-radius:6px;padding:20px;}
+  .next-label{font-family:var(--mono);font-size:11px;color:var(--yellow);letter-spacing:.1em;margin-bottom:10px;}
+  .next-teams{font-size:20px;font-weight:700;color:var(--bright);margin-bottom:4px;}
+  .next-meta{font-family:var(--mono);font-size:12px;color:var(--dim);}
+
+  .voeb-note{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);border-radius:4px;padding:10px 14px;font-size:12px;color:var(--dim);margin-bottom:14px;}
+  .voeb-note strong{color:var(--acc);}
+
+  footer{text-align:center;padding:20px;font-family:var(--mono);font-size:11px;color:var(--dim);border-top:1px solid var(--border);margin-top:10px;}
+</style>
+</head>
+<body>
+
+
+<div class="container">
+
+<!-- ══════════════════════════ 01 ══════════════════════════ -->
+<div>
+  <div class="section-label">01 — Aktuelles Ergebnis</div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">DG2 · Runde 4 · Mi 18.02.2026 · Heim</span>
+    </div>
+    <div class="card-body">
+      <div class="big-score">
+        <div><div class="team su9">SU9 1</div><div class="meta">Heim</div></div>
+        <div><div class="score w">7 : 0</div><div class="meta">Sieg · +3 Punkte</div></div>
+        <div><div class="team">WILI 5</div><div class="meta">Gast · Rang 10</div></div>
+      </div>
+      <div class="stat-row" style="justify-content:center;margin-bottom:16px;">
+        <div class="stat-chip"><span class="n">Mannschaftspunkte</span><span class="v" style="color:var(--green)">+3</span></div>
+        <div class="stat-chip"><span class="n">SU9 Gesamtpunkte</span><span class="v" style="color:var(--green)">25</span></div>
+        <div class="stat-chip"><span class="n">SU9 Rang</span><span class="v" style="color:var(--green)">3 / 10</span></div>
+      </div>
+      <div class="voeb-note"><strong>VÖB-Punktesystem:</strong> Sieg = 3 Punkte · Remis = 1 Punkt · Niederlage = 0 Punkte</div>
+      <div class="analysis">
+        <span class="good">Perfektes Ergebnis — 7:0 Whitewash!</span> Alle 7 Spiele gewonnen,
+        kein einziger Satzverlust nötig. WILI 5 ist Schlusslicht und wurde entsprechend klar besiegt.
+        Besonders erfreulich: <strong>Lukas Gotthart</strong> als Gastspiel-C holte beide Einzel sicher.
+        Das Doppel Micheluzzi/Gotthart gewann 3:2 — auch in einem engen Spiel gehalten.
+        <span class="good">Sauberster Sieg der Saison.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 02 ══════════════════════════ -->
+<div>
+  <div class="section-label">02 — Unsere Spielerleistung · DG2 R4 vs WILI 5</div>
+  <div class="two-col">
+
+    <div class="player-card">
+      <div class="player-name">Hubert Micheluzzi · Position A</div>
+      <div class="player-sub">DG2 R4 · Einzel 2/2 · Doppel: Sieg</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einzelsiege</span><span class="pv" style="color:var(--green)">2</span></div>
+        <div class="pstat"><span class="pn">Einzelnied.</span><span class="pv" style="color:var(--green)">0</span></div>
+        <div class="pstat"><span class="pn">Doppel</span><span class="pv" style="color:var(--green)">✓</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:100%;background:var(--green)"></div></div>
+      <div class="perf-detail">
+        I vs Al Hamwi: <span style="color:var(--green)">3:2 ✓</span> ·
+        V vs Al Hamwi: <span style="color:var(--green)">3:1 ✓</span> ·
+        IIIA Doppel: <span style="color:var(--green)">3:2 ✓</span>
+        <br>Solide Leistung gegen stärksten WILI-Spieler
+      </div>
+    </div>
+
+    <div class="player-card">
+      <div class="player-name">Bary Ramadan · Position B</div>
+      <div class="player-sub">DG2 R4 · Einzel 2/2 · kein Doppel</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einzelsiege</span><span class="pv" style="color:var(--green)">2</span></div>
+        <div class="pstat"><span class="pn">Einzelnied.</span><span class="pv" style="color:var(--green)">0</span></div>
+        <div class="pstat"><span class="pn">Doppel</span><span class="pv" style="color:var(--dim)">—</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:100%;background:var(--green)"></div></div>
+      <div class="perf-detail">
+        II vs Gnanago: <span style="color:var(--green)">3:1 ✓</span> ·
+        VI vs Al Hamwi: <span style="color:var(--green)">3:1 ✓</span>
+      </div>
+    </div>
+
+    <div class="player-card">
+      <div class="player-name">Lukas Gotthart · Position C (Gastspiel)</div>
+      <div class="player-sub">DG2 R4 · Einzel 2/2 · Doppel: Sieg</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einzelsiege</span><span class="pv" style="color:var(--green)">2</span></div>
+        <div class="pstat"><span class="pn">Einzelnied.</span><span class="pv" style="color:var(--green)">0</span></div>
+        <div class="pstat"><span class="pn">Doppel</span><span class="pv" style="color:var(--green)">✓</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:100%;background:var(--green)"></div></div>
+      <div class="perf-detail">
+        III vs Schmid: <span style="color:var(--green)">3:2 ✓</span> ·
+        VII vs Gnanago: <span style="color:var(--green)">3:1 ✓</span> ·
+        IIIA Doppel: <span style="color:var(--green)">3:2 ✓</span>
+        <br><span style="color:var(--green)">Perfekte 4/4 Leistung — bester Spieler des Matches</span>
+      </div>
+    </div>
+
+  </div>
+  <div class="analysis" style="margin-top:12px">
+    <strong>Fazit DG2 R4:</strong> Mannschaftsleistung auf höchstem Niveau — alle 3 Spieler ohne Niederlage.
+    <span class="good">Gotthart als Gastspiel-C war 3/3 (2E+1D)</span> — ideale Verstärkung.
+    Das Doppel Micheluzzi/Gotthart gewann auch das knappe 3:2, was zeigt: Diese Paarung funktioniert.
+    Gegen WILI 5 (Schlusslicht) war ein 7:0 erwartet — aber es verdient trotzdem Anerkennung, keinen Punkt zu verschenken.
+  </div>
+</div>
+
+<!-- ══════════════════════════ 03 ══════════════════════════ -->
+<div>
+  <div class="section-label">03 — Der Gegner · WILI 5</div>
+  <div class="card">
+    <div class="card-body">
+      <div class="stat-row" style="margin-bottom:14px">
+        <div class="stat-chip"><span class="n">Rang</span><span class="v" style="color:var(--yellow)">5 / 10</span></div>
+        <div class="stat-chip"><span class="n">Punkte</span><span class="v" style="color:var(--yellow)">21</span></div>
+        <div class="stat-chip"><span class="n">S-U-N</span><span class="v">7-0-7</span></div>
+        <div class="stat-chip"><span class="n">Sp-V</span><span class="v" style="color:var(--yellow)">56:59</span></div>
+      </div>
+      <table style="margin-bottom:14px">
+        <thead><tr><th>Spieler</th><th>Sp</th><th>S / N</th><th>CRS</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Basel Al Hamwi</strong></td><td>12</td><td>15:14</td><td>11108</td><td>gewertet (Rang 10)</td></tr>
+          <tr><td>Jan Wieczor</td><td>10</td><td>14:11</td><td>11921</td><td>gewertet (Rang 11)</td></tr>
+          <tr><td>Robert Schmid</td><td>10</td><td>11:11</td><td>12766</td><td>gewertet (Rang 15, SIK 0.68)</td></tr>
+          <tr><td>Chen Jiatan</td><td>3</td><td>5:3</td><td>13008</td><td>nicht gewertet</td></tr>
+          <tr><td>Jean-Lynce Gnanago</td><td>2</td><td>2:3</td><td>12000*</td><td>nicht gewertet</td></tr>
+        </tbody>
+      </table>
+      <div class="analysis">
+        WILI 5 ist entgegen erster Erwartung <span class="warn">Rang 5 mit 21 Punkten</span> — kein Schlusslicht,
+        sondern Mittelfeld mit ausgeglichener 7-0-7 Bilanz.
+        <strong>Al Hamwi</strong> (CRS 11108, 15:14) und <strong>Wieczor</strong> (CRS 11921, 14:11) sind
+        solide Gegner auf Liga-Niveau. Trotzdem: Im Hinspiel (DG1 R4) gewann SU9 V1 auswärts 2:6,
+        Rückspiel (DG2 R4) 7:0. <span class="good">Direktbilanz: 2 Siege, 0 Niederlagen.</span>
+        Die 7:0 zeigt, dass SU9 V1 klar stärker ist — aber WILI 5 ist besser als die ursprüngliche Einschätzung.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 04 ══════════════════════════ -->
+<div>
+  <div class="section-label">04 — Spiel-Details · Kreuzmatrix DG2 R4</div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">SU9 1 vs WILI 5 · Endstand 7:0</span>
+    </div>
+    <div class="card-body">
+      <div style="font-size:12px;color:var(--dim);margin-bottom:8px;font-family:var(--mono)">
+        SU9: A=Micheluzzi · B=Ramadan · C=Gotthart &nbsp;|&nbsp; WILI5: X=Al Hamwi · Y=Gnanago · Z=Schmid
+      </div>
+      <div class="games-grid">
+        <div class="game-cell"><span class="gid">I · A vs X</span><span class="gplayer">Micheluzzi vs Al Hamwi</span><span class="gresult w">3:2 ✓</span></div>
+        <div class="game-cell"><span class="gid">II · B vs Y</span><span class="gplayer">Ramadan vs Gnanago</span><span class="gresult w">3:1 ✓</span></div>
+        <div class="game-cell"><span class="gid">III · C vs Z</span><span class="gplayer">Gotthart vs Schmid</span><span class="gresult w">3:2 ✓</span></div>
+        <div class="game-cell doppel"><span class="gid">IIIA ♦ Doppel</span><span class="gplayer">Micheluzzi/Gotthart vs Al Hamwi/Gnanago</span><span class="gresult w">3:2 ✓</span></div>
+        <div class="game-cell"><span class="gid">IV · B vs X</span><span class="gplayer">Bary Ramadan vs Al Hamwi</span><span class="gresult w">3:1 ✓</span></div>
+        <div class="game-cell"><span class="gid">V · A vs Z</span><span class="gplayer">Hubert Micheluzzi vs Al Hamwi</span><span class="gresult w">3:1 ✓</span></div>
+        <div class="game-cell"><span class="gid">VI · C vs Y</span><span class="gplayer">Lukas Gotthart vs Gnanago</span><span class="gresult w">3:1 ✓</span></div>
+      </div>
+      <div style="font-size:11px;color:var(--dim);margin-top:8px">Abbruch nach Spiel VI bei Stand 7:0 (alle 6 Siege + Doppel für SU9)</div>
+      <div class="analysis" style="margin-top:12px">
+        <strong>Spielverlauf:</strong> Dominant von Anfang an — nach Spiel III bereits 3:0,
+        Doppel → 4:0, dann drei weitere Siege → 7:0, Abbruch.
+        Knappe Sätze (3:2 in I, III, Doppel) zeigen: WILI 5 kämpfte, hatte aber keine Chance.
+        <span class="good">Keinen einzigen Punkt abgegeben — perfektes Ergebnis.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 05 ══════════════════════════ -->
+<div>
+  <div class="section-label">05 — Gesamtanalyse & Ausblick Saison 2025/26</div>
+  <div class="card">
+    <div class="card-body">
+      <div class="alert-box" style="margin-bottom:14px">
+        <strong>⚠ Strafverifizierung DG1 R6:</strong> SU9 1 – SKH 3 wurde mit 0:7 strafverifiziert
+        wegen „nicht erlaubtem Spielereinsatz der Heimmannschaft". Das kostet 3 Punkte und 7 Spielpunkte —
+        ohne diese Strafe wäre SU9 V1 auf Rang 2 mit 28 Punkten. Die Ursache und Konsequenzen
+        sollten geprüft werden (Gastspielregel-Verstoß?).
+      </div>
+      <div class="analysis">
+        <strong>Stärken:</strong> SU9 V1 ist mit 25 Punkten auf <span class="good">Rang 3</span> —
+        eine der stärksten Positionen aller vier SU9-Mannschaften. 8 Siege, 1 Remis, 2 Niederlagen
+        (+ 1 Strafverifizierung) aus 12 gewerteten Spielen. Das Trio Ramadan/Micheluzzi/Reindl
+        als Stamm funktioniert gut — ergänzt durch Gastspiele (Gotthart, Löffler, Fuchs).<br><br>
+
+        <strong>Ramadan</strong> ist auf VÖB-Niveau der zuverlässigste Spieler (~65% Quote).
+        <strong>Micheluzzi</strong> (~55%) spielt auf A-Position solide.
+        <strong>Reindl</strong> (~50%) ist variabel.<br><br>
+
+        <span class="warn">Risiko:</span> 7 noch offene Spiele — davon 4 auswärts.
+        Das Rückspiel gegen SKH 3 (Mi 11.03., auswärts) ist heikel — im Hinspiel wurde
+        die Strafverifizierung ausgesprochen. <span class="warn">Gastspielregel penibel einhalten!</span><br><br>
+
+        <span class="good">Ziel:</span> Rang 2 oder 3 sichern. Mit 7 offenen Spielen
+        (max. 21 weitere Punkte) ist sogar Rang 1 (aktuell 28 Punkte) theoretisch noch erreichbar,
+        aber nur wenn alle Spiele gewonnen werden.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 06 ══════════════════════════ -->
+<div>
+  <div class="section-label">06 — Nächstes Spiel</div>
+  <div class="next-box">
+    <div class="next-label">▶ Mi 11.03.2026 · 18:00 Uhr · AUSWÄRTS · DG2 R6</div>
+    <div class="next-teams">SKH 3 – SU9 1</div>
+    <div class="next-meta">Hintere Zollamtsstraße 19, Wien · VÖB 2. Klasse</div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <div class="card-header"><span class="card-title">Vorschau: SKH 3 vs SU9 1</span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--red);margin-left:auto">⚠ Hinspiel strafverifiziert 0:7</span>
+    </div>
+    <div class="card-body">
+      <div class="alert-box" style="margin-bottom:14px">
+        <strong>Wichtig:</strong> Das Hinspiel (DG1 R6) gegen SKH 3 wurde wegen nicht erlaubtem Spielereinsatz
+        mit 0:7 gegen SU9 bestraft. Das Rückspiel ist daher besonders heikel —
+        <strong>alle Spieler müssen regelkonform aufgestellt sein (Gastspielregel VÖB strikt beachten).</strong>
+      </div>
+      <div class="stat-row" style="margin-bottom:14px">
+        <div class="stat-chip"><span class="n">SKH 3 Rang</span><span class="v" style="color:var(--red)">2 / 10</span></div>
+        <div class="stat-chip"><span class="n">SKH 3 Punkte</span><span class="v" style="color:var(--red)">30</span></div>
+        <div class="stat-chip"><span class="n">SKH 3 S-U-N</span><span class="v">9-3-1</span></div>
+        <div class="stat-chip"><span class="n">Hinspiel</span><span class="v" style="color:var(--red)">0:7 (Strafe)</span></div>
+      </div>
+      <div class="analysis">
+        SKH 3 ist <span class="bad">Rang 2 mit 30 Punkten</span> — zweitstärkste Mannschaft der Liga,
+        deutlich stärker als ursprünglich angenommen. 9 Siege, 3 Remis, nur 1 Niederlage.
+        Das Hinspiel-Ergebnis (0:7 Strafe) spiegelt nicht die echte Spielstärke wider.<br><br>
+        <span class="warn">Priorität Nummer 1:</span> Regelkonforme Aufstellung — kein weiteres Risiko einer Strafverifizierung.
+        Reindl, Ramadan und Micheluzzi sind V1-gebunden und dürfen ohne Einschränkung spielen.<br><br>
+        <strong>Erwartung:</strong> SKH 3 ist auswärts ein <span class="warn">schwieriger Gegner</span> —
+        ein Punktgewinn wäre bereits ein gutes Ergebnis. Ein Sieg ist möglich, aber nicht wahrscheinlich.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 07 ══════════════════════════ -->
+<div>
+  <div class="section-label">07 — Tabellenstand · VÖB 2. Klasse</div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Tabelle 2025/26 · Stand 05.03.2026</span></div>
+    <div class="card-body">
+      <div class="voeb-note"><strong>VÖB-Punktesystem:</strong> Sieg = 3P · Remis = 1P · Niederlage = 0P · Nichtantreten = 0:7, 0:21 Sätze</div>
+      <div class="stat-row" style="margin-bottom:16px">
+        <div class="stat-chip"><span class="n">SU9 Rang</span><span class="v" style="color:var(--green)">3 / 10</span></div>
+        <div class="stat-chip"><span class="n">Punkte</span><span class="v" style="color:var(--green)">25</span></div>
+        <div class="stat-chip"><span class="n">Gespielt</span><span class="v">12 (+ 1 Strafe)</span></div>
+        <div class="stat-chip"><span class="n">Offen</span><span class="v" style="color:var(--yellow)">7</span></div>
+        <div class="stat-chip"><span class="n">Sp-V</span><span class="v" style="color:var(--green)">62:39</span></div>
+      </div>
+      <table>
+        <thead><tr><th>Rang</th><th>Mannschaft</th><th>Sp</th><th>S</th><th>U</th><th>N</th><th>Sp-V</th><th>P</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>SK Bundesrechenzentrum 2</td><td>14</td><td>12</td><td>1</td><td>1</td><td>83:36</td><td><strong>37</strong></td></tr>
+          <tr class="hl"><td>2</td><td>SK Handelsministerium 3 (SKH 3)</td><td>13</td><td>9</td><td>3</td><td>1</td><td>75:39</td><td><strong>30</strong></td></tr>
+          <tr class="su9-row"><td>3</td><td>⬤ Sportunion Wien 9 1</td><td>12</td><td>8</td><td>1</td><td>3</td><td>62:39</td><td><strong>25</strong></td></tr>
+          <tr><td>4</td><td>Brunner TTC 2 (BTTC 2)</td><td>13</td><td>8</td><td>1</td><td>4</td><td>64:46</td><td><strong>25</strong></td></tr>
+          <tr><td>5</td><td>KSV Wiener Linien 5 (WILI 5)</td><td>14</td><td>7</td><td>0</td><td>7</td><td>56:59</td><td><strong>21</strong></td></tr>
+          <tr><td>6</td><td>SV Post Wien 2 (POST 2)</td><td>14</td><td>4</td><td>1</td><td>9</td><td>39:70</td><td><strong>13</strong></td></tr>
+          <tr><td>7</td><td>Freizeit Sport Finanz 1 (FSF 1)</td><td>13</td><td>3</td><td>2</td><td>8</td><td>51:65</td><td><strong>11</strong></td></tr>
+          <tr><td>8</td><td>Härm 1 (HÄRM 1)</td><td>14</td><td>3</td><td>2</td><td>9</td><td>47:70</td><td><strong>11</strong></td></tr>
+          <tr><td>9</td><td>KSV HG I 2 (HG I 2)</td><td>14</td><td>3</td><td>2</td><td>9</td><td>45:72</td><td><strong>11</strong></td></tr>
+          <tr><td>10</td><td>ESV FJB 4 (FJB 4)</td><td>13</td><td>3</td><td>1</td><td>9</td><td>44:70</td><td><strong>10</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="analysis" style="margin-top:14px">
+        SU9 V1 auf Rang 3 mit 25 Punkten, gleichauf mit BTTC 2 (auch 25P) —
+        aber <span class="good">besserem Spielverhältnis (62:39 vs 64:46)</span>.
+        <span class="warn">SKH 3 auf Rang 2 mit 30 Punkten</span> ist eine Überraschung — und das nächste Auswärtsspiel!
+        BRZ 2 führt dominant mit 37 Punkten (12 Siege).
+        <span class="good">Aufstieg in die 1. Klasse ist ein realistisches Ziel</span> —
+        Rang 2 ist bei 7 offenen Spielen noch erreichbar, aber das Rückspiel gegen BRZ 2 (Mi 18.03., Heim) wird entscheidend.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 08 ══════════════════════════ -->
+<div>
+  <div class="section-label">08 — Spielerstatistiken · Saison gesamt (nur Einzel)</div>
+  <div class="two-col">
+
+    <!-- GEWERTET -->
+    <div class="player-card">
+      <div class="player-name">Hubert Micheluzzi</div>
+      <div class="player-sub">Rang 3 · Pass 3095 · V1-gebunden · S70 · CRS 12793 · gewertet ✓</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">10</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--green)">19</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--yellow)">6</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--green)">76%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:76%;background:var(--green)"></div></div>
+      <div class="perf-detail">Bester gewerteter Einzelspieler der Mannschaft · 76% auf VÖB-Niveau deutlich besser als WTTV W1 (32%)</div>
+    </div>
+
+    <div class="player-card">
+      <div class="player-name">Bary Ramadan</div>
+      <div class="player-sub">Rang 5 · Pass 3790 · V1-gebunden · CRS 12408 · gewertet ✓</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">11</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--green)">21</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--yellow)">8</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--green)">72%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:72%;background:var(--green)"></div></div>
+      <div class="perf-detail">Meiste Einzelspiele · zuverlässig auf V1-Niveau · CRS-Führender im Team</div>
+    </div>
+
+    <div class="player-card">
+      <div class="player-name">Heinz Reindl</div>
+      <div class="player-sub">Rang 19 · Pass 3792 · V1-gebunden · CRS 11007 · gewertet ✓</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">8</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--yellow)">8</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--yellow)">10</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--yellow)">44%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:44%;background:var(--yellow)"></div></div>
+      <div class="perf-detail">Unter 50% — niedrigster CRS (11007) im gewerteten Kern · variabel einsetzbar</div>
+    </div>
+
+    <!-- NICHT GEWERTET -->
+    <div class="player-card" style="border-color:rgba(251,191,36,.3)">
+      <div class="player-name">Lukas Gotthart</div>
+      <div class="player-sub">Pass 3096 · Gastspiel · CRS 13462 · <span style="color:var(--yellow)">nicht gewertet</span></div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">1</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--green)">2</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--green)">0</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--green)">100%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:100%;background:var(--green)"></div></div>
+      <div class="perf-detail"><span style="color:var(--green)">2/2 · höchster CRS im Team (13462)</span> — idealer Gastspiel-C · mehr Einsätze empfohlen</div>
+    </div>
+
+    <div class="player-card" style="border-color:rgba(251,191,36,.3)">
+      <div class="player-name">Georg Fuchs</div>
+      <div class="player-sub">Pass 3151 · Gastspiel · CRS 15362* (0.11 Faktor) · <span style="color:var(--yellow)">nicht gewertet</span></div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">1</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--yellow)">2</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--yellow)">1</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--yellow)">67%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:67%;background:var(--yellow)"></div></div>
+      <div class="perf-detail">CRS 15362 mit niedrigem Gewichtungsfaktor (0.11) — wenig Spiele, CRS nicht aussagekräftig</div>
+    </div>
+
+    <div class="player-card" style="border-color:rgba(248,113,113,.25)">
+      <div class="player-name">Hannes Löffler</div>
+      <div class="player-sub">Pass 3320 · Gastspiel · CRS 10975 · <span style="color:var(--yellow)">nicht gewertet</span></div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">2</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--red)">1</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--red)">5</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--red)">17%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:17%;background:var(--red)"></div></div>
+      <div class="perf-detail">⚠ Nur 17% in 2 V1-Einsätzen · niedrigster CRS der Gäste (10975) · kein weiterer Einsatz empfohlen</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════ 09 ══════════════════════════ -->
+<div>
+  <div class="section-label">09 — Doppelstatistik · Saison 2025/26</div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Doppelpaare V1</span></div>
+    <div class="card-body">
+      <table>
+        <thead><tr><th>Paar</th><th>Einsätze</th><th>Siege</th><th>Niederlagen</th><th>Quote</th></tr></thead>
+        <tbody>
+          <tr style="background:rgba(74,222,128,.05)">
+            <td><strong>Ramadan / Micheluzzi</strong></td><td>8</td>
+            <td style="color:var(--green)">6</td><td style="color:var(--red)">2</td>
+            <td><span style="color:var(--green);font-family:var(--mono);font-weight:600">75%</span></td>
+          </tr>
+          <tr>
+            <td>Micheluzzi / Löffler</td><td>2</td>
+            <td style="color:var(--yellow)">1</td><td style="color:var(--red)">1</td>
+            <td><span style="color:var(--yellow);font-family:var(--mono)">50%</span></td>
+          </tr>
+          <tr>
+            <td>Micheluzzi / Gotthart</td><td>1</td>
+            <td style="color:var(--green)">1</td><td style="color:var(--red)">0</td>
+            <td><span style="color:var(--green);font-family:var(--mono)">100%</span></td>
+          </tr>
+          <tr>
+            <td>Fuchs / Ramadan</td><td>1</td>
+            <td style="color:var(--yellow)">1</td><td style="color:var(--red)">0</td>
+            <td><span style="color:var(--yellow);font-family:var(--mono)">100%</span></td>
+          </tr>
+          <tr>
+            <td>Micheluzzi / Ramadan (Strafverifizierung)</td><td>1</td>
+            <td style="color:var(--dim)">—</td><td style="color:var(--dim)">—</td>
+            <td><span style="color:var(--red);font-family:var(--mono)">Strafe</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="analysis" style="margin-top:14px">
+        <span class="good">Ramadan/Micheluzzi mit 75% (6/8)</span> ist das klare Stamm-Doppel —
+        und das zuverlässigste Doppel aller vier SU9-Mannschaften. Dieses Paar sollte
+        wann immer möglich eingesetzt werden. Gotthart als Alternative (100%, 1/1) ist vielversprechend.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 10 ══════════════════════════ -->
+<div>
+  <div class="section-label">10 — Alle Ergebnisse · Saison 2025/26</div>
+  <ul class="match-list">
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R2 · Mi 17.09.2025 · Auswärts</span><span class="match-teams">HG I 2 – SU9 1</span><span class="match-score w">4:6</span></div>
+      <div class="match-note">Ramadan/Reindl/Micheluzzi · Ramadan 3/3, Micheluzzi 2/3 · Alle 10 Spiele</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R3 · Mi 24.09.2025 · Heim</span><span class="match-teams">SU9 1 – POST 2</span><span class="match-score l">4:6</span></div>
+      <div class="match-note">Ramadan/Löffler/Micheluzzi · Löffler 2/3, Micheluzzi 2/3 · Alle 10 Spiele</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R4 · Mi 08.10.2025 · Auswärts</span><span class="match-teams">WILI 5 – SU9 1</span><span class="match-score w">2:6</span></div>
+      <div class="match-note">Reindl/Ramadan/Micheluzzi · Ramadan 2/3, Micheluzzi 2/3 · Abbruch bei 2:6 (8 Spiele)</div>
+    </li>
+    <li class="match-item penalty-match">
+      <div class="match-header"><span class="match-runde">DG1 · R6 · Mi 22.10.2025 · Heim</span><span class="match-teams">SU9 1 – SKH 3</span><span class="match-score pen">0:7 STRAFE</span></div>
+      <div class="match-note" style="color:var(--red)">⚠ Strafverifizierung durch MuBA — nicht erlaubter Spielereinsatz der Heimmannschaft</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R7 · Mo 03.11.2025 · Auswärts</span><span class="match-teams">BRZ 2 – SU9 1</span><span class="match-score l">6:4</span></div>
+      <div class="match-note">Ramadan/Löffler/Fuchs · Ramadan 2/3, Löffler 1/3, Fuchs 1/3 · Alle 10 Spiele</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R8 · Mi 12.11.2025 · Heim</span><span class="match-teams">SU9 1 – FSF 1</span><span class="match-score w">6:3</span></div>
+      <div class="match-note">Ramadan/Reindl/Micheluzzi · Micheluzzi 3/3, Ramadan 2/3 · Abbruch bei 6:3 (9 Spiele)</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R9 · Mi 19.11.2025 · Auswärts</span><span class="match-teams">BTTC 2 – SU9 1</span><span class="match-score w">2:6</span></div>
+      <div class="match-note">Reindl/Micheluzzi/Ramadan · Micheluzzi 3/3, Ramadan 2/3 · Abbruch bei 2:6 (8 Spiele)</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R10 · Mi 03.12.2025 · Heim</span><span class="match-teams">SU9 1 – FJB 4</span><span class="match-score w">6:1</span></div>
+      <div class="match-note">Reindl/Ramadan/Micheluzzi · Ramadan 2/2, Reindl 2/2, Micheluzzi 2/2 · Abbruch bei 6:1 (7 Spiele)</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R11 · Mo 15.12.2025 · Auswärts</span><span class="match-teams">HÄRM 1 – SU9 1</span><span class="match-score d">5:5</span></div>
+      <div class="match-note">Ramadan/Reindl/Micheluzzi · Ramadan 3/3, Micheluzzi 1/3 · Alle 10 Spiele</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG2 · R2 · Mi 21.01.2026 · Heim</span><span class="match-teams">SU9 1 – HG I 2</span><span class="match-score w">6:1</span></div>
+      <div class="match-note">Reindl/Micheluzzi/Ramadan · Ramadan 2/2, Micheluzzi 2/2 · Abbruch bei 6:1 (7 Spiele)</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG2 · R3 · Di 27.01.2026 · Auswärts</span><span class="match-teams">POST 2 – SU9 1</span><span class="match-score w">2:6</span></div>
+      <div class="match-note">Reindl/Ramadan/Micheluzzi · Ramadan 2/3, Micheluzzi 1/3, Reindl 2/3 · Abbruch bei 2:6 (8 Spiele)</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG2 · R4 · Mi 18.02.2026 · Heim</span><span class="match-teams">SU9 1 – WILI 5</span><span class="match-score w">7:0</span></div>
+      <div class="match-note">Micheluzzi/Ramadan/Gotthart · Alle 3 Spieler 2+/2 · Abbruch bei 7:0 (7 Spiele)</div>
+    </li>
+  </ul>
+</div>
+
+<!-- ══════════════════════════ 11 ══════════════════════════ -->
+<div>
+  <div class="section-label">11 — Noch ausstehende Spiele · DG2</div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">7 offene Spiele</span></div>
+    <div class="card-body">
+      <table>
+        <thead><tr><th>Datum</th><th>H/A</th><th>Gegner</th><th>Rang</th><th>Punkte</th><th>Prognose</th></tr></thead>
+        <tbody>
+          <tr class="hl">
+            <td><strong>Mi 11.03.2026</strong></td>
+            <td style="color:var(--yellow)">Auswärts</td>
+            <td>SKH 3 ⚠</td><td>2</td><td>30</td>
+            <td style="color:var(--yellow);font-family:var(--mono)">Schwierig · Achtung Gastspielregel!</td>
+          </tr>
+          <tr class="hl">
+            <td>Mi 18.03.2026</td>
+            <td style="color:var(--green)">Heim</td>
+            <td>BRZ 2</td><td>1</td><td>28</td>
+            <td style="color:var(--orange);font-family:var(--mono)">Schlüsselspiel Rang 1!</td>
+          </tr>
+          <tr>
+            <td>Do 26.03.2026</td>
+            <td style="color:var(--yellow)">Auswärts</td>
+            <td>FSF 1</td><td>4</td><td>21</td>
+            <td style="color:var(--yellow);font-family:var(--mono)">Offen</td>
+          </tr>
+          <tr>
+            <td>Mi 15.04.2026</td>
+            <td style="color:var(--green)">Heim</td>
+            <td>BTTC 2</td><td>5</td><td>20</td>
+            <td style="color:var(--green);font-family:var(--mono)">Sieg möglich</td>
+          </tr>
+          <tr>
+            <td>Do 23.04.2026</td>
+            <td style="color:var(--yellow)">Auswärts</td>
+            <td>FJB 4</td><td>9</td><td>8</td>
+            <td style="color:var(--green);font-family:var(--mono)">Sieg erwartet</td>
+          </tr>
+          <tr>
+            <td>Mi 06.05.2026</td>
+            <td style="color:var(--green)">Heim</td>
+            <td>HÄRM 1</td><td>7</td><td>12</td>
+            <td style="color:var(--green);font-family:var(--mono)">Sieg möglich</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="analysis" style="margin-top:14px">
+        <strong>Szenarien (max. 21 weitere Punkte):</strong><br>
+        <span class="good">5–6 Siege</span> → 40–43 Punkte → <span class="good">Rang 1–2, Aufstieg möglich</span><br>
+        <span class="warn">3–4 Siege</span> → 34–37 Punkte → <span class="warn">Rang 2–3</span><br><br>
+        <span class="orange">Das Heimspiel gegen BRZ 2 (Mi 18.03.) ist das wichtigste Spiel der Saison</span> —
+        direktes Duell gegen Tabellenführer. BRZ 2 hat 28 Punkte, SU9 V1 hat 25 —
+        ein Sieg würde die Tabellenspitze in greifbare Nähe rücken.<br><br>
+        <span class="warn">⚠ SKH 3 Rückspiel (Mi 11.03.):</span> Gastspielregel strikt einhalten —
+        kein weiteres Risiko einer Strafverifizierung eingehen.
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+</body>
+</html>

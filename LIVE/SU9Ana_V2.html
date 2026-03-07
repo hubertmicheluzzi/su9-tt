@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SU9Ana_V2 – VÖB Mannschaft 2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap');
+  :root {
+    --bg:#0d0f14; --bg2:#13161e; --bg3:#1a1f2b; --border:#2a3040;
+    --acc:#60a5fa; --green:#4ade80; --yellow:#fbbf24; --red:#f87171;
+    --orange:#fb923c; --text:#e2e8f0; --dim:#7a8899; --bright:#ffffff;
+    --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;}
+  .header-title span{color:var(--bright);}50%{opacity:.3}}
+  .container{max-width:1100px;margin:0 auto;padding:28px 24px;display:grid;gap:28px;}
+  .section-label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+  .card-header{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .card-title{font-weight:600;font-size:14px;color:var(--bright);}
+  .card-body{padding:18px;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;}
+  @media(max-width:700px){.two-col,.three-col{grid-template-columns:1fr;}}
+  .big-score{display:flex;align-items:center;justify-content:center;gap:24px;padding:20px 0;}
+  .big-score .team{font-size:15px;font-weight:600;color:var(--bright);text-align:center;flex:1;}
+  .big-score .team.su9{color:var(--acc);}
+  .big-score .score{font-family:var(--mono);font-size:48px;font-weight:600;}
+  .big-score .score.w{color:var(--green);}
+  .big-score .score.d{color:var(--yellow);}
+  .big-score .score.l{color:var(--red);}
+  .big-score .meta{font-family:var(--mono);font-size:11px;color:var(--dim);text-align:center;margin-top:4px;}
+  .stat-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .stat-chip{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:8px 14px;font-family:var(--mono);}
+  .stat-chip .n{color:var(--dim);font-size:9px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:3px;}
+  .stat-chip .v{color:var(--bright);font-size:15px;font-weight:600;}
+  .analysis{background:rgba(96,165,250,.05);border:1px solid rgba(96,165,250,.2);border-radius:4px;padding:14px 16px;font-size:13px;line-height:1.8;}
+  .analysis strong{color:var(--acc);}
+  .analysis .warn{color:var(--yellow);font-weight:600;}
+  .analysis .good{color:var(--green);font-weight:600;}
+  .analysis .bad{color:var(--red);font-weight:600;}
+  .analysis .orange{color:var(--orange);font-weight:600;}
+  .games-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:10px;}
+  .game-cell{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:6px 8px;}
+  .game-cell .gid{font-family:var(--mono);color:var(--dim);font-size:9px;display:block;margin-bottom:2px;}
+  .game-cell .gplayer{color:var(--text);font-size:10px;display:block;margin-bottom:3px;line-height:1.3;}
+  .game-cell .gresult{font-family:var(--mono);font-weight:600;font-size:12px;}
+  .game-cell .gresult.w{color:var(--green);}
+  .game-cell .gresult.l{color:var(--red);}
+  .game-cell.doppel{background:rgba(96,165,250,.07);border-color:rgba(96,165,250,.3);}
+  .player-card{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:14px;}
+  .player-name{font-weight:600;font-size:14px;color:var(--bright);margin-bottom:2px;}
+  .player-sub{font-family:var(--mono);font-size:10px;color:var(--dim);margin-bottom:10px;}
+  .pstats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px;}
+  .pstat .pn{font-family:var(--mono);font-size:9px;color:var(--dim);display:block;}
+  .pstat .pv{font-family:var(--mono);font-size:16px;font-weight:600;}
+  .pbar{height:4px;border-radius:2px;background:var(--border);overflow:hidden;margin-bottom:6px;}
+  .pbar-fill{height:100%;border-radius:2px;}
+  .perf-detail{font-size:11px;color:var(--dim);line-height:1.5;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{padding:8px 12px;text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--border);white-space:nowrap;}
+  td{padding:8px 12px;border-bottom:1px solid rgba(42,48,64,.4);vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  tr.su9-row{background:rgba(96,165,250,.08);}
+  tr.su9-row td{color:var(--bright);}
+  tr.hl{background:rgba(251,191,36,.06);}
+  .match-list{list-style:none;display:grid;gap:8px;}
+  .match-item{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:12px 16px;}
+  .match-header{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+  .match-runde{font-family:var(--mono);font-size:10px;color:var(--dim);}
+  .match-teams{font-weight:600;font-size:13px;color:var(--bright);flex:1;}
+  .match-score{font-family:var(--mono);font-size:17px;font-weight:600;}
+  .match-score.w{color:var(--green);}
+  .match-score.d{color:var(--yellow);}
+  .match-score.l{color:var(--red);}
+  .match-note{font-size:11px;color:var(--dim);}
+  .next-box{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.3);border-radius:6px;padding:20px;}
+  .next-label{font-family:var(--mono);font-size:11px;color:var(--yellow);letter-spacing:.1em;margin-bottom:10px;}
+  .next-teams{font-size:20px;font-weight:700;color:var(--bright);margin-bottom:4px;}
+  .next-meta{font-family:var(--mono);font-size:12px;color:var(--dim);}
+  .voeb-note{background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.2);border-radius:4px;padding:10px 14px;font-size:12px;color:var(--dim);margin-bottom:14px;}
+  .voeb-note strong{color:var(--acc);}
+  footer{text-align:center;padding:20px;font-family:var(--mono);font-size:11px;color:var(--dim);border-top:1px solid var(--border);margin-top:10px;}
+</style>
+</head>
+<body>
+
+
+<div class="container">
+
+<!-- 01 -->
+<div>
+  <div class="section-label">01 — Aktuelles Ergebnis</div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">DG2 · Runde 6 · Mi 04.03.2026 · Heim · Von Gastmannschaft bestätigt</span></div>
+    <div class="card-body">
+      <div class="big-score">
+        <div><div class="team su9">SU9 2</div><div class="meta">Heim</div></div>
+        <div><div class="score l">2 : 6</div><div class="meta">Niederlage · 0 Punkte</div></div>
+        <div><div class="team">BBSV 1</div><div class="meta">Gast · Rang 5</div></div>
+      </div>
+      <div class="stat-row" style="justify-content:center;margin-bottom:16px;">
+        <div class="stat-chip"><span class="n">Mannschaftspunkte</span><span class="v" style="color:var(--red)">+0</span></div>
+        <div class="stat-chip"><span class="n">SU9 Gesamtpunkte</span><span class="v" style="color:var(--red)">4</span></div>
+        <div class="stat-chip"><span class="n">SU9 Rang</span><span class="v" style="color:var(--red)">10 / 10</span></div>
+      </div>
+      <div class="analysis">
+        Deutliche Niederlage gegen BBSV 1 (Rang 5). Ishak und Auvillain holten je 1 Einzelsieg —
+        <span class="bad">Steinrigl 0/2</span> und das Doppel verloren.
+        BBSV brachte mit Veitschegger (CRS 12879, nicht gewertet) ihren stärksten Mann —
+        er dominierte mit 3 Siegen. <span class="warn">SU9 V2 ist in dieser Klasse strukturell zu schwach.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 02 -->
+<div>
+  <div class="section-label">02 — Unsere Spielerleistung · DG2 R6 vs BBSV 1</div>
+  <div class="two-col">
+    <div class="player-card">
+      <div class="player-name">Adi Steinrigl · Position A</div>
+      <div class="player-sub">DG2 R6 · Einzel 0/2 · Doppel verloren</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--red)">0</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--red)">2</span></div>
+        <div class="pstat"><span class="pn">Doppel</span><span class="pv" style="color:var(--red)">✗</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:0%;background:var(--red)"></div></div>
+      <div class="perf-detail">
+        I vs Tieu Van: <span style="color:var(--red)">0:3 ✗</span> ·
+        V vs Veitschegger: <span style="color:var(--red)">0:3 ✗</span> ·
+        IIIA Doppel mit Auvillain: <span style="color:var(--red)">0:3 ✗</span>
+      </div>
+    </div>
+    <div class="player-card">
+      <div class="player-name">Cyril Auvillain · Position B</div>
+      <div class="player-sub">DG2 R6 · Einzel 1/2 · Doppel verloren</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--yellow)">1</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--yellow)">1</span></div>
+        <div class="pstat"><span class="pn">Doppel</span><span class="pv" style="color:var(--red)">✗</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:50%;background:var(--yellow)"></div></div>
+      <div class="perf-detail">
+        II vs Veitschegger: <span style="color:var(--red)">0:3 ✗</span> ·
+        VII vs Wokurek: <span style="color:var(--green)">3:1 ✓</span> ·
+        IIIA Doppel mit Steinrigl: <span style="color:var(--red)">0:3 ✗</span>
+      </div>
+    </div>
+    <div class="player-card">
+      <div class="player-name">Johannes Ishak · Position C</div>
+      <div class="player-sub">DG2 R6 · Einzel 1/3 · kein Doppel</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--yellow)">1</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--yellow)">2</span></div>
+        <div class="pstat"><span class="pn">Doppel</span><span class="pv" style="color:var(--dim)">—</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:33%;background:var(--yellow)"></div></div>
+      <div class="perf-detail">
+        III vs Wokurek: <span style="color:var(--red)">0:3 ✗</span> ·
+        VI vs Tieu Van: <span style="color:var(--green)">3:2 ✓</span> ·
+        VIII vs Veitschegger: <span style="color:var(--red)">0:3 ✗</span>
+      </div>
+    </div>
+  </div>
+  <div class="analysis" style="margin-top:12px">
+    <strong>Fazit DG2 R6:</strong> Ishak mit 2/3 war der einzige Lichtblick.
+    <span class="bad">Steinrigl 0/3, Doppel 0:3</span> — BBSV brachte mit Veitschegger (CRS 12879)
+    und Wokurek (CRS 12247) zwei überdurchschnittlich starke Spieler die nicht in der gewerteten Rangliste sind,
+    aber de facto stärker als alles was SU9 V2 aufstellen kann.
+  </div>
+</div>
+
+<!-- 03 -->
+<div>
+  <div class="section-label">03 — Der Gegner · BBSV 1</div>
+  <div class="card">
+    <div class="card-body">
+      <div class="stat-row" style="margin-bottom:14px">
+        <div class="stat-chip"><span class="n">Rang</span><span class="v" style="color:var(--yellow)">5 / 10</span></div>
+        <div class="stat-chip"><span class="n">Punkte</span><span class="v">22</span></div>
+        <div class="stat-chip"><span class="n">S-U-N</span><span class="v">7-1-6</span></div>
+        <div class="stat-chip"><span class="n">Sp-V</span><span class="v">56:58</span></div>
+      </div>
+      <table style="margin-bottom:14px">
+        <thead><tr><th>Spieler</th><th>Sp</th><th>S / N</th><th>CRS</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Liu Tieu Phong</td><td>9</td><td>11:12</td><td>9535</td><td>gewertet (Rang 14)</td></tr>
+          <tr><td>Luu Tieu Van</td><td>8</td><td>5:12</td><td>8131</td><td>gewertet (Rang 19)</td></tr>
+          <tr><td><strong>Werner Veitschegger</strong></td><td>5</td><td>13:1</td><td>12879</td><td>nicht gewertet · stärkster</td></tr>
+          <tr><td>Stefan Wokurek</td><td>5</td><td>8:3</td><td>12247</td><td>nicht gewertet</td></tr>
+          <tr><td>Wolfgang Petrzalka</td><td>4</td><td>5:6</td><td>12423</td><td>nicht gewertet</td></tr>
+        </tbody>
+      </table>
+      <div class="analysis">
+        BBSV 1 ist Rang 5 mit ausgeglichener Bilanz (56:58 Sp-V).
+        Die Stärke liegt bei den <span class="warn">nicht gewerteten Spielern</span> — besonders
+        Veitschegger (CRS 12879, 13:1!) und Wokurek (CRS 12247) sind deutlich zu stark für SU9 V2.
+        Direktbilanz: Hinspiel verloren 1:6 (auswärts), Rückspiel jetzt 2:6.
+        <span class="bad">0 Punkte aus 2 Spielen gegen BBSV.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 -->
+<div>
+  <div class="section-label">04 — Spiel-Details · Kreuzmatrix DG2 R6</div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">SU9 2 vs BBSV 1 · Endstand 2:6</span></div>
+    <div class="card-body">
+      <div style="font-size:12px;color:var(--dim);margin-bottom:8px;font-family:var(--mono)">
+        SU9: A=Steinrigl · B=Auvillain · C=Ishak &nbsp;|&nbsp; BBSV: X=Tieu Van · Y=Veitschegger · Z=Wokurek
+      </div>
+      <div class="games-grid">
+        <div class="game-cell"><span class="gid">I · A vs X</span><span class="gplayer">Steinrigl vs Tieu Van</span><span class="gresult l">0:3 ✗</span></div>
+        <div class="game-cell"><span class="gid">II · B vs Y</span><span class="gplayer">Auvillain vs Veitschegger</span><span class="gresult l">0:3 ✗</span></div>
+        <div class="game-cell"><span class="gid">III · C vs Z</span><span class="gplayer">Ishak vs Wokurek</span><span class="gresult l">0:3 ✗</span></div>
+        <div class="game-cell doppel"><span class="gid">IIIA ♦ Doppel</span><span class="gplayer">Steinrigl/Auvillain vs Tieu Van/Veitschegger</span><span class="gresult l">0:3 ✗</span></div>
+        <div class="game-cell"><span class="gid">IV · B vs X</span><span class="gplayer">Steinrigl vs Veitschegger</span><span class="gresult l">0:3 ✗</span></div>
+        <div class="game-cell"><span class="gid">V · A vs Z</span><span class="gplayer">Ishak vs Tieu Van</span><span class="gresult w">3:2 ✓</span></div>
+        <div class="game-cell"><span class="gid">VI · C vs Y</span><span class="gplayer">Auvillain vs Wokurek</span><span class="gresult w">3:1 ✓</span></div>
+        <div class="game-cell"><span class="gid">VII · B vs Z</span><span class="gplayer">Ishak vs Veitschegger</span><span class="gresult l">0:3 ✗</span></div>
+        <div class="game-cell"><span class="gid">VIII · C vs X</span><span class="gplayer">Ishak vs Wokurek (abgebr.)</span><span class="gresult l">—</span></div>
+      </div>
+      <div class="analysis" style="margin-top:12px">
+        Nach 0:4 zwei Einzelsiege (Ishak, Auvillain) → 2:5, dann Abbruch bei 2:6.
+        <span class="warn">Veitschegger unbezwingbar (3:0 gegen alle) — zu stark für dieses Niveau.</span>
+        Einzige Lichtblicke: Ishak schlug Tieu Van 3:2, Auvillain schlug Wokurek 3:1.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 -->
+<div>
+  <div class="section-label">05 — Gesamtanalyse & Ausblick Saison 2025/26</div>
+  <div class="card">
+    <div class="card-body">
+      <div class="analysis">
+        <span class="bad">SU9 V2 ist klares Schlusslicht</span> der 3. Klasse — Rang 10/10 mit 4 Punkten,
+        28:82 Sp-V. Nur 1 Sieg (LENZ 2, 6:2) und 1 Remis (SKH 4, 5:5) in 14 gespielten Partien.<br><br>
+
+        <strong>Strukturelles Problem:</strong> Der Kern (Ishak, Petro, Auvillain, Steinrigl) ist
+        auf 3. Klasse VÖB-Niveau schlicht zu schwach. Die Liga-Spitze (WILI 7 mit 40P, WILI 6 mit 28P)
+        ist eine andere Kategorie.<br><br>
+
+        <span class="good">Stärken:</span> <strong>Ishak</strong> (Rang 18, 9:17) ist der einzige
+        halbwegs konkurrenzfähige Spieler. Das Doppel <strong>Löffler/Ishak</strong> (2:1) und
+        <strong>Löffler/Petro</strong> (1:1) funktionieren, wenn Löffler als Gast dabei ist.<br><br>
+
+        <span class="warn">Fazit Saison:</span> Mit 4 offenen Spielen (max. 12 Punkte) ist der
+        letzte Platz kaum mehr zu vermeiden. LENZ 2 (Rang 9, 5P) liegt nur 1 Punkt vor SU9 V2 —
+        aber LENZ hat nur noch 3 offene Spiele. <span class="orange">Abstieg aus der 3. Klasse ist realistisch</span>,
+        aber VÖB-Abstiegsregeln müssen geprüft werden (gibt es eine 4. Klasse?).
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 06 -->
+<div>
+  <div class="section-label">06 — Nächstes Spiel</div>
+  <div class="next-box">
+    <div class="next-label">▶ Di 17.03.2026 · 18:00 Uhr · AUSWÄRTS · DG2 R7</div>
+    <div class="next-teams">SKH 5 – SU9 2</div>
+    <div class="next-meta">Hintere Zollamtsstraße 19, Wien · VÖB 3. Klasse</div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <div class="card-header"><span class="card-title">Vorschau: SKH 5 vs SU9 2</span></div>
+    <div class="card-body">
+      <div class="stat-row" style="margin-bottom:14px">
+        <div class="stat-chip"><span class="n">SKH 5 Rang</span><span class="v" style="color:var(--red)">3 / 10</span></div>
+        <div class="stat-chip"><span class="n">SKH 5 Punkte</span><span class="v" style="color:var(--red)">27</span></div>
+        <div class="stat-chip"><span class="n">SKH 5 S-U-N</span><span class="v">8-3-3</span></div>
+        <div class="stat-chip"><span class="n">Hinspiel</span><span class="v" style="color:var(--red)">0:7 (SU9 verlor)</span></div>
+      </div>
+      <table style="margin-bottom:14px">
+        <thead><tr><th>SKH 5 Spieler</th><th>Sp</th><th>S / N</th><th>CRS</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Roman Duskanich</strong></td><td>14</td><td>25:13</td><td>10272</td><td>gewertet (Rang 5)</td></tr>
+          <tr><td>Walter Schaschl</td><td>10</td><td>15:9</td><td>9546</td><td>gewertet (Rang 10)</td></tr>
+          <tr><td>Ingo Korak</td><td>14</td><td>19:16</td><td>9773</td><td>gewertet (Rang 11)</td></tr>
+        </tbody>
+      </table>
+      <div class="analysis">
+        SKH 5 ist Rang 3 mit 27 Punkten — deutlich stärker als SU9 V2.
+        Im Hinspiel (DG1 R7) verlor SU9 V2 0:7 — kompletter Whitewash.
+        Duskanich (25:13, CRS 10272) ist der stärkste Spieler, Korak (19:16) sehr präsent.
+        <span class="bad">Ein Sieg ist unwahrscheinlich</span> — Ziel: zumindest 2–3 Einzelpunkte holen
+        und nicht erneut 0:7 verlieren. <span class="warn">Löffler als Gastspiel wäre hilfreich.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 07 -->
+<div>
+  <div class="section-label">07 — Tabellenstand · VÖB 3. Klasse</div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Tabelle 2025/26 · Stand 07.03.2026</span></div>
+    <div class="card-body">
+      <div class="voeb-note"><strong>VÖB-Punktesystem:</strong> Sieg = 3P · Remis = 1P · Niederlage = 0P</div>
+      <div class="stat-row" style="margin-bottom:16px">
+        <div class="stat-chip"><span class="n">SU9 Rang</span><span class="v" style="color:var(--red)">10 / 10</span></div>
+        <div class="stat-chip"><span class="n">Punkte</span><span class="v" style="color:var(--red)">4</span></div>
+        <div class="stat-chip"><span class="n">S-U-N</span><span class="v" style="color:var(--red)">1-1-12</span></div>
+        <div class="stat-chip"><span class="n">Sp-V</span><span class="v" style="color:var(--red)">28:82</span></div>
+        <div class="stat-chip"><span class="n">Offen</span><span class="v" style="color:var(--yellow)">4</span></div>
+      </div>
+      <table>
+        <thead><tr><th>Rang</th><th>Mannschaft</th><th>Sp</th><th>S</th><th>U</th><th>N</th><th>Sp-V</th><th>P</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>KSV Wiener Linien 7</td><td>14</td><td>13</td><td>1</td><td>0</td><td>84:36</td><td><strong>40</strong></td></tr>
+          <tr><td>2</td><td>KSV Wiener Linien 6</td><td>13</td><td>8</td><td>4</td><td>1</td><td>74:33</td><td><strong>28</strong></td></tr>
+          <tr><td>3</td><td>SK Handelsministerium 5</td><td>14</td><td>8</td><td>3</td><td>3</td><td>73:48</td><td><strong>27</strong></td></tr>
+          <tr><td>4</td><td>TTC Olympic 3</td><td>14</td><td>7</td><td>4</td><td>3</td><td>70:49</td><td><strong>25</strong></td></tr>
+          <tr><td>5</td><td>Bundesbahnsportverein 1</td><td>14</td><td>7</td><td>1</td><td>6</td><td>56:58</td><td><strong>22</strong></td></tr>
+          <tr><td>6</td><td>SK Handelsministerium 4</td><td>14</td><td>6</td><td>2</td><td>6</td><td>59:60</td><td><strong>20</strong></td></tr>
+          <tr><td>7</td><td>KSV HG I 3</td><td>13</td><td>5</td><td>2</td><td>6</td><td>53:56</td><td><strong>17</strong></td></tr>
+          <tr><td>8</td><td>SV Post Wien 3</td><td>14</td><td>3</td><td>0</td><td>11</td><td>46:73</td><td><strong>9</strong></td></tr>
+          <tr class="hl"><td>9</td><td>ATUS Langenzersdorf 2</td><td>14</td><td>1</td><td>2</td><td>11</td><td>34:82</td><td><strong>5</strong></td></tr>
+          <tr class="su9-row"><td>10</td><td>⬤ Sportunion Wien 9 2</td><td>14</td><td>1</td><td>1</td><td>12</td><td>28:82</td><td><strong>4</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="analysis" style="margin-top:14px">
+        SU9 V2 auf dem letzten Platz — nur 1 Punkt hinter LENZ 2 (Rang 9, 5P).
+        <span class="warn">4 offene Spiele, max. 12 weitere Punkte möglich.</span>
+        Rang 9 ist theoretisch noch erreichbar wenn SU9 V2 gewinnt und LENZ 2 verliert —
+        aber angesichts der bisherigen Saison ist das unwahrscheinlich.
+        <strong>Zu prüfen:</strong> Gibt es in der VÖB 3. Klasse einen Absteiger, und wenn ja,
+        in welche Klasse? Falls ja, ist SU9 V2 der erste Abstiegskandidat.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 08 -->
+<div>
+  <div class="section-label">08 — Spielerstatistiken · Saison gesamt (Einzelrangliste 3. Klasse)</div>
+  <div class="two-col">
+    <!-- GEWERTET -->
+    <div class="player-card">
+      <div class="player-name">Johannes Ishak</div>
+      <div class="player-sub">Rang 18 · Pass 3709 · V2-gebunden · CRS 7293 · gewertet ✓</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">11</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--red)">9</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--red)">17</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--red)">35%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:35%;background:var(--red)"></div></div>
+      <div class="perf-detail">Bester gewerteter Stammspieler · 35% ist dennoch unzureichend für diese Klasse</div>
+    </div>
+
+    <div class="player-card">
+      <div class="player-name">Branko Petro</div>
+      <div class="player-sub">Rang 20 · Pass 3712 · V2-gebunden · CRS 7447 · gewertet ✓</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">9</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--red)">5</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--red)">15</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--red)">25%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:25%;background:var(--red)"></div></div>
+      <div class="perf-detail">Rang 20 (letzter Platz) · strukturell überfordert auf diesem Niveau</div>
+    </div>
+
+    <!-- NICHT GEWERTET -->
+    <div class="player-card" style="border-color:rgba(251,191,36,.3)">
+      <div class="player-name">Hannes Löffler</div>
+      <div class="player-sub">Pass 3320 · Gastspiel (W2-gebunden) · CRS 10975 · nicht gewertet</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">3</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--green)">7</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--yellow)">2</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--green)">78%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:78%;background:var(--green)"></div></div>
+      <div class="perf-detail"><span style="color:var(--green)">78% — mit Abstand bester Spieler wenn dabei</span> · CRS 10975 weit über Klassenschnitt</div>
+    </div>
+
+    <div class="player-card" style="border-color:rgba(251,191,36,.3)">
+      <div class="player-name">Adi Steinrigl</div>
+      <div class="player-sub">Pass 3788 · V2-gebunden · CRS 7068 · nicht gewertet (SIK 0.83)</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">6</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--red)">3</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--red)">10</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--red)">23%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:23%;background:var(--red)"></div></div>
+      <div class="perf-detail">⚠ Knapp unter 51%-Schwelle für Wertung · ähnliche Probleme wie Petro</div>
+    </div>
+
+    <div class="player-card" style="border-color:rgba(251,191,36,.3)">
+      <div class="player-name">Cyril Auvillain</div>
+      <div class="player-sub">Pass 3789 · V2-gebunden · CRS 6723* (MuBA) · nicht gewertet</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">7</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--red)">1</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--red)">14</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--red)">7%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:7%;background:var(--red)"></div></div>
+      <div class="perf-detail">⚠ 1/15 Einzel · CRS vom MuBA zugeordnet · deutlich überfordert</div>
+    </div>
+
+    <div class="player-card" style="border-color:rgba(251,191,36,.3)">
+      <div class="player-name">Fabian Tatzreiter</div>
+      <div class="player-sub">Pass 3791 · V2-gebunden · CRS 9782 · nicht gewertet (SIK 0.61)</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">4</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--red)">1</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--red)">8</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--red)">11%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:11%;background:var(--red)"></div></div>
+      <div class="perf-detail">Selten eingesetzt · CRS 9782 höher als andere, aber wenig Spielpraxis</div>
+    </div>
+
+    <div class="player-card" style="border-color:rgba(251,191,36,.3)">
+      <div class="player-name">Ai-Mei Huang</div>
+      <div class="player-sub">Pass 3977 · V2-gebunden · CRS 9545* (MuBA) · nicht gewertet</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">2</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--red)">0</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--red)">4</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--red)">0%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:0%;background:var(--red)"></div></div>
+      <div class="perf-detail">0/4 Einzel · CRS vom MuBA zugeordnet · überfordert auf V2-Niveau</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 09 -->
+<div>
+  <div class="section-label">09 — Doppelstatistik · Saison 2025/26</div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Doppelpaare V2 (Doppelrangliste: Rang 10/10 · 2:12)</span></div>
+    <div class="card-body">
+      <table>
+        <thead><tr><th>Paar</th><th>S / N</th><th>Quote</th></tr></thead>
+        <tbody>
+          <tr style="background:rgba(74,222,128,.05)">
+            <td><strong>Löffler / Ishak</strong></td>
+            <td style="color:var(--green)">1:0</td>
+            <td><span style="color:var(--green);font-family:var(--mono);font-weight:600">100%</span></td>
+          </tr>
+          <tr>
+            <td>Löffler / Petro</td>
+            <td style="color:var(--yellow)">1:1</td>
+            <td><span style="color:var(--yellow);font-family:var(--mono)">50%</span></td>
+          </tr>
+          <tr>
+            <td>Steinrigl / Auvillain</td>
+            <td style="color:var(--red)">0:1</td>
+            <td><span style="color:var(--red);font-family:var(--mono)">0%</span></td>
+          </tr>
+          <tr>
+            <td>Steinrigl / Huang</td>
+            <td style="color:var(--red)">0:1</td>
+            <td><span style="color:var(--red);font-family:var(--mono)">0%</span></td>
+          </tr>
+          <tr>
+            <td>Auvillain / Huang</td>
+            <td style="color:var(--red)">0:1</td>
+            <td><span style="color:var(--red);font-family:var(--mono)">0%</span></td>
+          </tr>
+          <tr>
+            <td>Ishak / Auvillain, Ishak / Steinrigl, Ishak / Petro</td>
+            <td style="color:var(--red)">0:8 gesamt</td>
+            <td><span style="color:var(--red);font-family:var(--mono)">0%</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="analysis" style="margin-top:14px">
+        <span class="bad">Doppel-Rangliste Rang 10/10</span> mit 2:12 — schlechtestes Doppel der Liga.
+        Nur wenn <span class="good">Löffler dabei ist</span>, gibt es realistische Gewinnchancen im Doppel.
+        Ohne Löffler ist das Doppel praktisch verloren.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 10 -->
+<div>
+  <div class="section-label">10 — Alle Ergebnisse · Saison 2025/26</div>
+  <ul class="match-list">
+    <li class="match-item"><div class="match-header"><span class="match-runde">DG1 · R1 · Mi 10.09.2025 · Auswärts</span><span class="match-teams">SKH 4 – SU9 2</span><span class="match-score l">6:2</span></div><div class="match-note">Ishak/Petro/Tatzreiter · Ishak 2/3 · Abbruch bei 6:2</div></li>
+    <li class="match-item"><div class="match-header"><span class="match-runde">DG1 · R2 · Mi 17.09.2025 · Heim</span><span class="match-teams">SU9 2 – HG I 3</span><span class="match-score l">3:6</span></div><div class="match-note">Ishak/Petro/Auvillain · Ishak 2/3, Petro 1/3 · Alle 10 Spiele</div></li>
+    <li class="match-item"><div class="match-header"><span class="match-runde">DG1 · R4 · Mi 08.10.2025 · Heim</span><span class="match-teams">SU9 2 – POST 3</span><span class="match-score l">2:6</span></div><div class="match-note">Auvillain/Ishak/Steinrigl · Ishak 2/3 · Alle 10 Spiele (abgebr. nach 8)</div></li>
+    <li class="match-item"><div class="match-header"><span class="match-runde">DG1 · R5 · Di 14.10.2025 · Auswärts</span><span class="match-teams">OLY 3 – SU9 2</span><span class="match-score l">6:2</span></div><div class="match-note">Auvillain/Löffler/Petro · Löffler 2/3 · Alle 10 Spiele (abgebr. nach 8)</div></li>
+    <li class="match-item"><div class="match-header"><span class="match-runde">DG1 · R6 · Di 21.10.2025 · Auswärts</span><span class="match-teams">BBSV 1 – SU9 2</span><span class="match-score l">6:1</span></div><div class="match-note">Tatzreiter/Ishak/Petro · Tatzreiter 1/2 (WO) · Abbruch bei 6:1 (7 Spiele)</div></li>
+    <li class="match-item"><div class="match-header"><span class="match-runde">DG1 · R7 · Mi 05.11.2025 · Heim</span><span class="match-teams">SU9 2 – SKH 5</span><span class="match-score l">0:7</span></div><div class="match-note">Tatzreiter/Steinrigl/Ishak · Alle 0/2 oder 1/3 · Abbruch bei 0:7 (7 Spiele)</div></li>
+    <li class="match-item"><div class="match-header"><span class="match-runde">DG1 · R8 · Di 11.11.2025 · Auswärts</span><span class="match-teams">WILI 7 – SU9 2</span><span class="match-score l">6:1</span></div><div class="match-note">Auvillain/Ishak/Petro · Petro 1/3 · Abbruch bei 6:1 (7 Spiele)</div></li>
+    <li class="match-item"><div class="match-header"><span class="match-runde">DG1 · R10 · Do 04.12.2025 · Auswärts</span><span class="match-teams">WILI 6 – SU9 2</span><span class="match-score l">7:0</span></div><div class="match-note">Auvillain/Ishak/Petro · Alle 0/2 · Abbruch bei 7:0 (7 Spiele)</div></li>
+    <li class="match-item"><div class="match-header"><span class="match-runde">DG1 · R11 · Mi 17.12.2025 · Heim</span><span class="match-teams">SU9 2 – LENZ 2</span><span class="match-score w">6:2</span></div><div class="match-note">Steinrigl/Löffler/Ishak · Löffler 3/3, Steinrigl 2/2 · Abbruch bei 6:2 (8 Spiele)</div></li>
+    <li class="match-item"><div class="match-header"><span class="match-runde">DG2 · R1 · Mi 14.01.2026 · Heim</span><span class="match-teams">SU9 2 – SKH 4</span><span class="match-score d">5:5</span></div><div class="match-note">Steinrigl/Petro/Ishak · Steinrigl 3/3, Ishak 2/3 · Alle 10 Spiele</div></li>
+    <li class="match-item"><div class="match-header"><span class="match-runde">DG2 · R2 · Mi 21.01.2026 · Auswärts</span><span class="match-teams">HG I 3 – SU9 2</span><span class="match-score l">6:1</span></div><div class="match-note">Auvillain/Huang/Petro · Petro 1/3 · Alle 7 Spiele gespielt</div></li>
+    <li class="match-item"><div class="match-header"><span class="match-runde">DG2 · R4 · Di 17.02.2026 · Auswärts</span><span class="match-teams">POST 3 – SU9 2</span><span class="match-score l">6:3</span></div><div class="match-note">Ishak/Petro/Löffler · Löffler 2/3, Ishak 1/3 · Alle 10 Spiele</div></li>
+    <li class="match-item"><div class="match-header"><span class="match-runde">DG2 · R5 · Mi 25.02.2026 · Heim</span><span class="match-teams">SU9 2 – OLY 3</span><span class="match-score l">0:7</span></div><div class="match-note">Steinrigl/Tatzreiter/Huang · Alle 0/2 · Abbruch bei 0:7 (7 Spiele)</div></li>
+    <li class="match-item"><div class="match-header"><span class="match-runde">DG2 · R6 · Mi 04.03.2026 · Heim · ⚠ nicht bestätigt</span><span class="match-teams">SU9 2 – BBSV 1</span><span class="match-score l">2:6</span></div><div class="match-note">Steinrigl/Auvillain/Ishak · Ishak 2/3 · Abbruch bei 2:6 (8 Spiele)</div></li>
+  </ul>
+</div>
+
+<!-- 11 -->
+<div>
+  <div class="section-label">11 — Noch ausstehende Spiele · DG2</div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">4 offene Spiele</span></div>
+    <div class="card-body">
+      <table>
+        <thead><tr><th>Datum</th><th>H/A</th><th>Gegner</th><th>Rang</th><th>Punkte</th><th>Prognose</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Di 17.03.2026</strong></td><td style="color:var(--yellow)">Auswärts</td>
+            <td>SKH 5</td><td>3</td><td>27</td>
+            <td style="color:var(--red);font-family:var(--mono)">Niederlage erwartet</td>
+          </tr>
+          <tr>
+            <td>Mi 25.03.2026</td><td style="color:var(--green)">Heim</td>
+            <td>WILI 7</td><td>1</td><td>40</td>
+            <td style="color:var(--red);font-family:var(--mono)">Klare Niederlage</td>
+          </tr>
+          <tr class="hl">
+            <td>Mi 22.04.2026</td><td style="color:var(--green)">Heim</td>
+            <td>WILI 6</td><td>2</td><td>28</td>
+            <td style="color:var(--red);font-family:var(--mono)">Niederlage erwartet</td>
+          </tr>
+          <tr class="hl">
+            <td>Mo 04.05.2026</td><td style="color:var(--yellow)">Auswärts</td>
+            <td>LENZ 2</td><td>9</td><td>5</td>
+            <td style="color:var(--yellow);font-family:var(--mono)">Einzige Siegchance!</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="analysis" style="margin-top:14px">
+        <strong>Realistische Szenarien:</strong><br>
+        SKH5, WILI7, WILI6 sind alle deutlich stärker — 0 Punkte wahrscheinlich.<br>
+        <span class="orange">LENZ 2 (Mo 04.05., Auswärts) ist das einzige realistische Spiel für Punkte</span> —
+        Hinspiel gewann SU9 V2 zu Hause 6:2. Ein Auswärtssieg bei LENZ 2 wäre möglich,
+        aber die Auswärtsform (5 Auswärtsniederlagen) ist mäßig.<br><br>
+        <span class="warn">Wahrscheinliches Saisonfinish: 4–7 Punkte, letzter Platz.</span>
+        Ob das einen Abstieg bedeutet — VÖB 3. Klasse Abstiegsregeln prüfen.
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+</body>
+</html>

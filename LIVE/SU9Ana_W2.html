@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SU9Ana_W2 – WTTV Mannschaft 2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap');
+  :root {
+    --bg:#0d0f14; --bg2:#13161e; --bg3:#1a1f2b; --border:#2a3040;
+    --acc:#a78bfa; --green:#4ade80; --yellow:#fbbf24; --red:#f87171;
+    --orange:#fb923c; --text:#e2e8f0; --dim:#7a8899; --bright:#ffffff;
+    --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;}
+  .container{max-width:1100px;margin:0 auto;padding:28px 24px;display:grid;gap:28px;}
+  .section-label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+  .card-header{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .card-title{font-weight:600;font-size:14px;color:var(--bright);}
+  .card-body{padding:18px;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:700px){.two-col{grid-template-columns:1fr;}}
+  .big-score{display:flex;align-items:center;justify-content:center;gap:24px;padding:20px 0;}
+  .big-score .team{font-size:15px;font-weight:600;color:var(--bright);text-align:center;flex:1;}
+  .big-score .team.su9{color:var(--acc);}
+  .big-score .score{font-family:var(--mono);font-size:48px;font-weight:600;}
+  .big-score .score.w{color:var(--green);}
+  .big-score .score.d{color:var(--yellow);}
+  .big-score .score.l{color:var(--red);}
+  .big-score .meta{font-family:var(--mono);font-size:11px;color:var(--dim);text-align:center;margin-top:4px;}
+  .stat-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .stat-chip{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:8px 14px;font-family:var(--mono);}
+  .stat-chip .n{color:var(--dim);font-size:9px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:3px;}
+  .stat-chip .v{color:var(--bright);font-size:15px;font-weight:600;}
+  .analysis{background:rgba(167,139,250,.05);border:1px solid rgba(167,139,250,.2);border-radius:4px;padding:14px 16px;font-size:13px;line-height:1.8;}
+  .analysis strong{color:var(--acc);}
+  .analysis .warn{color:var(--yellow);font-weight:600;}
+  .analysis .good{color:var(--green);font-weight:600;}
+  .analysis .bad{color:var(--red);font-weight:600;}
+  .analysis .orange{color:var(--orange);font-weight:600;}
+  .games-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:10px;}
+  .game-cell{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:6px 8px;}
+  .game-cell .gid{font-family:var(--mono);color:var(--dim);font-size:9px;display:block;margin-bottom:2px;}
+  .game-cell .gplayer{color:var(--text);font-size:10px;display:block;margin-bottom:3px;line-height:1.3;}
+  .game-cell .gresult{font-family:var(--mono);font-weight:600;font-size:12px;}
+  .game-cell .gresult.w{color:var(--green);}
+  .game-cell .gresult.l{color:var(--red);}
+  .game-cell .gresult.wo{color:var(--yellow);}
+  .game-cell.doppel{background:rgba(167,139,250,.07);border-color:rgba(167,139,250,.3);}
+  .player-card{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:14px;}
+  .player-name{font-weight:600;font-size:14px;color:var(--bright);margin-bottom:2px;}
+  .player-sub{font-family:var(--mono);font-size:10px;color:var(--dim);margin-bottom:10px;}
+  .pstats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px;}
+  .pstat .pn{font-family:var(--mono);font-size:9px;color:var(--dim);display:block;}
+  .pstat .pv{font-family:var(--mono);font-size:16px;font-weight:600;}
+  .pbar{height:4px;border-radius:2px;background:var(--border);overflow:hidden;margin-bottom:6px;}
+  .pbar-fill{height:100%;border-radius:2px;}
+  .perf-detail{font-size:11px;color:var(--dim);line-height:1.5;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{padding:8px 12px;text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--border);white-space:nowrap;}
+  td{padding:8px 12px;border-bottom:1px solid rgba(42,48,64,.4);vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  tr.su9-row{background:rgba(167,139,250,.08);}
+  tr.su9-row td{color:var(--bright);}
+  tr.hl{background:rgba(251,191,36,.06);}
+  .match-list{list-style:none;display:grid;gap:8px;}
+  .match-item{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:12px 16px;}
+  .match-header{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+  .match-runde{font-family:var(--mono);font-size:10px;color:var(--dim);}
+  .match-teams{font-weight:600;font-size:13px;color:var(--bright);flex:1;}
+  .match-score{font-family:var(--mono);font-size:17px;font-weight:600;}
+  .match-score.w{color:var(--green);}
+  .match-score.d{color:var(--yellow);}
+  .match-score.l{color:var(--red);}
+  .match-note{font-size:11px;color:var(--dim);}
+  .next-box{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.3);border-radius:6px;padding:20px;}
+  .next-label{font-family:var(--mono);font-size:11px;color:var(--yellow);letter-spacing:.1em;margin-bottom:10px;}
+  .next-teams{font-size:20px;font-weight:700;color:var(--bright);margin-bottom:4px;}
+  .next-meta{font-family:var(--mono);font-size:12px;color:var(--dim);}
+  .multi-result-bar{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+  .mres-item{flex:1;min-width:200px;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:12px 14px;}
+  .mres-runde{font-family:var(--mono);font-size:10px;color:var(--dim);margin-bottom:4px;}
+  .mres-teams{font-size:13px;font-weight:600;color:var(--bright);}
+  .mres-score{font-family:var(--mono);font-size:22px;font-weight:700;margin-top:2px;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ══════════════════════════ 01 ══════════════════════════ -->
+<div>
+  <div class="section-label">01 — Neue Ergebnisse · 05.–06.03.2026</div>
+  <div class="multi-result-bar">
+    <div class="mres-item" style="border-color:rgba(74,222,128,.3)">
+      <div class="mres-runde">DG2 · R6 · Do 05.03.2026 · Auswärts</div>
+      <div class="mres-teams">HAK 4 – SU9 2</div>
+      <div class="mres-score" style="color:var(--green)">0 : 7 <span style="font-size:12px;color:var(--yellow)">w.o.</span></div>
+      <div style="font-size:11px;color:var(--dim);margin-top:4px">Hakoah nicht angetreten · Kampflos · +2 Punkte</div>
+    </div>
+    <div class="mres-item" style="border-color:rgba(251,191,36,.3)">
+      <div class="mres-runde">DG2 · R4 · Fr 06.03.2026 · Auswärts (Nachholtermin)</div>
+      <div class="mres-teams">UNO City 2 – SU9 2</div>
+      <div class="mres-score" style="color:var(--yellow)">5 : 5</div>
+      <div style="font-size:11px;color:var(--dim);margin-top:4px">Löffler/Kalchhauser/Reindl · +1 Punkt</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="stat-row" style="justify-content:center">
+        <div class="stat-chip"><span class="n">Punkte diese Woche</span><span class="v" style="color:var(--green)">+3</span></div>
+        <div class="stat-chip"><span class="n">SU9 Gesamtpunkte</span><span class="v" style="color:var(--green)">11</span></div>
+        <div class="stat-chip"><span class="n">SU9 Rang</span><span class="v" style="color:var(--green)">~5 / 10</span></div>
+        <div class="stat-chip"><span class="n">Gespielt</span><span class="v">15</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 01a ══════════════════════════ -->
+<div>
+  <div class="section-label">01a — Hauptspiel-Analyse · DG2 R4 · UNO City 2 – SU9 2 · 5:5</div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">DG2 · Runde 4 (Nachholtermin) · Fr 06.03.2026 · Auswärts</span>
+    </div>
+    <div class="card-body">
+      <div class="big-score">
+        <div><div class="team">UNO City 2</div><div class="meta">Heim · Rang 6</div></div>
+        <div><div class="score d">5 : 5</div><div class="meta">Unentschieden · +1 Punkt</div></div>
+        <div><div class="team su9">SU9 2</div><div class="meta">Gast</div></div>
+      </div>
+      <div class="analysis">
+        Gegen UNO City 2 (Rang 6, 12P) ein respektables Auswärts-Unentschieden.
+        <strong>Reindl</strong> war der Rückhalt mit 2/3 Einzel (VI✓, VIII✓, III✗).
+        <strong>Löffler</strong> holt 1/3 (IX✓, I✗, V✗). <strong>Kalchhauser</strong> in seinem ersten W2-Einsatz dieser Saison: 1/3 (II✓, IV✗, VII✗).
+        <span class="good">Das Doppel Kalchhauser/Reindl gewann souverän 3:0</span> — UNO2 konnte das nicht ausgleichen.
+        Positiv: Reindl dominiert gegen den schwächsten UNO-Spieler Rajasekar (0:3). Negativ: Kanade (stärkster) gewann 3 von 4 Einzel gegen SU9.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 01b ══════════════════════════ -->
+<div>
+  <div class="section-label">01b — Kurznotiz · DG2 R6 · HAK 4 – SU9 2 · 0:7 w.o.</div>
+  <div class="card">
+    <div class="card-body">
+      <div class="analysis">
+        <strong>Hakoah 4 ist nicht angetreten (k.a.)</strong> — SU9 2 erhält kampflos 0:7 und 2 Punkte.
+        <span class="good">Das bedeutet: Im Rückspiel Hinspiel-Niederlage (4:6, DG1 R6) mehr als wettgemacht.</span>
+        Direktbilanz gegen HAK4: DG1 verloren 4:6, DG2 gewonnen 0:7 → ausgeglichen bei 11:13 Spielpunkten.
+        <span class="warn">Kein Einsatznachweis für Spieler in diesem Spiel (w.o.) — keine Spielerstatistiken.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 02 ══════════════════════════ -->
+<div>
+  <div class="section-label">02 — Spielerleistung · DG2 R4 vs UNO City 2</div>
+  <div class="two-col">
+
+    <div class="player-card">
+      <div class="player-name">Hannes Löffler · Position A</div>
+      <div class="player-sub">DG2 R4 · Einzel 1/3 · kein Doppel</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einzelsiege</span><span class="pv" style="color:var(--yellow)">1</span></div>
+        <div class="pstat"><span class="pn">Einzelnied.</span><span class="pv" style="color:var(--yellow)">2</span></div>
+        <div class="pstat"><span class="pn">Doppel</span><span class="pv" style="color:var(--dim)">—</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:33%;background:var(--yellow)"></div></div>
+      <div class="perf-detail">
+        I vs Niknia: <span style="color:var(--red)">1:3 ✗</span> ·
+        V vs Kanade: <span style="color:var(--red)">1:3 ✗</span> ·
+        IX vs Rajasekar: <span style="color:var(--green)">3:0 ✓</span>
+      </div>
+    </div>
+
+    <div class="player-card">
+      <div class="player-name">Christian Kalchhauser · Position B</div>
+      <div class="player-sub">DG2 R4 · Einzel 1/3 · Doppel gewonnen · W2-gebunden</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einzelsiege</span><span class="pv" style="color:var(--yellow)">1</span></div>
+        <div class="pstat"><span class="pn">Einzelnied.</span><span class="pv" style="color:var(--yellow)">2</span></div>
+        <div class="pstat"><span class="pn">Doppel</span><span class="pv" style="color:var(--green)">✓</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:33%;background:var(--yellow)"></div></div>
+      <div class="perf-detail">
+        II vs Rajasekar: <span style="color:var(--green)">3:0 ✓</span> ·
+        IV vs Niknia: <span style="color:var(--red)">2:3 ✗</span> ·
+        VII vs Kanade: <span style="color:var(--red)">0:3 ✗</span> ·
+        IIIA Doppel mit Reindl: <span style="color:var(--green)">3:0 ✓</span>
+      </div>
+    </div>
+
+    <div class="player-card">
+      <div class="player-name">Heinz Reindl · Position C</div>
+      <div class="player-sub">DG2 R4 · Einzel 2/3 · Doppel gewonnen · Bester</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einzelsiege</span><span class="pv" style="color:var(--green)">2</span></div>
+        <div class="pstat"><span class="pn">Einzelnied.</span><span class="pv" style="color:var(--yellow)">1</span></div>
+        <div class="pstat"><span class="pn">Doppel</span><span class="pv" style="color:var(--green)">✓</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:67%;background:var(--green)"></div></div>
+      <div class="perf-detail">
+        III vs Kanade: <span style="color:var(--red)">0:3 ✗</span> ·
+        VI vs Rajasekar: <span style="color:var(--green)">3:0 ✓</span> ·
+        VIII vs Niknia: <span style="color:var(--green)">3:2 ✓</span> ·
+        IIIA Doppel mit Kalchhauser: <span style="color:var(--green)">3:0 ✓</span>
+      </div>
+    </div>
+
+  </div>
+  <div class="analysis" style="margin-top:12px">
+    <strong>Fazit DG2 R4:</strong> <span class="good">Doppel Kalchhauser/Reindl mit 3:0 war entscheidend.</span>
+    Kalchhauser schlug Rajasekar souverän (3:0) — gut für seinen ersten Saisoneinsatz in W2. Reindl blieb zuverlässig (2/3).
+    <span class="warn">Kanade (stärkster UNO2) dominierte zu sehr</span> — gegen ihn gehen 3 von 4 Punkten verloren.
+    Löffler auf Position A ist strukturell zu schwach gegen obere Spieler — Position B besser geeignet.
+  </div>
+</div>
+
+<!-- ══════════════════════════ 04 ══════════════════════════ -->
+<div>
+  <div class="section-label">04 — Kreuzmatrix · DG2 R4 · UNO City 2 – SU9 2</div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">UNO City 2 vs SU9 2 · Endstand 5:5</span>
+    </div>
+    <div class="card-body">
+      <div style="font-size:12px;color:var(--dim);margin-bottom:8px;font-family:var(--mono)">
+        SU9: A=Löffler · B=Kalchhauser · C=Reindl &nbsp;|&nbsp; UNO2: X=Niknia · Y=Rajasekar · Z=Kanade
+      </div>
+      <div class="games-grid">
+        <div class="game-cell"><span class="gid">I · A vs X</span><span class="gplayer">Löffler vs Niknia</span><span class="gresult l">1:3 ✗</span></div>
+        <div class="game-cell"><span class="gid">II · B vs Y</span><span class="gplayer">Kalchhauser vs Rajasekar</span><span class="gresult w">3:0 ✓</span></div>
+        <div class="game-cell"><span class="gid">III · C vs Z</span><span class="gplayer">Reindl vs Kanade</span><span class="gresult l">0:3 ✗</span></div>
+        <div class="game-cell doppel"><span class="gid">IIIA ♦ Doppel</span><span class="gplayer">Kalchhauser/Reindl vs Kanade/Niknia</span><span class="gresult w">3:0 ✓</span></div>
+        <div class="game-cell"><span class="gid">IV · B vs X</span><span class="gplayer">Kalchhauser vs Niknia</span><span class="gresult l">2:3 ✗</span></div>
+        <div class="game-cell"><span class="gid">V · A vs Z</span><span class="gplayer">Löffler vs Kanade</span><span class="gresult l">1:3 ✗</span></div>
+        <div class="game-cell"><span class="gid">VI · B vs Y</span><span class="gplayer">Reindl vs Rajasekar</span><span class="gresult w">3:0 ✓</span></div>
+        <div class="game-cell"><span class="gid">VII · C vs X</span><span class="gplayer">Kalchhauser vs Kanade</span><span class="gresult l">0:3 ✗</span></div>
+        <div class="game-cell"><span class="gid">VIII · A vs Y</span><span class="gplayer">Reindl vs Niknia</span><span class="gresult w">3:2 ✓</span></div>
+        <div class="game-cell"><span class="gid">IX · B vs Z</span><span class="gplayer">Löffler vs Rajasekar</span><span class="gresult w">3:0 ✓</span></div>
+      </div>
+      <div class="analysis" style="margin-top:14px">
+        <strong>Spielverlauf:</strong> I-II: 1:1. III: 1:2. Doppel: 2:2. IV-V: 2:4 (kritische Phase).
+        VI: 3:4. VII: 3:5. VIII+IX: <span class="good">5:5 Aufholjagd!</span><br><br>
+        <strong>Muster:</strong> Kanade (Z) dominiert gegen alle SU9-Spieler: 3:0 vs Reindl, 3:1 vs Löffler, 3:0 vs Kalchhauser.
+        Rajasekar (Y) ist die klare Schwachstelle von UNO2 (3 Niederlagen).
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 05 ══════════════════════════ -->
+<div>
+  <div class="section-label">05 — Gesamtanalyse & Ausblick Saison 2025/26</div>
+  <div class="card">
+    <div class="card-body">
+      <div class="analysis">
+        <strong>Stand nach 15 Spielen (11 Punkte):</strong> SU9 2 springt mit dem w.o.-Sieg gegen HAK4 (+2P) und dem Remis gegen UNO2 (+1P)
+        auf 11 Punkte. <span class="good">Rang ~5 — deutlich besser als erwartet.</span><br><br>
+        <strong>Positiv:</strong> Reindl/Löffler Doppel (71%) und Kalchhauser/Reindl Doppel (100% bisher) — das Doppel funktioniert.
+        Reindl bleibt der zuverlässigste Spieler (57%). Kalchhauser als Verstärkung ist ein Gewinn.<br><br>
+        <strong>Schwächen:</strong> Petro als Stamm-C ist strukturell zu schwach (20%).
+        <span class="bad">Ohne Kalchhauser/Reindl auf Position B/C leidet die Aufstellung.</span><br><br>
+        <strong>Empfehlung Restspiele:</strong><br>
+        1. Kalchhauser wenn möglich einsetzen (W2-gebunden, höhere Klasse)<br>
+        2. Reindl/Löffler Doppel beibehalten<br>
+        3. Petro nur wenn nötig — Alternativen bevorzugen
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 06 ══════════════════════════ -->
+<div>
+  <div class="section-label">06 — Nächstes Spiel</div>
+  <div class="next-box">
+    <div class="next-label">▶ NÄCHSTES · Do 19.03.2026 · 19:00 Uhr · HEIM · DG2 R7</div>
+    <div class="next-teams">SU9 2 vs Langenzersdorf 6</div>
+    <div class="next-meta">ASKÖ Floridsdorf · DG2 Runde 7</div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <div class="card-header"><span class="card-title">Vorschau: SU9 2 vs LENZ 6</span></div>
+    <div class="card-body">
+      <div class="stat-row" style="margin-bottom:14px">
+        <div class="stat-chip"><span class="n">LENZ 6 Rang</span><span class="v" style="color:var(--yellow)">7 / 10</span></div>
+        <div class="stat-chip"><span class="n">LENZ 6 Punkte</span><span class="v">9</span></div>
+        <div class="stat-chip"><span class="n">LENZ 6 S-U-N</span><span class="v">4-1-8</span></div>
+        <div class="stat-chip"><span class="n">Hinspiel</span><span class="v" style="color:var(--red)">SU9 verlor 3:6</span></div>
+      </div>
+      <div class="analysis">
+        LENZ 6 liegt mit 9 Punkten hinter SU9 2. Das Heimspiel ist eine gute Gelegenheit:
+        <span class="good">3 Siege im Heimspiel möglich</span> wenn Kalchhauser und Reindl spielen.
+        Im Hinspiel DG1 R7 verlor SU9 3:6 — das muss im Rückspiel korrigiert werden.
+        Hauptspieler LENZ6: Jelenko Erak (3/4 gegen SU9) und Yoshi Strik.
+        <span class="warn">Achtung: Erak und Strik sind stark</span> — Reindl muss seinen Mann stellen.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 07 ══════════════════════════ -->
+<div>
+  <div class="section-label">07 — Tabellenstand · Gruppe Ib</div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Tabelle 2025/26 · Stand 07.03.2026</span></div>
+    <div class="card-body">
+      <div class="stat-row" style="margin-bottom:16px">
+        <div class="stat-chip"><span class="n">SU9 Rang</span><span class="v" style="color:var(--green)">~5 / 10</span></div>
+        <div class="stat-chip"><span class="n">Punkte</span><span class="v" style="color:var(--green)">11</span></div>
+        <div class="stat-chip"><span class="n">Gespielt</span><span class="v">15</span></div>
+        <div class="stat-chip"><span class="n">Offen</span><span class="v" style="color:var(--yellow)">3</span></div>
+        <div class="stat-chip"><span class="n">Sp-V</span><span class="v" style="color:var(--red)">56:73</span></div>
+      </div>
+      <table>
+        <thead><tr><th>Rang</th><th>Mannschaft</th><th>Sp</th><th>S</th><th>U</th><th>N</th><th>Sp-V</th><th>P</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Naturfreunde Stadlau 10</td><td>14</td><td>10</td><td>1</td><td>3</td><td>76:36</td><td><strong>21</strong></td></tr>
+          <tr><td>2</td><td>Döbling 3</td><td>15</td><td>8</td><td>4</td><td>3</td><td>75:51</td><td><strong>20</strong></td></tr>
+          <tr><td>3</td><td>Postsportverein 5</td><td>14</td><td>7</td><td>2</td><td>5</td><td>65:55</td><td><strong>16</strong></td></tr>
+          <tr><td>4</td><td>Sportklub/Flötzersteig 12</td><td>14</td><td>5</td><td>5</td><td>4</td><td>65:57</td><td><strong>15</strong></td></tr>
+          <tr><td>5</td><td>Korneuburg 5</td><td>13</td><td>5</td><td>3</td><td>5</td><td>57:55</td><td><strong>13</strong></td></tr>
+          <tr><td>6</td><td>Uno City 2</td><td>14</td><td>4</td><td>5</td><td>5</td><td>60:58</td><td><strong>13</strong></td></tr>
+          <tr><td>7</td><td>Langenzersdorf 6</td><td>13</td><td>4</td><td>1</td><td>8</td><td>49:61</td><td><strong>9</strong></td></tr>
+          <tr class="su9-row"><td>~5*</td><td>⬤ Sportunion 9 2</td><td>15</td><td>3</td><td>5</td><td>7</td><td>56:73</td><td><strong>11</strong></td></tr>
+          <tr><td>9</td><td>Hakoah 4</td><td>14</td><td>1</td><td>2</td><td>11</td><td>35:82</td><td><strong>4</strong></td></tr>
+          <tr><td>10</td><td>Sokol Polski 2</td><td>13</td><td>1</td><td>2</td><td>10</td><td>33:77</td><td><strong>4</strong></td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:11px;color:var(--dim);margin-top:6px">* Rang vorläufig — Tabelle nach XTTV-Stand 07.03.2026. Exakter Rang hängt von ausstehenden Spielen ab.</div>
+      <div class="analysis" style="margin-top:14px">
+        <span class="good">SU9 2 auf 11 Punkte — 7 Punkte Vorsprung auf die Abstiegszone (HAK4/SOK2 mit je 4P).</span>
+        Das Spielverhältnis (56:73) ist negativ, aber irrelevant für den Ligaverbleib.
+        3 Spiele offen: LENZ6 (H, 19.03.), KORN5 (A, 26.03.), SOK2 (H, 16.04.).
+        <span class="good">SOK2 (H, 16.04.) ist ein sicherer Sieg-Kandidat</span> — direktes Duell gegen Letzten.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 08 ══════════════════════════ -->
+<div>
+  <div class="section-label">08 — Spielerstatistiken · Saison gesamt (nur Einzel)</div>
+  <div class="two-col">
+
+    <div class="player-card">
+      <div class="player-name">Heinz Reindl</div>
+      <div class="player-sub">Pos. B (stärkster) · RL 1069 ± 53 · Rang 28 Rangliste</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">12</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--green)">20</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--yellow)">15</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--yellow)">57%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:57%;background:var(--yellow)"></div></div>
+      <div class="perf-detail">Zuverlässigster Spieler · R4: 2/3 Einzel + Doppel ✓ · gutes Doppel mit Löffler oder Kalchhauser</div>
+    </div>
+
+    <div class="player-card">
+      <div class="player-name">Hannes Löffler</div>
+      <div class="player-sub">Pos. A/B variabel · RL 1052 ± 48 · Rang 30 Rangliste</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">14</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--yellow)">17</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--red)">23</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--red)">43%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:43%;background:var(--red)"></div></div>
+      <div class="perf-detail">Meiste Einsätze · R4: 1/3 · zu oft auf Position A gegen stärkere Gegner</div>
+    </div>
+
+    <div class="player-card">
+      <div class="player-name">Branko Petro</div>
+      <div class="player-sub">Pos. C · RL 991 ± 62 · Rang 34 Rangliste</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">9</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--red)">5</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--red)">20</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--red)">20%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:20%;background:var(--red)"></div></div>
+      <div class="perf-detail">⚠ Nur 20% Siegquote · in R4 und R6 nicht eingesetzt · Kalchhauser übernimmt</div>
+    </div>
+
+    <div class="player-card" style="border-color:rgba(74,222,128,.25)">
+      <div class="player-name">Christian Kalchhauser</div>
+      <div class="player-sub">W2-gebunden · RL 1121 ± 54 · Rang 25 · Neueinsatz R4</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">1</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--yellow)">1</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--yellow)">2</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--yellow)">33%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:33%;background:var(--yellow)"></div></div>
+      <div class="perf-detail">Erster W2-Einsatz DG2 R4 · Doppel mit Reindl 3:0 gewonnen · Potenzial als fester Stammspieler</div>
+    </div>
+
+    <div class="player-card">
+      <div class="player-name">Johannes Ishak</div>
+      <div class="player-sub">Gastspiel · RL 1042 ± 57 · Rang 31</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">3</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--yellow)">2</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--red)">7</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--red)">22%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:22%;background:var(--red)"></div></div>
+      <div class="perf-detail">Gelegenheitsgast · ähnliches Niveau wie Petro</div>
+    </div>
+
+    <div class="player-card">
+      <div class="player-name">Weitere Gäste</div>
+      <div class="player-sub">Lukas Gotthart · Ai-Mei Huang · Bary Ramadan · Max Wintersteller</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Gotthart</span><span class="pv" style="color:var(--yellow)">2/6</span></div>
+        <div class="pstat"><span class="pn">Huang</span><span class="pv" style="color:var(--yellow)">3/5</span></div>
+        <div class="pstat"><span class="pn">Wintersteller</span><span class="pv" style="color:var(--green)">3/3</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:50%;background:var(--yellow)"></div></div>
+      <div class="perf-detail">Wintersteller als Gast: 3/3 (100%) — häufigster Einsatz empfohlen bei Verfügbarkeit</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════ 09 ══════════════════════════ -->
+<div>
+  <div class="section-label">09 — Doppelstatistik · Saison 2025/26</div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Doppelpaare W2</span></div>
+    <div class="card-body">
+      <table>
+        <thead><tr><th>Paar</th><th>Einsätze</th><th>Siege</th><th>Niederlagen</th><th>Quote</th></tr></thead>
+        <tbody>
+          <tr style="background:rgba(74,222,128,.05)">
+            <td><strong>Reindl / Löffler</strong></td><td>7</td>
+            <td style="color:var(--green)">5</td><td style="color:var(--red)">2</td>
+            <td><span style="color:var(--green);font-family:var(--mono);font-weight:600">71%</span></td>
+          </tr>
+          <tr style="background:rgba(74,222,128,.05)">
+            <td><strong>Kalchhauser / Reindl</strong></td><td>1</td>
+            <td style="color:var(--green)">1</td><td style="color:var(--red)">0</td>
+            <td><span style="color:var(--green);font-family:var(--mono);font-weight:600">100%</span></td>
+          </tr>
+          <tr>
+            <td>Löffler / Ishak</td><td>2</td>
+            <td style="color:var(--red)">0</td><td style="color:var(--red)">2</td>
+            <td><span style="color:var(--red);font-family:var(--mono)">0%</span></td>
+          </tr>
+          <tr>
+            <td>Gotthart / Petro</td><td>1</td>
+            <td style="color:var(--green)">1</td><td style="color:var(--red)">0</td>
+            <td><span style="color:var(--green);font-family:var(--mono)">100%</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="analysis" style="margin-top:14px">
+        <span class="good">Reindl/Löffler (71%) und Kalchhauser/Reindl (100%) sind die besten Doppelpaarungen.</span>
+        <strong>Löffler/Ishak (0/2)</strong> sollte nicht mehr eingesetzt werden.
+        Wenn Kalchhauser spielt → Kalchhauser/Reindl bevorzugen.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 10 ══════════════════════════ -->
+<div>
+  <div class="section-label">10 — Alle Ergebnisse · Saison 2025/26</div>
+  <ul class="match-list">
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R1 · Do 18.09.2025 · Auswärts</span><span class="match-teams">Döbling 3 – SU9 2</span><span class="match-score l">6:2</span></div>
+      <div class="match-note">Petro/Reindl/Löffler · Reindl 1/3, Löffler 1/3 · Abbruch nach Spiel VIII bei 6:2</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R2 · Do 25.09.2025 · Heim</span><span class="match-teams">SU9 2 – Postsportverein 5</span><span class="match-score l">3:6</span></div>
+      <div class="match-note">Löffler/Ramadan/Reindl · Reindl 2/3, Löffler 1/3 · Alle 10 Spiele</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R3 · Do 02.10.2025 · Auswärts</span><span class="match-teams">NFS 10 – SU9 2</span><span class="match-score l">6:1</span></div>
+      <div class="match-note">Ishak/Petro/Löffler · Löffler 1/3 · Abbruch nach Spiel VII bei 6:1</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R4 · Do 16.10.2025 · Heim</span><span class="match-teams">SU9 2 – Uno City 2</span><span class="match-score d">5:5</span></div>
+      <div class="match-note">Löffler/Petro/Reindl · Reindl 2/3, Petro 1/3 · Alle 10 Spiele</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R5 · Mi 22.10.2025 · Auswärts</span><span class="match-teams">SKFL 12 – SU9 2</span><span class="match-score l">6:1</span></div>
+      <div class="match-note">Petro/Reindl/Löffler · Löffler 1/3 · Abbruch nach Spiel VII bei 6:1</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R6 · Mo 10.11.2025 · Heim</span><span class="match-teams">SU9 2 – Hakoah 4</span><span class="match-score l">4:6</span></div>
+      <div class="match-note">Petro/Löffler/Reindl · Reindl 2/3, Löffler 2/3, Petro 0/3 · Alle 10 Spiele</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R7 · Mo 17.11.2025 · Auswärts</span><span class="match-teams">Langenzersdorf 6 – SU9 2</span><span class="match-score l">6:3</span></div>
+      <div class="match-note">Petro/Löffler/Reindl · Reindl 2/3, Löffler 1/3 · Alle 10 Spiele</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R8 · Do 27.11.2025 · Heim</span><span class="match-teams">SU9 2 – Korneuburg 5</span><span class="match-score l">3:6</span></div>
+      <div class="match-note">Petro/Reindl/Löffler · WO in I + V für SU9 (KORN5 mit 2 Spielern) · Alle Spiele</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG1 · R9 · Di 02.12.2025 · Auswärts</span><span class="match-teams">Sokol Polski 2 – SU9 2</span><span class="match-score w">2:6</span></div>
+      <div class="match-note">Reindl/Löffler/Wintersteller · Wintersteller 3/3, Reindl 2/3 · Alle 9 Spiele (Abbruch 6:2)</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG2 · R1 · Do 15.01.2026 · Heim</span><span class="match-teams">SU9 2 – Döbling 3</span><span class="match-score l">3:6</span></div>
+      <div class="match-note">Ishak/Löffler/Huang · Löffler 2/3, Huang 1/3 · Alle 10 Spiele</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG2 · R2 · Fr 23.01.2026 · Auswärts</span><span class="match-teams">Postsportverein 5 – SU9 2</span><span class="match-score l">6:2</span></div>
+      <div class="match-note">Ishak/Gotthart/Petro · Gotthart 2/3 bester · Abbruch nach Spiel VIII bei 6:2</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG2 · R3 · Do 29.01.2026 · Heim</span><span class="match-teams">SU9 2 – NFS 10</span><span class="match-score l">2:6</span></div>
+      <div class="match-note">Reindl/Petro/Löffler · Reindl 1/3, Löffler 1/3, Petro 0/3 · Abbruch nach Spiel VIII bei 2:6</div>
+    </li>
+    <li class="match-item">
+      <div class="match-header"><span class="match-runde">DG2 · R5 · Do 26.02.2026 · Heim</span><span class="match-teams">SU9 2 – SKFL 12</span><span class="match-score d">5:5</span></div>
+      <div class="match-note">Löffler/Reindl/Petro · Reindl 2/3, Löffler 2/3, Petro 0/3 · Alle 10 Spiele</div>
+    </li>
+    <li class="match-item" style="border-color:rgba(251,191,36,.3)">
+      <div class="match-header"><span class="match-runde">DG2 · R4 · Fr 06.03.2026 · Auswärts ★ (Nachholtermin)</span><span class="match-teams">UNO City 2 – SU9 2</span><span class="match-score d">5:5</span></div>
+      <div class="match-note">Löffler/Kalchhauser/Reindl · Reindl 2/3, Kalchhauser 1/3, Löffler 1/3 · Doppel Kalchhauser/Reindl 3:0 ✓</div>
+    </li>
+    <li class="match-item" style="border-color:rgba(74,222,128,.3)">
+      <div class="match-header"><span class="match-runde">DG2 · R6 · Do 05.03.2026 · Auswärts ★</span><span class="match-teams">HAK 4 – SU9 2</span><span class="match-score w">0:7</span></div>
+      <div class="match-note">w.o. · Hakoah nicht angetreten (k.a.) · Kampflos · keine Einzelergebnisse</div>
+    </li>
+  </ul>
+</div>
+
+<!-- ══════════════════════════ 11 ══════════════════════════ -->
+<div>
+  <div class="section-label">11 — Noch ausstehende Spiele · DG2</div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">3 offene Spiele</span></div>
+    <div class="card-body">
+      <table>
+        <thead><tr><th>Datum</th><th>H/A</th><th>Gegner</th><th>Rang</th><th>Punkte</th><th>Prognose</th></tr></thead>
+        <tbody>
+          <tr class="hl">
+            <td><strong>Do 19.03.2026</strong></td>
+            <td style="color:var(--green)">Heim</td>
+            <td>Langenzersdorf 6</td><td>7</td><td>9</td>
+            <td style="color:var(--green);font-family:var(--mono)">Sieg möglich</td>
+          </tr>
+          <tr>
+            <td>Do 26.03.2026</td>
+            <td style="color:var(--yellow)">Auswärts</td>
+            <td>Korneuburg 5</td><td>5</td><td>13</td>
+            <td style="color:var(--yellow);font-family:var(--mono)">Schwierig</td>
+          </tr>
+          <tr class="hl">
+            <td>Do 16.04.2026</td>
+            <td style="color:var(--green)">Heim</td>
+            <td>Sokol Polski 2</td><td>10</td><td>4</td>
+            <td style="color:var(--green);font-family:var(--mono)">Sieg möglich</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="analysis" style="margin-top:14px">
+        <strong>Szenarien:</strong><br>
+        <span class="good">2 Siege</span> (LENZ6 + SOK2) → 15 Punkte → <span class="good">Rang 5–6 realistisch</span><br>
+        <span class="warn">1 Sieg</span> (nur SOK2) → 13 Punkte → <span class="warn">Rang 6–7</span><br><br>
+        Mit 11 Punkten und 7 Punkten Vorsprung auf die Abstiegszone ist <span class="good">der Klassenverbleib gesichert.</span>
+        Das Ziel ist jetzt ein möglichst guter Platz im Mittelfeld.
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+</body>
+</html>
