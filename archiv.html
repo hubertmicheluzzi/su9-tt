@@ -1,130 +1,39 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SU9Ana – Archiv</title>
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SU9 Archiv</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap');
-  :root {
-    --bg:#0d0f14; --bg2:#13161e; --bg3:#1a1f2b; --border:#2a3040;
-    --text:#e2e8f0; --dim:#7a8899; --bright:#ffffff;
-    --acc:#fbbf24;
-    --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans',sans-serif;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: var(--sans);
-         font-size: 14px; min-height: 100vh; }
-
-  /* HEADER */
-  #header {
-    background: var(--bg2); border-bottom: 1px solid var(--border);
-    padding: 14px 24px; display: flex; align-items: center; gap: 16px;
-  }
-  .back-btn {
-    font-family: var(--mono); font-size: 11px; color: var(--dim);
-    text-decoration: none; border: 1px solid var(--border);
-    padding: 5px 12px; border-radius: 3px; transition: all .15s;
-  }
-  .back-btn:hover { color: var(--bright); border-color: var(--dim); }
-  .header-title {
-    font-family: var(--sans); font-size: 20px; font-weight: 700; color: var(--bright);
-  }
-  .header-title .sub {
-    font-family: var(--mono); font-size: 12px; font-weight: 400;
-    color: var(--dim); margin-left: 10px;
-  }
-
-  /* CONTENT */
-  .container { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
-  .section-label {
-    font-family: var(--mono); font-size: 10px; letter-spacing: .18em;
-    text-transform: uppercase; color: var(--dim); margin-bottom: 16px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
-
-  /* MSJ CARDS */
-  .msj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 40px; }
-  .msj-card {
-    background: var(--bg2); border: 1px solid var(--border);
-    border-top: 2px solid var(--acc);
-    border-radius: 6px; padding: 20px;
-  }
-  .msj-title {
-    font-family: var(--mono); font-size: 16px; font-weight: 600;
-    color: var(--acc); margin-bottom: 4px;
-  }
-  .msj-sub { font-size: 11px; color: var(--dim); margin-bottom: 16px; }
-  .ra-btn {
-    display: block; width: 100%;
-    font-family: var(--mono); font-size: 11px; font-weight: 600;
-    padding: 8px 12px; border-radius: 4px; text-decoration: none;
-    border: 1px solid var(--border); background: var(--bg3);
-    color: var(--dim); margin-bottom: 8px; transition: all .15s;
-    text-align: center;
-  }
-  .ra-btn:hover { color: var(--bright); border-color: var(--dim); }
-  .ra-btn.available { color: var(--bright); border-color: rgba(251,191,36,.4);
-    background: rgba(251,191,36,.07); }
-  .ra-btn.available:hover { background: rgba(251,191,36,.15); }
-  .ra-btn.empty { opacity: .4; cursor: default; pointer-events: none; }
-
-  .note { font-family: var(--mono); font-size: 11px; color: var(--dim);
-          background: var(--bg3); border: 1px solid var(--border);
-          border-radius: 4px; padding: 12px 16px; margin-top: 24px; line-height: 1.7; }
-  .note strong { color: var(--bright); }
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap');
+:root{--bg:#0d0f14;--txt:#e2e8f0;--txt2:#94a3b8;--blue:#4a9eff;--brown:#c8843a;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--txt);font-family:'IBM Plex Mono',monospace;padding:16px;}
+h1{font-size:12px;color:var(--txt2);margin-bottom:18px;letter-spacing:2px;text-transform:uppercase;}
+.row{display:flex;flex-wrap:wrap;gap:6px;padding:4px 0;align-items:center;}
+.spacer{height:10px;}
+.btn-label{font-size:11px;font-weight:700;padding:6px 10px;border-radius:4px;cursor:default;white-space:nowrap;border:none;}
+.btn-label.wttv{background:rgba(74,158,255,.25);color:#fff;border:1px solid rgba(74,158,255,.5);}
+.btn-label.voeb{background:rgba(200,132,58,.25);color:#fff;border:1px solid rgba(200,132,58,.5);}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;padding:6px 11px;border-radius:4px;text-decoration:none;white-space:nowrap;transition:opacity .15s;display:inline-block;border:none;}
+.btn:hover{opacity:.75;}
+.btn.wttv{background:rgba(74,158,255,.12);color:var(--blue);border:1px solid rgba(74,158,255,.3);}
+.btn.voeb{background:rgba(200,132,58,.12);color:var(--brown);border:1px solid rgba(200,132,58,.3);}
+.btn.free{min-width:36px;opacity:.25;cursor:default;pointer-events:none;}
+.btn.pending{color:#6b7280;background:rgba(200,200,200,.08);border:1px solid rgba(200,200,200,.18);cursor:default;pointer-events:none;}
 </style>
 </head>
 <body>
+<h1>SU9 · Archiv · 2025/26</h1>
+<div class="row"><button class="btn-label wttv">2025 W1 FRÜHJAHR</button><a href="2025/WTTV/W1/RAF/R1/SU9Ana_W1.html" target="_blank" class="btn wttv">HAN1</a><a href="2025/WTTV/W1/RAF/R2/SU9Ana_W1.html" target="_blank" class="btn wttv">TT143</a><a href="2025/WTTV/W1/RAF/R3/SU9Ana_W1.html" target="_blank" class="btn wttv">SSH3</a><a href="2025/WTTV/W1/RAF/R4/SU9Ana_W1.html" target="_blank" class="btn wttv">LENZ4</a><span class="btn wttv pending">NFS7</span><a href="2025/WTTV/W1/RAF/R6/SU9Ana_W1.html" target="_blank" class="btn wttv">LSV6</a><span class="btn wttv pending">EDEN4</span><span class="btn wttv pending">SKFL10</span><span class="btn wttv pending">KONT7</span></div>
+<div class="row"><button class="btn-label wttv">2025 W1 HERBST</button><a href="2025/WTTV/W1/RAH/R1/SU9Ana_W1.html" target="_blank" class="btn wttv">HAN1</a><a href="2025/WTTV/W1/RAH/R2/SU9Ana_W1.html" target="_blank" class="btn wttv">TT143</a><a href="2025/WTTV/W1/RAH/R3/SU9Ana_W1.html" target="_blank" class="btn wttv">SSH3</a><a href="2025/WTTV/W1/RAH/R4/SU9Ana_W1.html" target="_blank" class="btn wttv">LENZ4</a><a href="2025/WTTV/W1/RAH/R5/SU9Ana_W1.html" target="_blank" class="btn wttv">NFS7</a><a href="2025/WTTV/W1/RAH/R6/SU9Ana_W1.html" target="_blank" class="btn wttv">LSV6</a><a href="2025/WTTV/W1/RAH/R7/SU9Ana_W1.html" target="_blank" class="btn wttv">EDEN4</a><a href="2025/WTTV/W1/RAH/R8/SU9Ana_W1.html" target="_blank" class="btn wttv">SKFL10</a><a href="2025/WTTV/W1/RAH/R9/SU9Ana_W1.html" target="_blank" class="btn wttv">KONT7</a></div>
+<div class="spacer"></div>
+<div class="row"><button class="btn-label wttv">2025 W2 FRÜHJAHR</button><a href="2025/WTTV/W2/RAF/R1/SU9Ana_W2.html" target="_blank" class="btn wttv">DOEB3</a><a href="2025/WTTV/W2/RAF/R2/SU9Ana_W2.html" target="_blank" class="btn wttv">POSW5</a><a href="2025/WTTV/W2/RAF/R3/SU9Ana_W2.html" target="_blank" class="btn wttv">NFS10</a><a href="2025/WTTV/W2/RAF/R4/SU9Ana_W2.html" target="_blank" class="btn wttv">UNO2</a><a href="2025/WTTV/W2/RAF/R5/SU9Ana_W2.html" target="_blank" class="btn wttv">SKFL12</a><a href="2025/WTTV/W2/RAF/R6/SU9Ana_W2.html" target="_blank" class="btn wttv">HAK4</a><span class="btn wttv pending">LENZ6</span><span class="btn wttv pending">KORN5</span><span class="btn wttv pending">SOK2</span></div>
+<div class="row"><button class="btn-label wttv">2025 W2 HERBST</button><a href="2025/WTTV/W2/RAH/R1/SU9Ana_W2.html" target="_blank" class="btn wttv">DOEB3</a><a href="2025/WTTV/W2/RAH/R2/SU9Ana_W2.html" target="_blank" class="btn wttv">POSW5</a><a href="2025/WTTV/W2/RAH/R3/SU9Ana_W2.html" target="_blank" class="btn wttv">NFS10</a><a href="2025/WTTV/W2/RAH/R4/SU9Ana_W2.html" target="_blank" class="btn wttv">UNO2</a><a href="2025/WTTV/W2/RAH/R5/SU9Ana_W2.html" target="_blank" class="btn wttv">SKFL12</a><a href="2025/WTTV/W2/RAH/R6/SU9Ana_W2.html" target="_blank" class="btn wttv">HAK4</a><a href="2025/WTTV/W2/RAH/R7/SU9Ana_W2.html" target="_blank" class="btn wttv">LENZ6</a><a href="2025/WTTV/W2/RAH/R8/SU9Ana_W2.html" target="_blank" class="btn wttv">KORN5</a><a href="2025/WTTV/W2/RAH/R9/SU9Ana_W2.html" target="_blank" class="btn wttv">SOK2</a></div>
+<div class="spacer"></div>
+<div class="row"><button class="btn-label voeb">2025 V1 FRÜHJAHR</button><span class="btn voeb free"></span><a href="2025/VÖB/V1/RAF/R2/SU9Ana_V1.html" target="_blank" class="btn voeb">HGI2</a><a href="2025/VÖB/V1/RAF/R3/SU9Ana_V1.html" target="_blank" class="btn voeb">POST2</a><a href="2025/VÖB/V1/RAF/R4/SU9Ana_V1.html" target="_blank" class="btn voeb">WILI5</a><span class="btn voeb free"></span><span class="btn voeb pending">SKH3</span><span class="btn voeb pending">BRZ2</span><span class="btn voeb pending">FSF1</span><span class="btn voeb pending">BTTC2</span><span class="btn voeb pending">FJB4</span><span class="btn voeb pending">HÄRM1</span></div>
+<div class="row"><button class="btn-label voeb">2025 V1 HERBST</button><span class="btn voeb free"></span><a href="2025/VÖB/V1/RAH/R2/SU9Ana_V1.html" target="_blank" class="btn voeb">HGI2</a><a href="2025/VÖB/V1/RAH/R3/SU9Ana_V1.html" target="_blank" class="btn voeb">POST2</a><a href="2025/VÖB/V1/RAH/R4/SU9Ana_V1.html" target="_blank" class="btn voeb">WILI5</a><span class="btn voeb free"></span><a href="2025/VÖB/V1/RAH/R6/SU9Ana_V1.html" target="_blank" class="btn voeb">SKH3</a><a href="2025/VÖB/V1/RAH/R7/SU9Ana_V1.html" target="_blank" class="btn voeb">BRZ2</a><a href="2025/VÖB/V1/RAH/R8/SU9Ana_V1.html" target="_blank" class="btn voeb">FSF1</a><a href="2025/VÖB/V1/RAH/R9/SU9Ana_V1.html" target="_blank" class="btn voeb">BTTC2</a><a href="2025/VÖB/V1/RAH/R10/SU9Ana_V1.html" target="_blank" class="btn voeb">FJB4</a><a href="2025/VÖB/V1/RAH/R11/SU9Ana_V1.html" target="_blank" class="btn voeb">HÄRM1</a></div>
+<div class="spacer"></div>
+<div class="row"><button class="btn-label voeb">2025 V2 FRÜHJAHR</button><a href="2025/VÖB/V2/RAF/R1/SU9Ana_V2.html" target="_blank" class="btn voeb">SKH4</a><a href="2025/VÖB/V2/RAF/R2/SU9Ana_V2.html" target="_blank" class="btn voeb">HGI3</a><span class="btn voeb free"></span><a href="2025/VÖB/V2/RAF/R4/SU9Ana_V2.html" target="_blank" class="btn voeb">POST3</a><a href="2025/VÖB/V2/RAF/R5/SU9Ana_V2.html" target="_blank" class="btn voeb">OLY3</a><a href="2025/VÖB/V2/RAF/R6/SU9Ana_V2.html" target="_blank" class="btn voeb">BBSV1</a><span class="btn voeb pending">SKH5</span><span class="btn voeb pending">WILI7</span><span class="btn voeb free"></span><span class="btn voeb pending">WILI6</span><span class="btn voeb pending">LENZ2</span></div>
+<div class="row"><button class="btn-label voeb">2025 V2 HERBST</button><a href="2025/VÖB/V2/RAH/R1/SU9Ana_V2.html" target="_blank" class="btn voeb">SKH4</a><a href="2025/VÖB/V2/RAH/R2/SU9Ana_V2.html" target="_blank" class="btn voeb">HGI3</a><span class="btn voeb free"></span><a href="2025/VÖB/V2/RAH/R4/SU9Ana_V2.html" target="_blank" class="btn voeb">POST3</a><a href="2025/VÖB/V2/RAH/R5/SU9Ana_V2.html" target="_blank" class="btn voeb">OLY3</a><a href="2025/VÖB/V2/RAH/R6/SU9Ana_V2.html" target="_blank" class="btn voeb">BBSV1</a><a href="2025/VÖB/V2/RAH/R7/SU9Ana_V2.html" target="_blank" class="btn voeb">SKH5</a><a href="2025/VÖB/V2/RAH/R8/SU9Ana_V2.html" target="_blank" class="btn voeb">WILI7</a><span class="btn voeb free"></span><a href="2025/VÖB/V2/RAH/R10/SU9Ana_V2.html" target="_blank" class="btn voeb">WILI6</a><a href="2025/VÖB/V2/RAH/R11/SU9Ana_V2.html" target="_blank" class="btn voeb">LENZ2</a></div>
 
-<div id="header">
-  <a class="back-btn" href="index.html">← Live</a>
-  <span class="header-title">SU9 Archiv<span class="sub">· Mannschaftssaisons</span></span>
-</div>
-
-<div class="container">
-
-  <div class="section-label">Mannschaftssaisons (MSJ)</div>
-  <div class="msj-grid">
-
-    <div class="msj-card">
-      <div class="msj-title">MSJ 2022</div>
-      <div class="msj-sub">Sep 2022 – Jun 2023</div>
-      <a class="ra-btn empty" href="#">RAH · Herbst 2022</a>
-      <a class="ra-btn empty" href="#">RAF · Frühjahr 2023</a>
-    </div>
-
-    <div class="msj-card">
-      <div class="msj-title">MSJ 2023</div>
-      <div class="msj-sub">Sep 2023 – Jun 2024</div>
-      <a class="ra-btn empty" href="#">RAH · Herbst 2023</a>
-      <a class="ra-btn empty" href="#">RAF · Frühjahr 2024</a>
-    </div>
-
-    <div class="msj-card">
-      <div class="msj-title">MSJ 2024</div>
-      <div class="msj-sub">Sep 2024 – Jun 2025</div>
-      <a class="ra-btn empty" href="#">RAH · Herbst 2024</a>
-      <a class="ra-btn empty" href="#">RAF · Frühjahr 2025</a>
-    </div>
-
-    <div class="msj-card">
-      <div class="msj-title">MSJ 2025</div>
-      <div class="msj-sub">Sep 2025 – Jun 2026 · <strong style="color:var(--acc)">laufend</strong></div>
-      <a class="ra-btn empty" href="#">RAH · Herbst 2025</a>
-      <a class="ra-btn empty" href="AR/2025/RAF/SU9Ana_V1.html">RAF · Frühjahr 2026</a>
-    </div>
-
-  </div>
-
-  <div class="note">
-    <strong>Legende:</strong><br>
-    MSJ = Mannschaftssaison-Jahr · beginnt September des Jahres x, endet Juni des Jahres x+1<br>
-    RAH = Rundenabschnitt Herbst (DG1) · RAF = Rundenabschnitt Frühjahr (DG2)<br>
-    Ausgegraut = noch keine Daten archiviert
-  </div>
-
-</div>
-</body>
-</html>
+</body></html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DG1 · R7 · 11.12.2025</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap');
+:root{--bg:#0d0f14;--bg2:#141720;--bg3:#1c2030;--acc:#4a9eff;--green:#4ade80;--yellow:#fbbf24;--red:#f87171;--txt:#e2e8f0;--txt2:#94a3b8;--border:#2a3045;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--txt);font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.5;padding:16px;}
+h1{font-family:'IBM Plex Mono',monospace;font-size:18px;color:var(--acc);margin-bottom:4px;}
+h2{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--acc);border-bottom:1px solid var(--border);padding-bottom:6px;margin:18px 0 10px;}
+.meta{font-size:12px;color:var(--txt2);margin-bottom:16px;}
+.section{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;}
+.rb-team{font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:600;color:var(--txt2);align-self:center;}.rb-score{font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;margin:0 10px;line-height:1;}
+.result-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;}
+.score{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:700;}
+.score.win{color:var(--green);}
+.score.loss{color:var(--red);}
+.score.draw{color:var(--yellow);}
+.badge{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;}
+.badge.win{background:rgba(74,222,128,.15);color:var(--green);border:1px solid rgba(74,222,128,.3);}
+.badge.loss{background:rgba(248,113,113,.15);color:var(--red);border:1px solid rgba(248,113,113,.3);}
+.badge.draw{background:rgba(251,191,36,.15);color:var(--yellow);border:1px solid rgba(251,191,36,.3);}
+.game-table{width:100%;border-collapse:collapse;font-family:'IBM Plex Mono',monospace;font-size:12px;}
+.game-table th{color:var(--txt2);font-weight:600;padding:4px 8px;text-align:left;border-bottom:1px solid var(--border);}
+.game-table td{padding:4px 8px;border-bottom:1px solid rgba(42,48,69,.5);}
+.game-table tr:last-child td{border-bottom:none;}
+.w{color:var(--green);}
+.l{color:var(--red);}
+.player-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:8px;}
+.player-card{background:var(--bg3);border-radius:6px;padding:10px;}
+.player-name{font-weight:600;font-size:13px;margin-bottom:4px;}
+.player-pos{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--txt2);}
+.player-stat{font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;margin-top:4px;}
+.stat-bar{height:4px;background:var(--bg);border-radius:2px;margin-top:4px;overflow:hidden;}
+.stat-fill{height:100%;border-radius:2px;background:var(--acc);}
+.note{font-size:12px;color:var(--txt2);font-style:italic;margin-top:8px;}
+.info-row{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--txt2);margin-bottom:8px;}
+.info-row span b{color:var(--txt);}
+.matrix-wrap{overflow-x:auto;}
+.matrix-table{border-collapse:collapse;font-family:'IBM Plex Mono',monospace;font-size:11px;}
+.matrix-table th,.matrix-table td{border:1px solid var(--border);padding:4px 8px;text-align:center;}
+.matrix-table th{background:var(--bg3);color:var(--txt2);}
+.matrix-table td.win{color:var(--green);}
+.matrix-table td.loss{color:var(--red);}
+.tag{font-family:'IBM Plex Mono',monospace;font-size:10px;background:rgba(74,158,255,.1);color:var(--acc);border:1px solid rgba(74,158,255,.2);border-radius:3px;padding:1px 5px;display:inline-block;margin-right:4px;}
+</style>
+
+</head>
+<body>
+<h1>SU9 · WTTV W1 · DG1 · R7 · 11.12.2025</h1>
+<div class="meta">WTTV 3. Klasse B · Herbst 2025 · Stand nach Runde 7 (letztes DG1-Spiel)</div>
+
+<div class="section">
+<h2>01 · Spielanalyse</h2>
+<div class="result-bar"><span class="rb-team">SU9 1</span><span class="rb-score" style="color:var(--red)">1:6</span><span class="rb-team">EDEN4</span><span class="badge loss">NIEDERLAGE</span></div>
+<div class="info-row">
+  <span><b>Datum:</b> Do. 11.12.2025</span>
+  <span><b>Heim:</b> SU9 1</span>
+  <span><b>Gast:</b> EDEN 4</span>
+  <span><b>Ort:</b> ASKÖ Floridsdorf</span>
+</div>
+<div class="info-row">
+  <span><b>Aufstellung SU9:</b> A=Ramadan · B=Kohlmann · C=Wintersteller</span>
+  <span><b>EDEN4:</b> Suntinger · Binder · Kohlmeyer</span>
+</div>
+<div class="info-row">
+  <span style="color:var(--yellow)"><b>⚠ Letztes DG1-Spiel chronologisch</b> (später als R8 und R9 gespielt)</span>
+</div>
+<table class="game-table">
+<tr><th>Pos</th><th>SU9</th><th>EDEN4</th><th>Erg.</th></tr>
+<tr><td class="tag">I</td><td>Ramadan (A)</td><td>Suntinger</td><td class="l">1:3</td></tr>
+<tr><td class="tag">II</td><td>Kohlmann (B)</td><td>Binder</td><td class="l">1:3</td></tr>
+<tr><td class="tag">III</td><td>Wintersteller (C)</td><td>Kohlmeyer</td><td class="l">0:3</td></tr>
+<tr><td class="tag">IIIA</td><td>Kohlmann/Wintersteller</td><td>Kohlmeyer/Suntinger</td><td class="l">1:3</td></tr>
+<tr><td class="tag">IV</td><td>Kohlmann (B)</td><td>Suntinger</td><td class="l">0:3</td></tr>
+<tr><td class="tag">V</td><td>Ramadan (A)</td><td>Kohlmeyer</td><td class="l">2:3</td></tr>
+<tr><td class="tag">VI</td><td>Wintersteller (C)</td><td>Binder</td><td class="w">3:0</td></tr>
+<tr><td class="tag">VII</td><td>—</td><td>—</td><td>—</td></tr>
+</table>
+<p class="note">Spiel endet 1:6 nach 7 Partien — Wintersteller gewinnt einzigen Punkt (Binder 3:0)</p>
+</div>
+<div class="section">
+<h2>02 · Spielerleistung</h2><div class="player-grid"><div class="player-card">
+<div class="player-name">Wintersteller</div>
+<div class="player-pos">Position C</div>
+<div class="player-stat" style="color:var(--yellow)">50% <span style="font-size:11px;color:var(--txt2)">(1S/1N)</span></div>
+<div class="stat-bar"><div class="stat-fill" style="width:50%;background:var(--yellow)"></div></div>
+<div class="note">Binder 3:0 ✓ | Kohlmeyer 0:3 ✗</div>
+</div><div class="player-card">
+<div class="player-name">Ramadan</div>
+<div class="player-pos">Position A</div>
+<div class="player-stat" style="color:var(--red)">0% <span style="font-size:11px;color:var(--txt2)">(0S/2N)</span></div>
+<div class="stat-bar"><div class="stat-fill" style="width:0%;background:var(--red)"></div></div>
+<div class="note">Suntinger 1:3, Kohlmeyer 2:3 ✗</div>
+</div><div class="player-card">
+<div class="player-name">Kohlmann</div>
+<div class="player-pos">Position B</div>
+<div class="player-stat" style="color:var(--red)">0% <span style="font-size:11px;color:var(--txt2)">(0S/2N)</span></div>
+<div class="stat-bar"><div class="stat-fill" style="width:0%;background:var(--red)"></div></div>
+<div class="note">Binder 1:3, Suntinger 0:3 ✗</div>
+</div><div class="player-card">
+<div class="player-name">Kohlmann/Wintersteller</div>
+<div class="player-pos">Position Doppel</div>
+<div class="player-stat" style="color:var(--red)">0% <span style="font-size:11px;color:var(--txt2)">(0S/1N)</span></div>
+<div class="stat-bar"><div class="stat-fill" style="width:0%;background:var(--red)"></div></div>
+<div class="note">Kohlmeyer/Suntinger 1:3 ✗</div>
+</div></div></div>
+<div class="section">
+<h2>05 · Gesamtanalyse</h2>
+<p>Klare Heimniederlage 1:6 gegen EDEN4 — das schlechteste Ergebnis der Hinrunde. Kohlmann ohne Einzelpunkt, das erste Mal in DG1. EDEN4 war in dieser Begegnung klar überlegen. Wintersteller rettet die Ehre mit einem Sieg gegen Binder. Chronologisch das letzte Spiel von DG1 (11.12., nach R8 am 27.11. und R9 am 05.12.).</p>
+</div>
+<div class="section">
+<h2>07 · Tabelle nach DG1 (alle Spiele gespielt)</h2>
+<p class="note">DG1 FINAL: SU9 1 · 4S/4N/1R · 9 Punkte. Rang im Mittelfeld der 3. Klasse B.</p>
+</div>
+</body></html>
