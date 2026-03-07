@@ -24,7 +24,7 @@
   #header {
     background: var(--bg2);
     border-bottom: 1px solid var(--border);
-    padding: 10px 20px 0;
+    padding: 6px 20px 0;
     flex-shrink: 0;
     z-index: 100;
   }
@@ -34,7 +34,7 @@
   }
   .logo { display: none; }
   .header-title-main {
-    font-family: var(--sans); font-size: 20px; font-weight: 700;
+    font-family: var(--sans); font-size: 17px; font-weight: 700;
     color: var(--bright); letter-spacing: .01em;
   }
   .header-title-main .stand {
@@ -152,7 +152,7 @@
 <div id="header">
   <div class="header-top">
     <span class="header-title-main">
-      SU9 TT-Übersicht<span class="stand"> · Stand: <span id="today-date"></span></span>
+      SU9 TT<span class="stand"> · Stand: <span id="today-date"></span></span>
     </span>
     <span class="live-tag"><span class="live-dot"></span>Live</span>
   </div>
@@ -204,13 +204,10 @@
     ar: 'Archiv · Mannschaftssaisons 2022–2026',
     re: 'Regelwerk · ITTF / ÖTTV · Gastspielregel-Checker'
   };
-
   const d = new Date();
   document.getElementById('today-date').textContent =
     d.toLocaleDateString('de-AT', {day:'2-digit', month:'2-digit', year:'numeric'});
-
   document.getElementById('subtitle-text').textContent = subtitles['v1'];
-
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
       const id = tab.dataset.id;
@@ -234,7 +231,6 @@
       document.getElementById('subtitle-text').textContent = subtitles[id] || '';
     });
   });
-
   var arActiveBtn = null;
   function arLoad(btn, url) {
     if (arActiveBtn) arActiveBtn.classList.remove('active');
