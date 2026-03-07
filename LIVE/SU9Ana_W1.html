@@ -15,18 +15,15 @@
   *{box-sizing:border-box;margin:0;padding:0;}
   body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;}
   .header-title span{color:var(--bright);}50%{opacity:.3}}
-
   .container{max-width:1100px;margin:0 auto;padding:28px 24px;display:grid;gap:28px;}
   .section-label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
   .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
-
   .card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
   .card-header{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
   .card-title{font-weight:600;font-size:14px;color:var(--bright);}
   .card-body{padding:18px;}
   .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
   @media(max-width:700px){.two-col{grid-template-columns:1fr;}}
-
   .big-score{display:flex;align-items:center;justify-content:center;gap:24px;padding:20px 0;}
   .big-score .team{font-size:15px;font-weight:600;color:var(--bright);text-align:center;flex:1;}
   .big-score .team.su9{color:var(--acc);}
@@ -35,19 +32,16 @@
   .big-score .score.d{color:var(--yellow);}
   .big-score .score.l{color:var(--red);}
   .big-score .meta{font-family:var(--mono);font-size:11px;color:var(--dim);text-align:center;margin-top:4px;}
-
   .stat-row{display:flex;gap:10px;flex-wrap:wrap;}
   .stat-chip{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:8px 14px;font-family:var(--mono);}
   .stat-chip .n{color:var(--dim);font-size:9px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:3px;}
   .stat-chip .v{color:var(--bright);font-size:15px;font-weight:600;}
-
   .analysis{background:rgba(74,158,255,.05);border:1px solid rgba(74,158,255,.2);border-radius:4px;padding:14px 16px;font-size:13px;line-height:1.8;}
   .analysis strong{color:var(--acc);}
   .analysis .warn{color:var(--yellow);font-weight:600;}
   .analysis .good{color:var(--green);font-weight:600;}
   .analysis .bad{color:var(--red);font-weight:600;}
   .analysis .orange{color:var(--orange);font-weight:600;}
-
   .games-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:10px;}
   .game-cell{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:6px 8px;}
   .game-cell .gid{font-family:var(--mono);color:var(--dim);font-size:9px;display:block;margin-bottom:2px;}
@@ -57,7 +51,7 @@
   .game-cell .gresult.l{color:var(--red);}
   .game-cell .gresult.wo{color:var(--yellow);}
   .game-cell.doppel{background:rgba(74,158,255,.07);border-color:rgba(74,158,255,.3);}
-
+  .game-cell.inactive{opacity:.35;}
   .player-card{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:14px;}
   .player-name{font-weight:600;font-size:14px;color:var(--bright);margin-bottom:2px;}
   .player-sub{font-family:var(--mono);font-size:10px;color:var(--dim);margin-bottom:10px;}
@@ -67,7 +61,6 @@
   .pbar{height:4px;border-radius:2px;background:var(--border);overflow:hidden;margin-bottom:6px;}
   .pbar-fill{height:100%;border-radius:2px;}
   .perf-detail{font-size:11px;color:var(--dim);line-height:1.5;}
-
   table{width:100%;border-collapse:collapse;font-size:13px;}
   th{padding:8px 12px;text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--border);white-space:nowrap;}
   td{padding:8px 12px;border-bottom:1px solid rgba(42,48,64,.4);vertical-align:middle;}
@@ -75,7 +68,6 @@
   tr.su9-row{background:rgba(74,158,255,.08);}
   tr.su9-row td{color:var(--bright);}
   tr.hl{background:rgba(251,191,36,.06);}
-
   .match-list{list-style:none;display:grid;gap:8px;}
   .match-item{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:12px 16px;}
   .match-header{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
@@ -86,18 +78,14 @@
   .match-score.d{color:var(--yellow);}
   .match-score.l{color:var(--red);}
   .match-note{font-size:11px;color:var(--dim);}
-
   .next-box{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.3);border-radius:6px;padding:20px;}
   .next-label{font-family:var(--mono);font-size:11px;color:var(--yellow);letter-spacing:.1em;margin-bottom:10px;}
   .next-teams{font-size:20px;font-weight:700;color:var(--bright);margin-bottom:4px;}
   .next-meta{font-family:var(--mono);font-size:12px;color:var(--dim);}
-
   footer{text-align:center;padding:20px;font-family:var(--mono);font-size:11px;color:var(--dim);border-top:1px solid var(--border);margin-top:10px;}
 </style>
 </head>
 <body>
-
-
 <div class="container">
 
 <!-- ══════════════════════════ 01 ══════════════════════════ -->
@@ -105,25 +93,25 @@
   <div class="section-label">01 — Aktuelles Ergebnis</div>
   <div class="card">
     <div class="card-header">
-      <span class="card-title">DG2 · Runde 4 · Do 19.02.2026 · Heim</span>
+      <span class="card-title">DG2 · Runde 6 · Do 05.03.2026 · Heim</span>
     </div>
     <div class="card-body">
       <div class="big-score">
         <div><div class="team su9">SU9 1</div><div class="meta">Heim</div></div>
-        <div><div class="score d">5 : 5</div><div class="meta">Unentschieden · +1 Punkt</div></div>
-        <div><div class="team">Langenzersdorf 4</div><div class="meta">Gast · Rang 10</div></div>
+        <div><div class="score w">6 : 2</div><div class="meta">Sieg · +2 Punkte</div></div>
+        <div><div class="team">Lehrersportverein 6</div><div class="meta">Gast · Rang 5</div></div>
       </div>
       <div class="stat-row" style="justify-content:center;margin-bottom:16px;">
-        <div class="stat-chip"><span class="n">Mannschaftspunkte</span><span class="v" style="color:var(--yellow)">+1</span></div>
-        <div class="stat-chip"><span class="n">SU9 Gesamtpunkte</span><span class="v" style="color:var(--yellow)">11</span></div>
-        <div class="stat-chip"><span class="n">SU9 Rang</span><span class="v" style="color:var(--yellow)">9 / 10</span></div>
+        <div class="stat-chip"><span class="n">Mannschaftspunkte</span><span class="v" style="color:var(--green)">+2</span></div>
+        <div class="stat-chip"><span class="n">SU9 Gesamtpunkte</span><span class="v" style="color:var(--green)">13</span></div>
+        <div class="stat-chip"><span class="n">SU9 Rang</span><span class="v" style="color:var(--green)">~7 / 10</span></div>
       </div>
       <div class="analysis">
-        <span class="bad">Verpasster Sieg.</span> Langenzersdorf 4 ist Schlusslicht mit nur 3 Punkten aus 14 Spielen —
-        ein Heimsieg war Pflicht. Das Ergebnis 5:5 bedeutet: <span class="warn">1 statt 2 mögliche Punkte geholt.</span>
-        Besonders problematisch: Kohlmann verlor zweimal (II: 0:3 vs Zeller, IV: 1:3 vs Bican)
-        gegen Gegner deutlich unter seinem Niveau (RL-Differenz 97–116 Punkte).
-        Das Doppel wurde gewonnen (3:1), reichte aber nicht.
+        <span class="good">Verdienter Heimsieg!</span> LSV 6 kam mit Werner (RL 1384) und dem neuen Lukas Fink —
+        trotz des starken Angreifers holte SU9 souverän 6:2. <strong>Ramadan</strong> überzeugte mit 2/2 Einzeln (je 3:2 in 5 Sätzen),
+        <strong>Kohlmann</strong> war solide mit 3/3 Einzel. Das Doppel Kohlmann/Wintersteller verlor wieder (0:3) —
+        <span class="warn">das bleibt das Sorgenkind.</span> Wintersteller holt 1/2, verliert gegen Werner (2:3).
+        Abbruch nach Spiel VII bei Stand 6:2 — kein Spiel VIII/IX nötig.
       </div>
     </div>
   </div>
@@ -131,93 +119,92 @@
 
 <!-- ══════════════════════════ 02 ══════════════════════════ -->
 <div>
-  <div class="section-label">02 — Unsere Spielerleistung · DG2 R4 vs Langenzersdorf 4</div>
+  <div class="section-label">02 — Unsere Spielerleistung · DG2 R6 vs Lehrersportverein 6</div>
   <div class="two-col">
 
     <div class="player-card">
-      <div class="player-name">Hubert Micheluzzi · Position A</div>
-      <div class="player-sub">DG2 R4 · Einzel 2/4 · Doppel: Sieg</div>
+      <div class="player-name">Bary Ramadan · Position A</div>
+      <div class="player-sub">DG2 R6 · Einzel 2/2 · kein Doppel · MVP</div>
       <div class="pstats">
-        <div class="pstat"><span class="pn">Einzelsiege</span><span class="pv" style="color:var(--yellow)">2</span></div>
-        <div class="pstat"><span class="pn">Einzelnied.</span><span class="pv" style="color:var(--red)">2</span></div>
-        <div class="pstat"><span class="pn">Doppel</span><span class="pv" style="color:var(--green)">✓</span></div>
+        <div class="pstat"><span class="pn">Einzelsiege</span><span class="pv" style="color:var(--green)">2</span></div>
+        <div class="pstat"><span class="pn">Einzelnied.</span><span class="pv" style="color:var(--green)">0</span></div>
+        <div class="pstat"><span class="pn">Doppel</span><span class="pv" style="color:var(--dim)">—</span></div>
       </div>
-      <div class="pbar"><div class="pbar-fill" style="width:50%;background:var(--yellow)"></div></div>
+      <div class="pbar"><div class="pbar-fill" style="width:100%;background:var(--green)"></div></div>
       <div class="perf-detail">
-        I vs Bican: <span style="color:var(--red)">1:3 ✗</span> ·
-        V vs Baumgartner: <span style="color:var(--red)">0:3 ✗</span> ·
-        IX vs Zeller: <span style="color:var(--green)">3:1 ✓</span> ·
-        IIIA Doppel: <span style="color:var(--green)">3:1 ✓</span>
+        I vs Fink: <span style="color:var(--green)">3:2 ✓</span> ·
+        V vs Werner: <span style="color:var(--green)">3:2 ✓</span> ·
+        <span style="color:var(--green)">Beide in 5 Sätzen — kämpferisch!</span>
       </div>
     </div>
 
     <div class="player-card">
       <div class="player-name">Richard Kohlmann · Position B</div>
-      <div class="player-sub">DG2 R4 · Einzel 1/3 · Doppel: nicht eingesetzt</div>
+      <div class="player-sub">DG2 R6 · Einzel 3/3 · Doppel verloren</div>
       <div class="pstats">
-        <div class="pstat"><span class="pn">Einzelsiege</span><span class="pv" style="color:var(--red)">1</span></div>
-        <div class="pstat"><span class="pn">Einzelnied.</span><span class="pv" style="color:var(--red)">2</span></div>
-        <div class="pstat"><span class="pn">Doppel</span><span class="pv" style="color:var(--dim)">—</span></div>
+        <div class="pstat"><span class="pn">Einzelsiege</span><span class="pv" style="color:var(--green)">3</span></div>
+        <div class="pstat"><span class="pn">Einzelnied.</span><span class="pv" style="color:var(--green)">0</span></div>
+        <div class="pstat"><span class="pn">Doppel</span><span class="pv" style="color:var(--red)">✗</span></div>
       </div>
-      <div class="pbar"><div class="pbar-fill" style="width:33%;background:var(--red)"></div></div>
+      <div class="pbar"><div class="pbar-fill" style="width:100%;background:var(--green)"></div></div>
       <div class="perf-detail">
-        II vs Zeller: <span style="color:var(--red)">0:3 ✗</span> ·
-        IV vs Bican: <span style="color:var(--red)">1:3 ✗</span> ·
-        VII vs Baumgartner: <span style="color:var(--green)">3:1 ✓</span><br>
-        <span style="color:var(--red)">⚠ Deutlich unter Normalleistung gegen Gegner unter seinem Niveau</span>
+        II vs Mayer-Schwieger: <span style="color:var(--green)">3:1 ✓</span> ·
+        IV vs Fink: <span style="color:var(--green)">3:2 ✓</span> ·
+        VII vs Werner: <span style="color:var(--green)">3:2 ✓</span> ·
+        IIIA Doppel: <span style="color:var(--red)">0:3 ✗</span>
       </div>
     </div>
 
     <div class="player-card">
       <div class="player-name">Max Wintersteller · Position C</div>
-      <div class="player-sub">DG2 R4 · Einzel 2/3 · Doppel: Sieg · Bester des Spiels</div>
+      <div class="player-sub">DG2 R6 · Einzel 1/2 · Doppel verloren</div>
       <div class="pstats">
-        <div class="pstat"><span class="pn">Einzelsiege</span><span class="pv" style="color:var(--green)">2</span></div>
+        <div class="pstat"><span class="pn">Einzelsiege</span><span class="pv" style="color:var(--yellow)">1</span></div>
         <div class="pstat"><span class="pn">Einzelnied.</span><span class="pv" style="color:var(--yellow)">1</span></div>
-        <div class="pstat"><span class="pn">Doppel</span><span class="pv" style="color:var(--green)">✓</span></div>
+        <div class="pstat"><span class="pn">Doppel</span><span class="pv" style="color:var(--red)">✗</span></div>
       </div>
-      <div class="pbar"><div class="pbar-fill" style="width:67%;background:var(--green)"></div></div>
+      <div class="pbar"><div class="pbar-fill" style="width:50%;background:var(--yellow)"></div></div>
       <div class="perf-detail">
-        III vs Baumgartner: <span style="color:var(--green)">3:0 ✓</span> ·
-        VI vs Zeller: <span style="color:var(--green)">3:2 ✓</span> ·
-        VIII vs Bican: <span style="color:var(--red)">1:3 ✗</span> ·
-        IIIA Doppel: <span style="color:var(--green)">3:1 ✓</span>
+        III vs Werner: <span style="color:var(--red)">2:3 ✗</span> ·
+        VI vs Mayer-Schwieger: <span style="color:var(--green)">3:2 ✓</span> ·
+        IIIA Doppel mit Kohlmann: <span style="color:var(--red)">0:3 ✗</span>
       </div>
     </div>
 
   </div>
   <div class="analysis" style="margin-top:12px">
-    <strong>Fazit DG2 R4:</strong> Wintersteller war mit 2E+1D bester SU9-Spieler — ungewöhnlich, da sonst Kohlmann die Hauptlast trägt.
-    <span class="bad">Kohlmann mit nur 1/3 Einzel gegen den Letzten</span> war der entscheidende Faktor für das verpasste Ergebnis.
-    <span class="good">Doppel Micheluzzi/Wintersteller gewann 3:1</span> — Bestätigung, dass dieses Paar besser funktioniert als Kohlmann/Wintersteller.
+    <strong>Fazit DG2 R6:</strong> <span class="good">Starker Sieg — Ramadan und Kohlmann bildeten das Rückgrat.</span>
+    Besonders erfreulich: Ramadan mit 2/2 (beide in 5 Sätzen) zeigt seine beste Saison-Leistung.
+    Kohlmann 3/3 Einzel ist genau das was die Mannschaft braucht. <span class="warn">Doppel Kohlmann/Wintersteller verliert zum 7. Mal in dieser Saison (0:3)</span> —
+    der Wechsel auf Ramadan/Kohlmann oder Micheluzzi/Wintersteller ist überfällig.
+    Wintersteller verliert gegen Werner (RL 1384, stärkster LSV-Spieler) knapp in 5 — das ist in Ordnung.
   </div>
 </div>
 
 <!-- ══════════════════════════ 03 ══════════════════════════ -->
 <div>
-  <div class="section-label">03 — Der Gegner · Langenzersdorf 4</div>
+  <div class="section-label">03 — Der Gegner · Lehrersportverein 6</div>
   <div class="card">
     <div class="card-body">
       <div class="stat-row" style="margin-bottom:14px">
-        <div class="stat-chip"><span class="n">Rang</span><span class="v" style="color:var(--red)">10 / 10</span></div>
-        <div class="stat-chip"><span class="n">Punkte</span><span class="v" style="color:var(--red)">3</span></div>
-        <div class="stat-chip"><span class="n">S-U-N</span><span class="v" style="color:var(--red)">1-1-12</span></div>
-        <div class="stat-chip"><span class="n">Sp-Verhältnis</span><span class="v" style="color:var(--red)">33:78</span></div>
+        <div class="stat-chip"><span class="n">Rang</span><span class="v" style="color:var(--yellow)">5 / 10</span></div>
+        <div class="stat-chip"><span class="n">Punkte</span><span class="v">14</span></div>
+        <div class="stat-chip"><span class="n">S-U-N</span><span class="v">6-2-7</span></div>
+        <div class="stat-chip"><span class="n">Sp-V (nach diesem Spiel)</span><span class="v" style="color:var(--red)">60:66</span></div>
       </div>
       <table style="margin-bottom:14px">
-        <thead><tr><th>Spieler</th><th>S / N</th><th>RL-Punkte</th><th>Einsätze</th></tr></thead>
+        <thead><tr><th>Spieler</th><th>S / N</th><th>RL-Punkte</th><th>AK</th></tr></thead>
         <tbody>
-          <tr><td><strong>Jona Bican</strong></td><td>8:14</td><td>1334 ± 48</td><td>10 · U21</td></tr>
-          <tr><td>Noel Zeller</td><td>6:18</td><td>1185 ± 44</td><td>10 · U23</td></tr>
-          <tr><td>Simon Trinkler</td><td>5:17</td><td>1164 ± 49</td><td>9</td></tr>
-          <tr><td>Lukas Baumgartner</td><td>4:19</td><td>1149 ± 46</td><td>10</td></tr>
+          <tr><td><strong>Michael Werner</strong></td><td>26:11</td><td>1384 ± 39</td><td>S40</td></tr>
+          <tr><td>Lukas Fink</td><td>—</td><td>—</td><td>Neuzugang R6</td></tr>
+          <tr><td>Maren Mayer-Schwieger</td><td>2:19</td><td>1025 ± 45</td><td>S40</td></tr>
         </tbody>
       </table>
       <div class="analysis">
-        Klares Schlusslicht — nur 1 Sieg in 14 Spielen. Trotzdem holten sie gegen SU9 ein 5:5 im Rückspiel.
-        <strong>Jona Bican</strong> (RL 1334, U21) ist mit Abstand der stärkste Spieler — schlug Kohlmann
-        zweimal (I und IV). <span class="bad">Zellers und Baumgartners Siege gegen Kohlmann sind ein Alarmsignal</span>
-        — beide liegen RL-technisch deutlich unter Kohlmann (1282). Direktbilanz gegen LENZ4: 1 Sieg (auswärts 3:6), 1 Remis (heim 5:5).
+        LSV 6 kam mit Werner (RL 1384) als stärkstem Spieler — er gewann 2 Einzeln (III: 2:3 Wintersteller, Doppel IIIA: 3:0).
+        Neuzugang Fink verlor beide Einzeln gegen Ramadan (3:2) und Kohlmann (3:2).
+        <strong>Mayer-Schwieger</strong> (RL 1025) war wie erwartet die klare Schwachstelle.
+        Direktbilanz gegen LSV 6: <span class="good">2 Siege (DG1 A 4:6, DG2 H 6:2)</span>.
       </div>
     </div>
   </div>
@@ -225,35 +212,33 @@
 
 <!-- ══════════════════════════ 04 ══════════════════════════ -->
 <div>
-  <div class="section-label">04 — Spiel-Details · Kreuzmatrix DG2 R4</div>
+  <div class="section-label">04 — Spiel-Details · Kreuzmatrix DG2 R6</div>
   <div class="card">
     <div class="card-header">
-      <span class="card-title">SU9 1 vs Langenzersdorf 4 · Endstand 5:5</span>
+      <span class="card-title">SU9 1 vs Lehrersportverein 6 · Endstand 6:2</span>
     </div>
     <div class="card-body">
       <div style="font-size:12px;color:var(--dim);margin-bottom:8px;font-family:var(--mono)">
-        SU9: A=Micheluzzi · B=Kohlmann · C=Wintersteller &nbsp;|&nbsp; LENZ4: X=Bican · Y=Zeller · Z=Baumgartner
+        SU9: A=Ramadan · B=Kohlmann · C=Wintersteller &nbsp;|&nbsp; LSV6: X=Fink · Y=Mayer-Schwieger · Z=Werner
       </div>
       <div class="games-grid">
-        <div class="game-cell"><span class="gid">I · A vs X</span><span class="gplayer">Micheluzzi vs Bican</span><span class="gresult l">1:3 ✗</span></div>
-        <div class="game-cell"><span class="gid">II · B vs Y</span><span class="gplayer">Kohlmann vs Zeller</span><span class="gresult l">0:3 ✗</span></div>
-        <div class="game-cell"><span class="gid">III · C vs Z</span><span class="gplayer">Wintersteller vs Baumgartner</span><span class="gresult w">3:0 ✓</span></div>
-        <div class="game-cell doppel"><span class="gid">IIIA ♦ Doppel</span><span class="gplayer">Micheluzzi/Wintersteller vs Bican/Zeller</span><span class="gresult w">3:1 ✓</span></div>
-        <div class="game-cell"><span class="gid">IV · B vs X</span><span class="gplayer">Kohlmann vs Bican</span><span class="gresult l">1:3 ✗</span></div>
-        <div class="game-cell"><span class="gid">V · A vs Z</span><span class="gplayer">Micheluzzi vs Baumgartner</span><span class="gresult l">0:3 ✗</span></div>
-        <div class="game-cell"><span class="gid">VI · C vs Y</span><span class="gplayer">Wintersteller vs Zeller</span><span class="gresult w">3:2 ✓</span></div>
-        <div class="game-cell"><span class="gid">VII · B vs Z</span><span class="gplayer">Kohlmann vs Baumgartner</span><span class="gresult w">3:1 ✓</span></div>
-        <div class="game-cell"><span class="gid">VIII · C vs X</span><span class="gplayer">Wintersteller vs Bican</span><span class="gresult l">1:3 ✗</span></div>
-        <div class="game-cell"><span class="gid">IX · A vs Y</span><span class="gplayer">Micheluzzi vs Zeller</span><span class="gresult w">3:1 ✓</span></div>
+        <div class="game-cell"><span class="gid">I · A vs X</span><span class="gplayer">Ramadan vs Fink</span><span class="gresult w">3:2 ✓</span></div>
+        <div class="game-cell"><span class="gid">II · B vs Y</span><span class="gplayer">Kohlmann vs Mayer-Schw.</span><span class="gresult w">3:1 ✓</span></div>
+        <div class="game-cell"><span class="gid">III · C vs Z</span><span class="gplayer">Wintersteller vs Werner</span><span class="gresult l">2:3 ✗</span></div>
+        <div class="game-cell doppel"><span class="gid">IIIA ♦ Doppel</span><span class="gplayer">Kohlmann/Wintersteller vs Werner/Mayer-Schw.</span><span class="gresult l">0:3 ✗</span></div>
+        <div class="game-cell"><span class="gid">IV · B vs X</span><span class="gplayer">Kohlmann vs Fink</span><span class="gresult w">3:2 ✓</span></div>
+        <div class="game-cell"><span class="gid">V · A vs Z</span><span class="gplayer">Ramadan vs Werner</span><span class="gresult w">3:2 ✓</span></div>
+        <div class="game-cell"><span class="gid">VI · C vs Y</span><span class="gplayer">Wintersteller vs Mayer-Schw.</span><span class="gresult w">3:2 ✓</span></div>
+        <div class="game-cell"><span class="gid">VII · B vs Z</span><span class="gplayer">Kohlmann vs Werner</span><span class="gresult w">3:2 ✓</span></div>
+        <div class="game-cell inactive"><span class="gid">VIII · — </span><span class="gplayer">Abbruch bei 6:2</span><span class="gresult" style="color:var(--dim)">—</span></div>
+        <div class="game-cell inactive"><span class="gid">IX · —</span><span class="gplayer">Abbruch bei 6:2</span><span class="gresult" style="color:var(--dim)">—</span></div>
       </div>
       <div class="analysis" style="margin-top:14px">
-        <strong>Spielverlauf:</strong> Nach III stand es 1:2. Doppel → 2:2. Dann drei Niederlagen (IV, V) → 2:4.
-        Kohlmann holt VII → 3:4. Wintersteller verliert VIII (das entscheidende Spiel!) → 3:5.
-        Micheluzzi holt IX → 4:5. Endstand 5:5.<br><br>
-        <strong>Entscheidende Spiele:</strong>
-        <span class="bad">II (Kohlmann 0:3 vs Zeller)</span> — Zeller ist RL 97 Punkte schwächer.
-        <span class="bad">VIII (Wintersteller 1:3 vs Bican)</span> — bei Stand 3:4 war das der Matchball für LENZ4.
-        Gewonnenes Doppel und Spiel IX (Micheluzzi 3:1 vs Zeller) zeigen Kampfgeist — reichten aber nicht.
+        <strong>Spielverlauf:</strong> I+II → 2:0 Start. III verloren → 2:1. Doppel → 2:2.
+        IV+V+VI → 5:2. VII → <span class="good">6:2 Abbruch.</span><br><br>
+        <span class="warn">Einziger Kritikpunkt:</span> Doppel 0:3 — das kostet potentiell 1 Punkt in engen Spielen.
+        <span class="good">Stark:</span> Ramadan gewinnt beide Einzel gegen Fink und vor allem gegen Werner (RL 1384) in 5 Sätzen.
+        Kohlmann 3/3 inklusive Werner in 5 Sätzen (VII) — das war der Siegpunkt.
       </div>
     </div>
   </div>
@@ -265,19 +250,17 @@
   <div class="card">
     <div class="card-body">
       <div class="analysis">
-        <strong>Stärken:</strong> Kohlmann (RL 1282, 62% Quote, Rang 10 Rangliste) ist klarer Anker.
-        Auswärtssiege bei TT14 3, LSV 6 und Lenz 4 sowie Heimsieg gegen SSH 3 zeigen reale Qualität.<br><br>
-        <strong>Schwächen:</strong> <span class="bad">Stamm-Doppel Kohlmann/Wintersteller verliert 6 von 8 (25%)</span> —
-        kostet in engen Spielen. Ramadan (25% Quote) und Spasskaia als Notfall schwächen die Aufstellung strukturell.<br><br>
-        <span class="warn">Verpasste Chancen:</span> 5:5 gegen Schlusslicht Lenz 4 (DG2 R4) und 5:5 gegen Kontakt 7 (DG1 R9) —
-        zwei verpasste Siege, die Rang 8 direkt kosten.<br><br>
-        <span class="good">Chancen:</span> 5 Spiele offen. Rückspiel gegen Kontakt 7 (15.04.) ist das Schlüsselspiel.
-        Heimspiele gegen LSV 6 und SKFL 10 sind gewinnbar.<br><br>
+        <strong>Stärken:</strong> Kohlmann (RL 1282, 65% Quote, Rang 10 Rangliste) ist klarer Anker.
+        Drei Siege im DG2 (R2 5:5, R4 5:5, R6 6:2) nach schwierigem Start zeigen aufsteigende Form.
+        Auswärtssiege (TT14, LSV6, LENZ4) und jetzt Heimsieg gegen LSV6 — die Mannschaft kann Punkte holen.<br><br>
+        <strong>Schwächen:</strong> <span class="bad">Doppel Kohlmann/Wintersteller verliert 7 von 9 (22%)</span> —
+        die nächste Gelegenheit, auf ein anderes Paar umzusteigen, muss genutzt werden.
+        Ramadan (33% Quote) bleibt inkonsistent.<br><br>
+        <span class="good">Fortschritt:</span> 13 Punkte aus 14 Spielen — Rang ~7. 4 Spiele offen.<br><br>
         <strong>Empfehlungen:</strong><br>
-        1. Doppel auf <span class="good">Micheluzzi/Wintersteller</span> umstellen (67% vs 25%)<br>
-        2. Kohlmann konsequent als stärksten Spieler auf Position B<br>
-        3. Stärkstmögliche Aufstellung für alle 5 Restspiele<br>
-        4. Sieg gegen Kontakt 7 als Hauptziel der Restsaison
+        1. Doppel wechseln: <span class="good">Ramadan/Kohlmann oder Micheluzzi/Wintersteller</span><br>
+        2. Sieg gegen Kontakt 7 (15.04.) als Hauptziel der Restsaison<br>
+        3. NFS7 (Fr 13.03.) auswärts: letztes Spiel DG2 R5 — klarer Fokus
       </div>
     </div>
   </div>
@@ -287,37 +270,34 @@
 <div>
   <div class="section-label">06 — Nächstes Spiel</div>
   <div class="next-box">
-    <div class="next-label">▶ HEUTE · Do 05.03.2026 · 19:00 Uhr · HEIM · DG2 R6</div>
-    <div class="next-teams">SU9 1 vs Lehrersportverein 6</div>
-    <div class="next-meta">ASKÖ Floridsdorf, Freytag. 32, 1210 Wien</div>
+    <div class="next-label">▶ NÄCHSTES · Fr 13.03.2026 · 18:30 Uhr · AUSWÄRTS · DG2 R5 (verlegt)</div>
+    <div class="next-teams">NFS 7 – SU9 1</div>
+    <div class="next-meta">Naturfreunde Stadlau · DG2 Runde 5 (Nachholtermin)</div>
   </div>
   <div class="card" style="margin-top:12px">
-    <div class="card-header"><span class="card-title">Vorschau: SU9 1 vs LSV 6</span></div>
+    <div class="card-header"><span class="card-title">Vorschau: NFS 7 vs SU9 1</span></div>
     <div class="card-body">
       <div class="stat-row" style="margin-bottom:14px">
-        <div class="stat-chip"><span class="n">LSV 6 Rang</span><span class="v" style="color:var(--yellow)">5 / 10</span></div>
-        <div class="stat-chip"><span class="n">LSV 6 Punkte</span><span class="v">14</span></div>
-        <div class="stat-chip"><span class="n">LSV 6 S-U-N</span><span class="v">6-2-6</span></div>
-        <div class="stat-chip"><span class="n">Hinspiel</span><span class="v" style="color:var(--green)">SU9 gewann 4:6</span></div>
+        <div class="stat-chip"><span class="n">NFS 7 Rang</span><span class="v" style="color:var(--yellow)">6 / 10</span></div>
+        <div class="stat-chip"><span class="n">NFS 7 Punkte</span><span class="v">14</span></div>
+        <div class="stat-chip"><span class="n">NFS 7 S-U-N</span><span class="v">6-2-6</span></div>
+        <div class="stat-chip"><span class="n">Hinspiel</span><span class="v" style="color:var(--red)">SU9 verlor 4:6</span></div>
       </div>
       <table style="margin-bottom:14px">
-        <thead><tr><th>LSV 6 Spieler</th><th>S / N</th><th>RL-Punkte</th><th>AK</th></tr></thead>
+        <thead><tr><th>NFS 7 Spieler</th><th>S / N</th><th>RL-Punkte</th></tr></thead>
         <tbody>
-          <tr><td><strong>Michael Werner</strong></td><td>26:10</td><td>1384 ± 39</td><td>S40</td></tr>
-          <tr><td>Carl Mayer</td><td>21:7</td><td>1372 ± 38</td><td>U17 2</td></tr>
-          <tr><td>Maren Mayer-Schwieger</td><td>2:18</td><td>1025 ± 45</td><td>S40</td></tr>
-          <tr><td>Philipp Huemer</td><td>0:5</td><td>1141 ± 77</td><td>S40</td></tr>
+          <tr><td><strong>Helmut Stachowetz</strong></td><td>—</td><td>~1300</td></tr>
+          <tr><td>Jürgen Mühl</td><td>—</td><td>~1280</td></tr>
+          <tr><td>Thomas Bader</td><td>—</td><td>~1150</td></tr>
         </tbody>
       </table>
       <div class="analysis">
-        <strong>Hinspiel (DG1 R6, auswärts):</strong> SU9 gewann 4:6.
-        Werner (RL 1384) ist der stärkste Spieler im Feld — schlug Wintersteller 3:0 und Kohlmann 3:1.
-        Er ist Rang 7 Einzelrangliste (26:10 S/N). <span class="warn">Spiel VII (B vs Z = Kohlmann vs Werner) wird entscheidend.</span><br><br>
-        <span class="good">Vorteil SU9:</span> Heimspiel, Hinspiel gewonnen.
-        Mayer-Schwieger (RL 1025, 2:18) und Huemer (RL 1141, 0:5) sind klare Schwachstellen von LSV 6 —
-        dort müssen Kohlmann und Wintersteller die Punkte holen.<br><br>
-        <strong>Erwartung:</strong> Bei voller Aufstellung <span class="good">Sieg 6:4 oder besser möglich.</span>
-        Empfehlung Doppel: Micheluzzi/Wintersteller.
+        <strong>Hinspiel (DG1 R5, Heim, 23.10.2025):</strong> SU9 verlor 4:6.
+        Micheluzzi schlug Mühl (3:1), Kohlmann schlug Mühl (3:0) und Stachowetz (3:0) — aber Spasskaia als Notfall-C verlor 0/3.
+        <span class="warn">NFS 7 ist auswärts schwieriger</span> — Stachowetz und Mühl sind stark auf Position A/B.<br><br>
+        <strong>Mit Ramadan/Kohlmann/Wintersteller:</strong> Chancen stehen 50:50.
+        <span class="good">Ramadan kann Mühl oder Bader schlagen</span>, Kohlmann ist für Stachowetz zuständig.
+        Wichtig: Kein Notfall-Einsatz mehr — volle Aufstellung nötig.
       </div>
     </div>
   </div>
@@ -327,14 +307,14 @@
 <div>
   <div class="section-label">07 — Tabellenstand · 3. Klasse B</div>
   <div class="card">
-    <div class="card-header"><span class="card-title">Tabelle 2025/26 · Stand 05.03.2026</span></div>
+    <div class="card-header"><span class="card-title">Tabelle 2025/26 · Stand 07.03.2026</span></div>
     <div class="card-body">
       <div class="stat-row" style="margin-bottom:16px">
-        <div class="stat-chip"><span class="n">SU9 Rang</span><span class="v" style="color:var(--yellow)">9 / 10</span></div>
-        <div class="stat-chip"><span class="n">Punkte</span><span class="v" style="color:var(--yellow)">11</span></div>
-        <div class="stat-chip"><span class="n">Gespielt</span><span class="v">13</span></div>
-        <div class="stat-chip"><span class="n">Offen</span><span class="v" style="color:var(--yellow)">5</span></div>
-        <div class="stat-chip"><span class="n">Sp-V</span><span class="v" style="color:var(--red)">52:65</span></div>
+        <div class="stat-chip"><span class="n">SU9 Rang</span><span class="v" style="color:var(--green)">~7 / 10</span></div>
+        <div class="stat-chip"><span class="n">Punkte</span><span class="v" style="color:var(--green)">13</span></div>
+        <div class="stat-chip"><span class="n">Gespielt</span><span class="v">14</span></div>
+        <div class="stat-chip"><span class="n">Offen</span><span class="v" style="color:var(--yellow)">4</span></div>
+        <div class="stat-chip"><span class="n">Sp-V</span><span class="v" style="color:var(--yellow)">58:67</span></div>
       </div>
       <table>
         <thead><tr><th>Rang</th><th>Mannschaft</th><th>Sp</th><th>S</th><th>U</th><th>N</th><th>Sp-V</th><th>P</th></tr></thead>
@@ -343,19 +323,20 @@
           <tr><td>2</td><td>Handelsministerium 1</td><td>15</td><td>7</td><td>4</td><td>4</td><td>66:66</td><td><strong>18</strong></td></tr>
           <tr><td>3</td><td>Sportklub/Flötzersteig 10</td><td>14</td><td>8</td><td>1</td><td>5</td><td>68:56</td><td><strong>17</strong></td></tr>
           <tr><td>4</td><td>ASKÖ TT 14 3</td><td>14</td><td>6</td><td>3</td><td>5</td><td>62:52</td><td><strong>15</strong></td></tr>
-          <tr><td>5</td><td>Lehrersportverein 6</td><td>14</td><td>6</td><td>2</td><td>6</td><td>62:62</td><td><strong>14</strong></td></tr>
+          <tr><td>5</td><td>Lehrersportverein 6</td><td>15</td><td>6</td><td>2</td><td>7</td><td>60:66</td><td><strong>14</strong></td></tr>
           <tr><td>6</td><td>Naturfreunde Stadlau 7</td><td>14</td><td>6</td><td>2</td><td>6</td><td>57:65</td><td><strong>14</strong></td></tr>
           <tr><td>7</td><td>Spar/Hobby Centre Vienna 3</td><td>15</td><td>5</td><td>3</td><td>7</td><td>63:65</td><td><strong>13</strong></td></tr>
+          <tr class="su9-row"><td>7*</td><td>⬤ Sportunion 9 1</td><td>14</td><td>5</td><td>3</td><td>6</td><td>58:67</td><td><strong>13</strong></td></tr>
           <tr class="hl"><td>8</td><td>Kontakt 7</td><td>15</td><td>3</td><td>5</td><td>7</td><td>60:72</td><td><strong>11</strong></td></tr>
-          <tr class="su9-row"><td>9</td><td>⬤ Sportunion 9 1</td><td>13</td><td>4</td><td>3</td><td>6</td><td>52:65</td><td><strong>11</strong></td></tr>
           <tr><td>10</td><td>Langenzersdorf 4</td><td>14</td><td>1</td><td>1</td><td>12</td><td>33:78</td><td><strong>3</strong></td></tr>
         </tbody>
       </table>
+      <div style="font-size:11px;color:var(--dim);margin-top:6px">* Rang exakt hängt von SSH3-Ergebnis ab (ebenfalls 13P). Tabellendaten aus XTTV nach Stand 07.03.2026.</div>
       <div class="analysis" style="margin-top:14px">
-        SU9 auf Rang 9, gleichauf mit Kontakt 7 (Rang 8, beide 11 Punkte) —
-        aber <span class="bad">schlechteres Spielverhältnis (52:65 vs 60:72)</span> trennt die beiden.
-        Abstieg zu Lenz 4 (3 Punkte) ist <span class="good">kein reales Risiko (8 Punkte Abstand).</span>
-        <span class="warn">Direktes Rückspiel gegen Kontakt 7 (15.04.) ist das Schlüsselspiel für Rang 8.</span>
+        <span class="good">SU9 springt auf 13 Punkte — gleichauf mit SSH 3 (Rang 7), 2 Punkte vor Kontakt 7.</span>
+        Abstieg (LENZ4, 3P) ist mit 10 Punkten Abstand <span class="good">kein Thema.</span>
+        4 Spiele offen: NFS7 (A, 13.03.), EDEN4 (A, 16.03.), SKFL10 (H, 26.03.), KONT7 (A, 15.04.).
+        <span class="warn">KONT7 (15.04.) bleibt das Schlüsselspiel</span> — Direktduell um Rang 7–8.
       </div>
     </div>
   </div>
@@ -370,26 +351,39 @@
       <div class="player-name">Richard Kohlmann</div>
       <div class="player-sub">Pos. B (stärkster) · RL 1282 ± 39 · S40 · Rang 10 Rangliste</div>
       <div class="pstats">
-        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">13</span></div>
-        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--yellow)">21</span></div>
-        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--red)">13</span></div>
-        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--yellow)">62%</span></div>
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">14</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--green)">24</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--yellow)">13</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--green)">65%</span></div>
       </div>
-      <div class="pbar"><div class="pbar-fill" style="width:62%;background:var(--yellow)"></div></div>
-      <div class="perf-detail">Zuverlässigster Punktelieferant · trägt Hauptlast der Mannschaft</div>
+      <div class="pbar"><div class="pbar-fill" style="width:65%;background:var(--green)"></div></div>
+      <div class="perf-detail">Zuverlässigster Punktelieferant · trägt Hauptlast der Mannschaft · R6 3/3 Einzel</div>
     </div>
 
     <div class="player-card">
       <div class="player-name">Max Wintersteller</div>
       <div class="player-sub">Pos. C (mittlerer) · RL 1255 ± 40 · S40 · Rang 18 Rangliste</div>
       <div class="pstats">
-        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">11</span></div>
-        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--yellow)">13</span></div>
-        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--red)">15</span></div>
-        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--red)">46%</span></div>
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">12</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--yellow)">14</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--red)">16</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--red)">47%</span></div>
       </div>
-      <div class="pbar"><div class="pbar-fill" style="width:46%;background:var(--red)"></div></div>
-      <div class="perf-detail">Verliert häufig entscheidende Spiele (VII, IX) · bestes Doppel-Paar mit Micheluzzi</div>
+      <div class="pbar"><div class="pbar-fill" style="width:47%;background:var(--yellow)"></div></div>
+      <div class="perf-detail">R6: 1/2 Einzel · verliert gegen Werner (RL 1384) 2:3 in 5 — tolerabel · Doppel-Problem</div>
+    </div>
+
+    <div class="player-card">
+      <div class="player-name">Bary Ramadan</div>
+      <div class="player-sub">Pos. variabel · RL 1166 ± 60 · Rang 27 Rangliste</div>
+      <div class="pstats">
+        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">8</span></div>
+        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--yellow)">6</span></div>
+        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--red)">12</span></div>
+        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--yellow)">33%</span></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:33%;background:var(--yellow)"></div></div>
+      <div class="perf-detail">R6 MVP: 2/2 Einzel (beide 3:2) · Sieg gegen Werner (RL 1384) besonders wertvoll</div>
     </div>
 
     <div class="player-card">
@@ -402,20 +396,7 @@
         <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--red)">32%</span></div>
       </div>
       <div class="pbar"><div class="pbar-fill" style="width:32%;background:var(--red)"></div></div>
-      <div class="perf-detail">Position A für S70 passend · gutes Doppel mit Wintersteller (67%)</div>
-    </div>
-
-    <div class="player-card">
-      <div class="player-name">Bary Ramadan</div>
-      <div class="player-sub">Pos. variabel · RL 1166 ± 60 · Rang 27 Rangliste</div>
-      <div class="pstats">
-        <div class="pstat"><span class="pn">Einsätze</span><span class="pv">7</span></div>
-        <div class="pstat"><span class="pn">Siege</span><span class="pv" style="color:var(--red)">4</span></div>
-        <div class="pstat"><span class="pn">Niederlagen</span><span class="pv" style="color:var(--red)">12</span></div>
-        <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--red)">25%</span></div>
-      </div>
-      <div class="pbar"><div class="pbar-fill" style="width:25%;background:var(--red)"></div></div>
-      <div class="perf-detail">Hohe SD (±60) = unbeständige Leistungen · RL ähnlich Micheluzzi</div>
+      <div class="perf-detail">In DG2 nicht eingesetzt · R6 Ramadan spielte statt Micheluzzi · gutes Doppel mit Wintersteller (67%)</div>
     </div>
 
     <div class="player-card" style="border-color:rgba(251,191,36,.25)">
@@ -428,7 +409,7 @@
         <div class="pstat"><span class="pn">Quote</span><span class="pv" style="color:var(--red)">0%</span></div>
       </div>
       <div class="pbar"><div class="pbar-fill" style="width:0%;background:var(--red)"></div></div>
-      <div class="perf-detail">⚠ Nur Notfalleinsatz R5 · SD ±106 = sehr wenige aktuelle Ergebnisse</div>
+      <div class="perf-detail">⚠ Nur Notfalleinsatz R5 DG1 · SD ±106 = sehr wenige aktuelle Ergebnisse</div>
     </div>
 
   </div>
@@ -444,19 +425,14 @@
         <thead><tr><th>Paar</th><th>Einsätze</th><th>Siege</th><th>Niederlagen</th><th>Quote</th></tr></thead>
         <tbody>
           <tr>
-            <td>Kohlmann / Wintersteller</td><td>8</td>
-            <td style="color:var(--red)">2</td><td style="color:var(--red)">6</td>
-            <td><span style="color:var(--red);font-family:var(--mono);font-weight:600">25%</span></td>
+            <td>Kohlmann / Wintersteller</td><td>9</td>
+            <td style="color:var(--red)">2</td><td style="color:var(--red)">7</td>
+            <td><span style="color:var(--red);font-family:var(--mono);font-weight:600">22%</span></td>
           </tr>
           <tr style="background:rgba(74,222,128,.05)">
             <td><strong>Micheluzzi / Wintersteller</strong></td><td>3</td>
             <td style="color:var(--green)">2</td><td style="color:var(--red)">1</td>
             <td><span style="color:var(--green);font-family:var(--mono);font-weight:600">67%</span></td>
-          </tr>
-          <tr>
-            <td>Micheluzzi / Kohlmann</td><td>1</td>
-            <td style="color:var(--red)">0</td><td style="color:var(--red)">1</td>
-            <td><span style="color:var(--red);font-family:var(--mono)">0%</span></td>
           </tr>
           <tr>
             <td>Ramadan / Micheluzzi</td><td>1</td>
@@ -466,9 +442,9 @@
         </tbody>
       </table>
       <div class="analysis" style="margin-top:14px">
-        Stamm-Doppel <strong>Kohlmann/Wintersteller</strong> verliert mit <span class="bad">25% (2/8)</span> klar zu oft.
-        <strong>Micheluzzi/Wintersteller</strong> gewinnt <span class="good">67% (2/3)</span>.
-        Datenlage noch dünn (3 Einsätze), Tendenz aber eindeutig — Wechsel des Stamm-Doppels wird empfohlen.
+        Stamm-Doppel <strong>Kohlmann/Wintersteller</strong> verliert jetzt mit <span class="bad">22% (2/9)</span> —
+        ein Wechsel ist dringend geboten. <strong>Micheluzzi/Wintersteller</strong> gewinnt <span class="good">67% (2/3)</span>.
+        Empfehlung: Bei Micheluzzi-Einsatz → Micheluzzi/Wintersteller. Bei Ramadan-Einsatz → Ramadan/Kohlmann testen.
       </div>
     </div>
   </div>
@@ -496,7 +472,7 @@
     </li>
     <li class="match-item">
       <div class="match-header"><span class="match-runde">DG1 · R5 · Do 23.10.2025 · Heim</span><span class="match-teams">SU9 1 – Naturfreunde Stadlau 7</span><span class="match-score l">4:6</span></div>
-      <div class="match-note">Micheluzzi/Spasskaia/Kohlmann · Spasskaia als Notfall-B (0/3) · Alle 10 Spiele</div>
+      <div class="match-note">Micheluzzi/Spasskaia/Kohlmann · Spasskaia als Notfall-C (0/3) · Alle 10 Spiele</div>
     </li>
     <li class="match-item">
       <div class="match-header"><span class="match-runde">DG1 · R6 · Do 06.11.2025 · Auswärts</span><span class="match-teams">Lehrersportverein 6 – SU9 1</span><span class="match-score w">4:6</span></div>
@@ -530,6 +506,14 @@
       <div class="match-header"><span class="match-runde">DG2 · R4 · Do 19.02.2026 · Heim</span><span class="match-teams">SU9 1 – Langenzersdorf 4</span><span class="match-score d">5:5</span></div>
       <div class="match-note">Micheluzzi/Kohlmann/Wintersteller · Wintersteller 2/3 bester · Alle 10 Spiele</div>
     </li>
+    <li class="match-item" style="border-color:rgba(74,222,128,.3)">
+      <div class="match-header"><span class="match-runde">DG2 · R6 · Do 05.03.2026 · Heim ★</span><span class="match-teams">SU9 1 – Lehrersportverein 6</span><span class="match-score w">6:2</span></div>
+      <div class="match-note">Ramadan/Kohlmann/Wintersteller · Kohlmann 3/3, Ramadan 2/2 · Abbruch nach VII</div>
+    </li>
+    <li class="match-item" style="opacity:.5">
+      <div class="match-header"><span class="match-runde">DG2 · R5 · Fr 13.03.2026 · Auswärts (verlegt)</span><span class="match-teams">NFS 7 – SU9 1</span><span class="match-score" style="color:var(--dim)">—</span></div>
+      <div class="match-note">Noch nicht gespielt · Naturfreunde Stadlau</div>
+    </li>
   </ul>
 </div>
 
@@ -537,22 +521,16 @@
 <div>
   <div class="section-label">11 — Noch ausstehende Spiele · DG2</div>
   <div class="card">
-    <div class="card-header"><span class="card-title">5 offene Spiele</span></div>
+    <div class="card-header"><span class="card-title">4 offene Spiele</span></div>
     <div class="card-body">
       <table>
         <thead><tr><th>Datum</th><th>H/A</th><th>Gegner</th><th>Rang</th><th>Punkte</th><th>Prognose</th></tr></thead>
         <tbody>
           <tr class="hl">
-            <td><strong>Do 05.03.2026</strong></td>
-            <td style="color:var(--green)">Heim</td>
-            <td>Lehrersportverein 6</td><td>5</td><td>14</td>
-            <td style="color:var(--green);font-family:var(--mono)">Sieg möglich</td>
-          </tr>
-          <tr>
-            <td>Do 05.03.2026</td>
+            <td><strong>Fr 13.03.2026</strong></td>
             <td style="color:var(--yellow)">Auswärts</td>
             <td>Naturfreunde Stadlau 7</td><td>6</td><td>14</td>
-            <td style="color:var(--yellow);font-family:var(--mono)">Offen</td>
+            <td style="color:var(--yellow);font-family:var(--mono)">Offen · R5 nachgeholt</td>
           </tr>
           <tr>
             <td>Mo 16.03.2026</td>
@@ -576,10 +554,10 @@
       </table>
       <div class="analysis" style="margin-top:14px">
         <strong>Szenarien:</strong><br>
-        <span class="good">3 Siege</span> (LSV6, NFS7, KONT7) → ca. 17 Punkte → <span class="good">Rang 7–8 realistisch</span><br>
-        <span class="warn">1–2 Siege</span> → ca. 13–15 Punkte → <span class="warn">Rang 8–9, abhängig von Kontakt 7</span><br><br>
+        <span class="good">2 Siege</span> (NFS7 + KONT7) → ~17 Punkte → <span class="good">Rang 7 realistisch</span><br>
+        <span class="warn">1 Sieg</span> (nur KONT7) → ~15 Punkte → <span class="warn">Rang 7–8</span><br><br>
         <span class="orange">Das Spiel gegen Kontakt 7 (Mi 15.04.) ist das wichtigste der Restsaison</span> —
-        direktes Duell um Rang 8 bei aktuellem Punktegleichstand.
+        direktes Duell um Rang 7–8 bei 2 Punkten Vorsprung.
       </div>
     </div>
   </div>
