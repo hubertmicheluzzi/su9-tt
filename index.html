@@ -10,23 +10,60 @@
     --bg:#0d0f14; --bg2:#13161e; --bg3:#1a1f2b; --border:#2a3040;
     --text:#e2e8f0; --dim:#7a8899; --bright:#ffffff;
     --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans',sans-serif;
+    /* Tab-Farben */
     --ar:#e2c97e;
   --w1:#a78bfa; --w2:#f472b6; --v1:#34d399; --v2:#60a5fa; --re:#fbbf24;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; overflow: hidden; }
-  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; display: flex; flex-direction: column; }
-  #header { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 6px 20px 0; flex-shrink: 0; z-index: 100; }
-  .header-top { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; flex-wrap: wrap; }
+  body { background: var(--bg); color: var(--text);
+         font-family: var(--sans); font-size: 14px;
+         display: flex; flex-direction: column; }
+
+  /* ── HEADER ── */
+  #header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 6px 20px 0;
+    flex-shrink: 0;
+    z-index: 100;
+  }
+  .header-top {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
   .logo { display: none; }
-  .header-title-main { font-family: var(--sans); font-size: 17px; font-weight: 700; color: var(--bright); letter-spacing: .01em; }
-  .header-title-main .stand { font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--dim); margin-left: 10px; }
+  .header-title-main {
+    font-family: var(--sans); font-size: 17px; font-weight: 700;
+    color: var(--bright); letter-spacing: .01em;
+  }
+  .header-title-main .stand {
+    font-family: var(--mono); font-size: 12px; font-weight: 400;
+    color: var(--dim); margin-left: 10px;
+  }
   .header-title-main .stand span { color: var(--bright); }
-  .live-tag { font-family: var(--mono); font-size: 9px; color: #4ade80; letter-spacing: .1em; display: flex; align-items: center; gap: 4px; margin-left: auto; }
-  .live-dot { width: 5px; height: 5px; background: #4ade80; border-radius: 50%; animation: pulse 2s infinite; }
+  .live-tag {
+    font-family: var(--mono); font-size: 9px; color: #4ade80;
+    letter-spacing: .1em; display: flex; align-items: center; gap: 4px;
+    margin-left: auto;
+  }
+  .live-dot {
+    width: 5px; height: 5px; background: #4ade80;
+    border-radius: 50%; animation: pulse 2s infinite;
+  }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  /* ── TABS ── */
   .tabs { display: flex; gap: 4px; align-items: flex-end; }
-  .tab { font-family: var(--mono); font-size: 10px; font-weight: 600; padding: 5px 6px 6px; border: 1px solid var(--border); border-bottom: none; border-radius: 4px 4px 0 0; background: var(--bg3); color: var(--dim); cursor: pointer; transition: all .15s; white-space: nowrap; user-select: none; }
+  .tab {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    letter-spacing: 0; padding: 5px 6px 6px; font-size: 10px;
+    border: 1px solid var(--border); border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    background: var(--bg3); color: var(--dim);
+    cursor: pointer; transition: all .15s;
+    white-space: nowrap; user-select: none;
+  }
   .tab:hover { color: var(--bright); background: var(--bg2); }
   .tab.active { background: var(--bg); border-bottom: 1px solid var(--bg); color: var(--bright); }
   .tab[data-id="w1"] { border-top: 2px solid var(--w1); }
@@ -41,37 +78,85 @@
   .tab.active[data-id="v2"] { color: var(--v2); }
   .tab.active[data-id="re"] { color: var(--re); }
   .tab.active[data-id="ar"] { color: var(--ar); }
-  #subtitle-bar { background: var(--bg); border-bottom: 1px solid var(--border); padding: 6px 20px; font-family: var(--mono); font-size: 11px; color: var(--dim); flex-shrink: 0; min-height: 30px; }
+
+  /* ── SUBTITLE BAR ── */
+  #subtitle-bar {
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    padding: 6px 20px;
+    font-family: var(--mono); font-size: 11px; color: var(--dim);
+    flex-shrink: 0; min-height: 30px;
+  }
   #subtitle-bar span { color: var(--bright); }
-  #content { flex: 1; overflow: hidden; position: relative; }
-  .pane { position: absolute; inset: 0; width: 100%; height: 100%; display: none; border: none; }
+
+  /* ── IFRAME CONTAINER ── */
+  #content {
+    flex: 1; overflow: hidden; position: relative;
+  }
+  .pane {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    display: none;
+    border: none;
+  }
   .pane.active { display: block; }
-  .ar-pane { display: none; overflow: hidden; position: absolute; inset: 0; height: 100%; }
+
+
+  /* ── ARCHIV PANE (kein iframe-in-iframe) ── */
+  --ar:#e2c97e;
+  .ar-pane {
+    display: none; flex-direction: column; overflow: hidden;
+    position: absolute; inset: 0; height: 100%;
+  }
   .ar-pane.active { display: flex; flex-direction: column; }
-  .ar-buttons { max-height: 50vh; flex-shrink: 0; padding: 10px 16px 6px; border-bottom: 1px solid var(--border); overflow-x: hidden; overflow-y: auto; }
+  .ar-buttons {
+    max-height: 50vh;
+    flex-shrink: 0;
+    padding: 10px 16px 6px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: hidden; overflow-y: auto;
+  }
   .ar-buttons::-webkit-scrollbar { width: 3px; }
   .ar-buttons::-webkit-scrollbar-thumb { background: var(--border); }
-  .ar-title { font-family: var(--mono); font-size: 10px; color: var(--dim); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
-  .ar-row { display: flex; flex-wrap: wrap; gap: 4px; padding: 2px 0; align-items: center; }
+  .ar-title {
+    font-family: var(--mono); font-size: 10px; color: var(--dim);
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .ar-row {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    padding: 2px 0; align-items: center;
+  }
+  .ar-row::-webkit-scrollbar { display: none; }
   .ar-spacer { height: 5px; }
-  .ar-label { font-family: var(--mono); font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 4px; cursor: default; white-space: nowrap; flex-shrink: 0; }
+  .ar-label {
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    padding: 4px 8px; border-radius: 4px;
+    cursor: default; white-space: nowrap; flex-shrink: 0;
+  }
   .ar-label.wttv { background:rgba(74,158,255,.2); color:#fff; border:1px solid rgba(74,158,255,.45); }
-  .ar-label.voeb { background:rgba(200,132,58,.2); color:#fff; border:1px solid rgba(200,132,58,.45); }
-  .ar-btn { font-family: var(--mono); font-size: 11px; font-weight: 600; padding: 3px 6px; border-radius: 4px; text-decoration: none; white-space: nowrap; cursor: pointer; flex-shrink: 0; transition: opacity .15s, background .15s; border: none; display: inline-block; }
+  .ar-label.voeb { background:rgba(200,132,58,.2);  color:#fff; border:1px solid rgba(200,132,58,.45); }
+  .ar-btn {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    padding: 3px 6px; border-radius: 4px; text-decoration: none;
+    white-space: nowrap; cursor: pointer; flex-shrink: 0;
+    transition: opacity .15s, background .15s; border: none; display: inline-block;
+  }
   .ar-btn:hover { opacity: .75; }
   .ar-btn.wttv { background:rgba(74,158,255,.12); color:#4a9eff; border:1px solid rgba(74,158,255,.3); }
-  .ar-btn.voeb { background:rgba(200,132,58,.12); color:#c8843a; border:1px solid rgba(200,132,58,.3); }
+  .ar-btn.voeb { background:rgba(200,132,58,.12);  color:#c8843a; border:1px solid rgba(200,132,58,.3); }
   .ar-btn.wttv.active { background:rgba(74,158,255,.35); border-color:#4a9eff; }
   .ar-btn.voeb.active { background:rgba(200,132,58,.35); border-color:#c8843a; }
-  .ar-btn.free { min-width:9px; opacity:.2; pointer-events:none; }
+  .ar-btn.free  { min-width:9px; opacity:.2; pointer-events:none; }
   .ar-btn.pending { color:#6b7280; background:rgba(200,200,200,.07); border:1px solid rgba(200,200,200,.15); pointer-events:none; }
   #ar-viewer { flex:1; border:none; background:var(--bg); min-height:300px; width:100%; display:block; }
 </style>
 </head>
 <body>
+
 <div id="header">
   <div class="header-top">
-    <span class="header-title-main">SU9 TT<span class="stand"> · Stand: <span id="today-date"></span></span></span>
+    <span class="header-title-main">
+      SU9 TT<span class="stand"> · Stand: <span id="today-date"></span></span>
+    </span>
     <span class="live-tag"><span class="live-dot"></span>Live</span>
   </div>
   <div class="tabs">
@@ -83,7 +168,11 @@
     <div class="tab" data-id="re">Regeln</div>
   </div>
 </div>
-<div id="subtitle-bar"><span id="subtitle-text"></span></div>
+
+<div id="subtitle-bar">
+  <span id="subtitle-text"></span>
+</div>
+
 <div id="content">
   <iframe class="pane"        data-id="w1" src="LIVE/SU9Ana_W1.html"></iframe>
   <iframe class="pane"        data-id="w2" src="LIVE/SU9Ana_W2.html"></iframe>
@@ -108,6 +197,7 @@
   </div>
   <iframe class="pane" data-id="re" src="REAna.html"></iframe>
 </div>
+
 <script>
   const subtitles = {
     w1: 'WTTV · 3. Klasse B · SU9·1 · Rang 8/10 · 13 Punkte',
@@ -117,17 +207,30 @@
     ar: 'Archiv · Mannschaftssaisons 2022–2026',
     re: 'Regelwerk · ITTF / ÖTTV · Gastspielregel-Checker'
   };
+
+  // Datum
   const d = new Date();
-  document.getElementById('today-date').textContent = d.toLocaleDateString('de-AT', {day:'2-digit', month:'2-digit', year:'numeric'});
+  document.getElementById('today-date').textContent =
+    d.toLocaleDateString('de-AT', {day:'2-digit', month:'2-digit', year:'numeric'});
+
+  // Default subtitle
   document.getElementById('subtitle-text').textContent = subtitles['v1'];
+
+  // Tab switching
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
       const id = tab.dataset.id;
+
+      // Tabs
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
+
+      // Panes (iframes)
       document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
       const pane = document.querySelector(`.pane[data-id="${id}"]`);
       if (pane) pane.classList.add('active');
+
+      // Archiv: Viewer-Höhe dynamisch setzen
       if (id === 'ar') {
         requestAnimationFrame(() => {
           const buttons = document.querySelector('.ar-buttons');
@@ -140,9 +243,13 @@
           }
         });
       }
+
+      // Subtitle
       document.getElementById('subtitle-text').textContent = subtitles[id] || '';
     });
   });
+
+  // Archiv viewer
   var arActiveBtn = null;
   function arLoad(btn, url) {
     if (arActiveBtn) arActiveBtn.classList.remove('active');
