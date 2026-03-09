@@ -237,7 +237,7 @@ function render(){
   });
 }
 
-window.addEventListener('load',()=>{render();});
+new ResizeObserver(()=>{render();}).observe(canvas);
 window.addEventListener('resize',()=>{render();});
 </script>
 </body>

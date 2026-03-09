@@ -187,21 +187,47 @@ function render(){
     ctx.globalAlpha=1;
   }
 
-  // DG2 Linie (nur gespielte)
-  const dg2pts=pts.filter(p=>p.dg===2&&p.type!=='pending'&&p.type!=='anchor');
-  if(anchorDG2&&dg2pts.length>0){
-    const seg=[anchorDG2,...dg2pts];
-    ctx.strokeStyle=ACCENT;
-    ctx.lineWidth=2.5;
-    ctx.shadowColor=ACCENT;
-    ctx.shadowBlur=8;
-    ctx.beginPath();
-    seg.forEach((p,i)=>{
-      const x=sx(p.slot),y=sy(p.z);
-      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+  // DG2 Linie: in zusammenhängende Segmente aufteilen (Lücke bei pending)
+  // Segment = aufeinanderfolgende gespielte Punkte ohne pending dazwischen
+  if(anchorDG2){
+    const dg2all=pts.filter(p=>p.dg===2&&p.type!=='anchor');
+    // Segmente bauen: beginne mit Anker, breche bei pending ab
+    const segments=[];
+    let seg=[anchorDG2];
+    for(const p of dg2all){
+      if(p.type==='pending'){
+        if(seg.length>1)segments.push(seg);
+        seg=null; // nach Lücke: kein Anschluss mehr
+      } else {
+        if(seg===null){
+          // isolierter Punkt nach Lücke
+          segments.push([p]);
+        } else {
+          seg.push(p);
+        }
+      }
+    }
+    if(seg&&seg.length>1)segments.push(seg);
+    // Einzelpunkte nach Lücke separat sammeln
+    // (bereits als Ein-Element-Arrays in segments)
+
+    segments.forEach(s=>{
+      if(s.length===1){
+        // Isolierter Punkt: nur Dot, keine Linie — wird unten in Dots-Section gerendert
+        return;
+      }
+      ctx.strokeStyle=ACCENT;
+      ctx.lineWidth=2.5;
+      ctx.shadowColor=ACCENT;
+      ctx.shadowBlur=8;
+      ctx.beginPath();
+      s.forEach((p,i)=>{
+        const x=sx(p.slot),y=sy(p.z);
+        if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+      });
+      ctx.stroke();
+      ctx.shadowBlur=0;
     });
-    ctx.stroke();
-    ctx.shadowBlur=0;
   }
 
   // Dots
@@ -262,7 +288,7 @@ function render(){
   }
 }
 
-window.addEventListener('load',()=>{render();});
+new ResizeObserver(()=>{render();}).observe(canvas);
 window.addEventListener('resize',()=>{render();});
 </script>
 </body>

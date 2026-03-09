@@ -175,8 +175,8 @@ function render(){
     ctx.fillText(lastPt.z.toFixed(1),sx(lastPt.slot)+8,sy(lastPt.z)+4);
   }
 }
-window.addEventListener('load',render);
-window.addEventListener('resize',render);
+new ResizeObserver(()=>{render();}).observe(canvas);
+window.addEventListener('resize',()=>{render();});
 </script>
 </body>
 </html>
