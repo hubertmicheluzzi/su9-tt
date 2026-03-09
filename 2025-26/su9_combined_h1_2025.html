@@ -3,40 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SU9 Gesamt 2025/26</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<title>SU9 · Alle Teams · H1 · 2025/26</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#0d0f14;color:#e8eaf0;font-family:'IBM Plex Sans',sans-serif;padding:20px;min-height:100vh;display:flex;align-items:flex-start;justify-content:center}
-.card{background:#141720;border-radius:12px;padding:22px 26px;max-width:900px;width:100%}
-.title{font-family:'Bebas Neue',sans-serif;font-size:2.3rem;color:#fff;letter-spacing:2px;line-height:1}
-.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
-.leg{display:flex;align-items:center;gap:6px}
-.leg-dot{width:10px;height:10px;border-radius:50%}
-.period{color:#555;font-size:0.73rem;margin-top:6px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.5px}
-.chart-wrap{margin-top:18px}
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap');
+  :root {
+    --bg:#0d0f14; --panel:#141720; --border:#252a38;
+    --accent:#ff3d2e; --text:#e8eaf0; --muted:#6b7280; --grid:#1e2333;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',sans-serif; min-height:100vh; padding:24px 16px 40px; }
+  .card { max-width:860px; margin:0 auto; background:var(--panel); overflow:hidden; }
+  .header {
+    background:linear-gradient(135deg,#1a0a08 0%,#0d1220 100%);
+    border-bottom:3px solid var(--accent);
+    padding:28px 28px 22px; position:relative; overflow:hidden;
+  }
+  .header::before {
+    content:''; position:absolute; top:-40px; right:-40px;
+    width:200px; height:200px; border-radius:50%;
+    background:radial-gradient(circle,rgba(255,61,46,.12) 0%,transparent 70%);
+    pointer-events:none;
+  }
+  .club-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.9rem,7vw,3.2rem); color:var(--text); letter-spacing:.08em; line-height:1; margin-bottom:12px; }
+  .teams-grid { display:flex; flex-direction:column; gap:4px; margin-bottom:10px; }
+  .team-players { font-family:'IBM Plex Sans',sans-serif; font-size:clamp(.72rem,2vw,.84rem); font-weight:400; line-height:1.4; }
+  .team-label { font-family:'IBM Plex Mono',monospace; font-size:clamp(.62rem,1.6vw,.72rem); font-weight:600; letter-spacing:.12em; text-transform:uppercase; }
+  .pl-guest { color:#9ca3af; }
+  .period-line { font-family:'IBM Plex Mono',monospace; font-size:clamp(.62rem,1.6vw,.72rem); color:var(--muted); letter-spacing:.06em; margin-top:4px; }
+  .chart-section { padding:20px 20px 24px; }
+  .chart-title { font-family:'IBM Plex Mono',monospace; font-size:.68rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
+  canvas { display:block; width:100%; border-radius:4px; }
+  .footer { border-top:1px solid var(--border); padding:12px 28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+  .footer-note { font-size:.65rem; color:var(--muted); font-family:'IBM Plex Mono',monospace; letter-spacing:.06em; }
+  .legend { display:flex; gap:18px; flex-wrap:wrap; align-items:center; }
+  .legend-item { display:flex; align-items:center; gap:6px; font-size:.65rem; color:var(--muted); font-family:'IBM Plex Mono',monospace; }
+  .legend-line { width:22px; height:3px; border-radius:2px; flex-shrink:0; }
 </style>
 </head>
 <body>
 <div class="card">
-  <div class="title">SU9 MANNSCHAFTEN 2025/26</div>
-  <div class="legend">
-    <div class="leg"><div class="leg-dot" style="background:#3b82f6"></div><span style="color:#3b82f6">W1 · WTTV 3.Kl.B</span></div>
-    <div class="leg"><div class="leg-dot" style="background:#ff3d2e"></div><span style="color:#ff3d2e">W2 · WTTV Gr.Ib</span></div>
-    <div class="leg"><div class="leg-dot" style="background:#ff9500"></div><span style="color:#ff9500">V1 · VÖB 2.Kl.</span></div>
-    <div class="leg"><div class="leg-dot" style="background:#a855f7"></div><span style="color:#a855f7">V2 · VÖB 3.Kl.</span></div>
+  <div class="header">
+    <div class="club-title">SU9 · Saison 2025/26</div>
+    <div class="teams-grid">
+      <div class="team-players">
+        <span class="team-label" style="color:#3b82f6;">W1 · WTTV 3.Kl.B&nbsp;&nbsp;</span><span style="color:#3b82f6;">Richard, Max, Bary, Hubert</span><span class="pl-guest"> (Valeria)</span>
+      </div>
+      <div class="team-players">
+        <span class="team-label" style="color:#ff3d2e;">W2 · WTTV Gr.Ib&nbsp;&nbsp;</span><span style="color:#ff3d2e;">Hannes, Heinz, Branko</span><span class="pl-guest"> (Bary, Johannes, Lukas, Ai-Mei, Max)</span>
+      </div>
+      <div class="team-players">
+        <span class="team-label" style="color:#ff9500;">V1 · VÖB 2.Kl.&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#ff9500;">Bary, Hubert, Heinz</span><span class="pl-guest"> (Hannes, Georg, Lukas)</span>
+      </div>
+      <div class="team-players">
+        <span class="team-label" style="color:#a855f7;">V2 · VÖB 3.Kl.&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#a855f7;">Johannes, Branko, Adi, Cyril, Hannes</span><span class="pl-guest"> (Fabian, Ai-Mei)</span>
+      </div>
+    </div>
+    <div class="period-line">2025/26 · Halbzeit-Stand</div>
   </div>
-  <div class="period">Saison 2025/26 &nbsp;·&nbsp; Halbzeit-Stand</div>
-  <div class="chart-wrap">
-    <canvas id="c" style="width:100%;border-radius:6px"></canvas>
+
+  <div class="chart-section">
+    <div class="chart-title">Wertungspunkte-Verlauf · kumuliert · alle Teams</div>
+    <canvas id="c"></canvas>
+  </div>
+
+  <div class="footer">
+    <div class="legend">
+      <div class="legend-item"><div class="legend-line" style="background:#3b82f6;"></div><span>W1 · WTTV (2×9 Rd.)</span></div>
+      <div class="legend-item"><div class="legend-line" style="background:#ff3d2e;"></div><span>W2 · WTTV (2×9 Rd.)</span></div>
+      <div class="legend-item"><div class="legend-line" style="background:#ff9500;"></div><span>V1 · VÖB (2×11 Rd.)</span></div>
+      <div class="legend-item"><div class="legend-line" style="background:#a855f7;"></div><span>V2 · VÖB (2×11 Rd.)</span></div>
+    </div>
+    <div class="footer-note">SU9Ana · Kombiniert · H1 · 2025/26</div>
   </div>
 </div>
-<script>
-// Combined: Alle 4 Teams auf gleichem X-Achsen-Schema
-// X-Schema: DG1 Slots 0–11, DG2 Slots 12–23 (SEP 0.8)
-// WTTV-Teams (W1,W2): nur 9 Runden → Slots 1–9 / 13–21
-// VÖB-Teams (V1,V2): 11 Runden → Slots 1–11 / 13–23
 
+<script>
 function delta(a,b){
   if(a===null)return null;
   if(a>b)return 2+(a-b)/10;
@@ -44,17 +85,16 @@ function delta(a,b){
   return (a-b)/10;
 }
 
-function buildPts(rounds, dg2Offset){
+function buildPts(rounds,dg2Anchor){
   let z=0;
   const pts=[{slot:0,z:0,type:'start',dg:1}];
   let dg2Added=false;
-  for(let i=0;i<rounds.length;i++){
-    const rd=rounds[i];
+  for(const rd of rounds){
     if(rd.dg===2&&!dg2Added){
-      pts.push({slot:dg2Offset,z:z,type:'anchor',dg:2});
+      pts.push({slot:dg2Anchor,z:z,type:'anchor',dg:2});
       dg2Added=true;
     }
-    const slot=rd.dg===1?rd.r:(dg2Offset+rd.r);
+    const slot=rd.dg===1?rd.r:(dg2Anchor+rd.r);
     if(rd.sf){
       pts.push({slot,z,d:0,type:'spielfrei',dg:rd.dg,r:rd.r});
     } else {
@@ -70,175 +110,223 @@ function buildPts(rounds, dg2Offset){
   return pts;
 }
 
-// W1: DG2-Anker bei Slot 12 (WTTV hat 9 Runden, Slots 1-9 / 13-21)
-const w1rounds=[
+const w1pts=buildPts([
   {dg:1,r:1,a:3,b:6},{dg:1,r:2,a:6,b:4},{dg:1,r:3,a:6,b:3},{dg:1,r:4,a:6,b:3},
   {dg:1,r:5,a:4,b:6},{dg:1,r:6,a:6,b:4},{dg:1,r:7,a:1,b:6},{dg:1,r:8,a:1,b:6},{dg:1,r:9,a:5,b:5},
   {dg:2,r:1,a:3,b:6},{dg:2,r:2,a:5,b:5},{dg:2,r:3,a:1,b:6},{dg:2,r:4,a:5,b:5},
   {dg:2,r:5,a:null,b:null},{dg:2,r:6,a:6,b:2},
   {dg:2,r:7,a:null,b:null},{dg:2,r:8,a:null,b:null},{dg:2,r:9,a:null,b:null},
-];
-const w2rounds=[
+],12);
+
+const w2pts=buildPts([
   {dg:1,r:1,a:6,b:2},{dg:1,r:2,a:3,b:6},{dg:1,r:3,a:1,b:6},{dg:1,r:4,a:5,b:5},
   {dg:1,r:5,a:1,b:6},{dg:1,r:6,a:4,b:6},{dg:1,r:7,a:3,b:6},{dg:1,r:8,a:3,b:6},{dg:1,r:9,a:6,b:2},
   {dg:2,r:1,a:3,b:6},{dg:2,r:2,a:2,b:6},{dg:2,r:3,a:2,b:6},
   {dg:2,r:4,a:null,b:null},{dg:2,r:5,a:5,b:5},
   {dg:2,r:6,a:null,b:null},{dg:2,r:7,a:null,b:null},{dg:2,r:8,a:null,b:null},{dg:2,r:9,a:null,b:null},
-];
-const v1rounds=[
-  {dg:1,r:1,a:null,b:null,sf:true},{dg:1,r:2,a:4,b:6},{dg:1,r:3,a:4,b:6},{dg:1,r:4,a:6,b:2},
-  {dg:1,r:5,a:null,b:null,sf:true},{dg:1,r:6,a:0,b:7},{dg:1,r:7,a:6,b:4},{dg:1,r:8,a:6,b:3},
+],12);
+
+const v1pts=buildPts([
+  {dg:1,r:1,sf:true},{dg:1,r:2,a:4,b:6},{dg:1,r:3,a:4,b:6},{dg:1,r:4,a:6,b:2},
+  {dg:1,r:5,sf:true},{dg:1,r:6,a:0,b:7},{dg:1,r:7,a:6,b:4},{dg:1,r:8,a:6,b:3},
   {dg:1,r:9,a:6,b:2},{dg:1,r:10,a:6,b:1},{dg:1,r:11,a:5,b:5},
-  {dg:2,r:1,a:null,b:null,sf:true},{dg:2,r:2,a:6,b:1},{dg:2,r:3,a:6,b:2},{dg:2,r:4,a:7,b:0},
+  {dg:2,r:1,sf:true},{dg:2,r:2,a:6,b:1},{dg:2,r:3,a:6,b:2},{dg:2,r:4,a:7,b:0},
   {dg:2,r:5,a:null,b:null},{dg:2,r:6,a:null,b:null},{dg:2,r:7,a:null,b:null},
   {dg:2,r:8,a:null,b:null},{dg:2,r:9,a:null,b:null},{dg:2,r:10,a:null,b:null},{dg:2,r:11,a:null,b:null},
-];
-const v2rounds=[
-  {dg:1,r:1,a:6,b:2},{dg:1,r:2,a:3,b:6},{dg:1,r:3,a:null,b:null,sf:true},{dg:1,r:4,a:2,b:6},
+],12);
+
+const v2pts=buildPts([
+  {dg:1,r:1,a:6,b:2},{dg:1,r:2,a:3,b:6},{dg:1,r:3,sf:true},{dg:1,r:4,a:2,b:6},
   {dg:1,r:5,a:6,b:2},{dg:1,r:6,a:1,b:6},{dg:1,r:7,a:0,b:7},{dg:1,r:8,a:1,b:6},
-  {dg:1,r:9,a:null,b:null,sf:true},{dg:1,r:10,a:7,b:0},{dg:1,r:11,a:6,b:2},
-  {dg:2,r:1,a:5,b:5},{dg:2,r:2,a:1,b:6},{dg:2,r:3,a:null,b:null,sf:true},{dg:2,r:4,a:3,b:6},
+  {dg:1,r:9,sf:true},{dg:1,r:10,a:7,b:0},{dg:1,r:11,a:6,b:2},
+  {dg:2,r:1,a:5,b:5},{dg:2,r:2,a:1,b:6},{dg:2,r:3,sf:true},{dg:2,r:4,a:3,b:6},
   {dg:2,r:5,a:0,b:7},{dg:2,r:6,a:2,b:6},
-  {dg:2,r:7,a:null,b:null},{dg:2,r:8,a:null,b:null},{dg:2,r:9,a:null,b:null,sf:true},
+  {dg:2,r:7,a:null,b:null},{dg:2,r:8,a:null,b:null},{dg:2,r:9,sf:true},
   {dg:2,r:10,a:null,b:null},{dg:2,r:11,a:null,b:null},
-];
+],12);
 
 const teams=[
-  {pts:buildPts(w1rounds,12),color:'#3b82f6',label:'W1'},
-  {pts:buildPts(w2rounds,12),color:'#ff3d2e',label:'W2'},
-  {pts:buildPts(v1rounds,12),color:'#ff9500',label:'V1'},
-  {pts:buildPts(v2rounds,12),color:'#a855f7',label:'V2'},
+  {pts:w1pts,color:'#3b82f6',label:'W1'},
+  {pts:w2pts,color:'#ff3d2e',label:'W2'},
+  {pts:v1pts,color:'#ff9500',label:'V1'},
+  {pts:v2pts,color:'#a855f7',label:'V2'},
 ];
 
 const canvas=document.getElementById('c');
+
 function render(){
   const W=canvas.offsetWidth||820;
-  const H=Math.round(W*0.5);
+  const H=Math.round(W*0.48);
   canvas.width=W*2; canvas.height=H*2;
   canvas.style.height=H+'px';
   const ctx=canvas.getContext('2d');
   ctx.scale(2,2);
-  const PAD={top:30,right:88,bottom:38,left:52};
+
+  const PAD={top:28,right:70,bottom:52,left:50};
   const cw=W-PAD.left-PAD.right;
   const ch=H-PAD.top-PAD.bottom;
 
-  ctx.fillStyle='#141720';
+  ctx.fillStyle='#0d0f14';
   ctx.fillRect(0,0,W,H);
 
-  const TOTAL_SLOTS=24.8;
-  const SEP_GAP=0.8;
+  const SEP_GAP=0.6;
+  const TOTAL=23+SEP_GAP;
   function sx(slot){
     const s=slot>=12?slot+SEP_GAP:slot;
-    return PAD.left+s*(cw/TOTAL_SLOTS);
+    return PAD.left+(s/TOTAL)*cw;
   }
 
-  // Z range über alle Teams
   const allZ=teams.flatMap(t=>t.pts.map(p=>p.z));
-  const zMax=Math.max(...allZ)+1.5;
-  const zMin=Math.min(...allZ)-1;
+  const zMin=Math.floor(Math.min(...allZ)-0.8);
+  const zMax=Math.ceil(Math.max(...allZ)+0.8);
   const zRange=zMax-zMin;
   function sy(z){return PAD.top+(1-(z-zMin)/zRange)*ch;}
 
-  // Gitter
-  ctx.strokeStyle='#1e2130';
-  ctx.lineWidth=0.5;
-  for(let zg=Math.floor(zMin);zg<=Math.ceil(zMax);zg+=2){
+  // Y-Gitter
+  for(let zg=zMin;zg<=zMax;zg++){
+    if(zRange>14&&zg%2!==0)continue;
     const y=sy(zg);
+    const isZero=zg===0;
+    ctx.strokeStyle=isZero?'#374151':'#1e2333';
+    ctx.lineWidth=isZero?1.5:0.6;
+    if(isZero)ctx.setLineDash([4,3]);
     ctx.beginPath();ctx.moveTo(PAD.left,y);ctx.lineTo(W-PAD.right,y);ctx.stroke();
-    ctx.fillStyle='#3a3f55';
+    ctx.setLineDash([]);
+    ctx.fillStyle=isZero?'#9ca3af':'#6b7280';
     ctx.font='9px IBM Plex Mono,monospace';
     ctx.textAlign='right';
-    ctx.fillText(zg,PAD.left-5,y+3);
+    ctx.fillText(zg,PAD.left-6,y+3.5);
   }
-  ctx.strokeStyle='#2a2d3a';
-  ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(PAD.left,sy(0));ctx.lineTo(W-PAD.right,sy(0));ctx.stroke();
 
-  // Separator
-  const xsep=PAD.left+12.4*(cw/TOTAL_SLOTS);
-  ctx.strokeStyle='rgba(255,255,255,0.1)';
-  ctx.lineWidth=1;
-  ctx.setLineDash([3,5]);
-  ctx.beginPath();ctx.moveTo(xsep,PAD.top-10);ctx.lineTo(xsep,H-PAD.bottom+5);ctx.stroke();
-  ctx.setLineDash([]);
-
-  // DG Labels
-  ctx.fillStyle='#2e3347';
+  // Y-Label
+  ctx.save();
+  ctx.translate(12,PAD.top+ch/2);
+  ctx.rotate(-Math.PI/2);
+  ctx.fillStyle='#6b7280';
   ctx.font='9px IBM Plex Mono,monospace';
   ctx.textAlign='center';
-  ctx.fillText('Durchgang 1',PAD.left+6*(cw/TOTAL_SLOTS),PAD.top-14);
-  ctx.fillText('Durchgang 2',PAD.left+18.4*(cw/TOTAL_SLOTS),PAD.top-14);
+  ctx.fillText('WERTUNG',0,0);
+  ctx.restore();
 
-  // Runden-Labels (nur R1-R9 für WTTV, R1-R11 für VÖB, gemeinsam)
-  ctx.fillStyle='#2e3347';
-  ctx.font='8px IBM Plex Mono,monospace';
-  ctx.textAlign='center';
-  for(let s=1;s<=11;s++){
-    ctx.fillText('R'+s,sx(s),H-PAD.bottom+14);
-  }
-  for(let s=13;s<=23;s++){
-    ctx.fillText('R'+(s-12),sx(s),H-PAD.bottom+14);
-  }
+  // Separator
+  const xSep=(sx(11)+sx(12))/2;
+  ctx.strokeStyle='#2d3550';ctx.lineWidth=1.5;ctx.setLineDash([5,4]);
+  ctx.beginPath();ctx.moveTo(xSep,PAD.top);ctx.lineTo(xSep,PAD.top+ch);ctx.stroke();
+  ctx.setLineDash([]);
 
-  // Jedes Team rendern
-  teams.forEach(team=>{
-    const {pts,color,label}=team;
-    const ACCENT=color;
+  // DG-Labels
+  ctx.fillStyle='#374151';ctx.font='8px IBM Plex Mono,monospace';ctx.textAlign='center';
+  ctx.fillText('HINRUNDE',(PAD.left+xSep)/2,PAD.top-10);
+  ctx.fillText('RÜCKRUNDE',(xSep+W-PAD.right)/2,PAD.top-10);
 
-    // Linien zeichnen (nur gespielte Punkte verbinden)
-    function drawLine(seg){
-      if(seg.length<2)return;
-      ctx.strokeStyle=ACCENT;
-      ctx.lineWidth=2;
-      ctx.shadowColor=ACCENT;
-      ctx.shadowBlur=6;
-      ctx.beginPath();
-      seg.forEach((p,i)=>{
-        const x=sx(p.slot),y=sy(p.z);
-        if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
-      });
-      ctx.stroke();
-      ctx.shadowBlur=0;
+  // X-Labels
+  ctx.fillStyle='#6b7280';ctx.font='8px IBM Plex Mono,monospace';ctx.textAlign='center';
+  for(let r=1;r<=11;r++){
+    if(r%2!==0||r===11){
+      ctx.fillText('R'+r,sx(r),PAD.top+ch+14);
+      ctx.fillText('R'+r,sx(12+r),PAD.top+ch+14);
     }
+  }
+  ctx.fillStyle='#374151';ctx.font='7.5px IBM Plex Mono,monospace';
+  ctx.fillText('DG1',(PAD.left+xSep)/2,PAD.top+ch+28);
+  ctx.fillText('DG2',(xSep+W-PAD.right)/2,PAD.top+ch+28);
 
+  // Achsen
+  ctx.strokeStyle='#3a4155';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PAD.left,PAD.top);ctx.lineTo(PAD.left,PAD.top+ch);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(PAD.left,PAD.top+ch);ctx.lineTo(W-PAD.right,PAD.top+ch);ctx.stroke();
+
+  const COL={win:'#22c55e',draw:'#60a5fa',loss:'#ef4444'};
+
+  function drawSegment(seg,color){
+    if(seg.length<2)return;
+    // Glow
+    ctx.strokeStyle=color;ctx.lineWidth=5;ctx.globalAlpha=0.12;
+    ctx.lineJoin='round';ctx.lineCap='round';
+    ctx.beginPath();
+    seg.forEach((p,i)=>i===0?ctx.moveTo(sx(p.slot),sy(p.z)):ctx.lineTo(sx(p.slot),sy(p.z)));
+    ctx.stroke();
+    ctx.globalAlpha=1;
+    // Linie
+    ctx.strokeStyle=color;ctx.lineWidth=2.5;
+    ctx.shadowColor=color;ctx.shadowBlur=6;
+    ctx.beginPath();
+    seg.forEach((p,i)=>i===0?ctx.moveTo(sx(p.slot),sy(p.z)):ctx.lineTo(sx(p.slot),sy(p.z)));
+    ctx.stroke();
+    ctx.shadowBlur=0;ctx.shadowColor='transparent';
+  }
+
+  teams.forEach(({pts,color,label})=>{
+    // DG1
     const dg1line=pts.filter(p=>(p.dg===1||p.slot===0)&&p.type!=='pending');
-    drawLine(dg1line);
+    drawSegment(dg1line,color);
 
+    // Brücke
     const lastDG1=dg1line[dg1line.length-1];
-    const anchorDG2=pts.find(p=>p.type==='anchor');
-    if(lastDG1&&anchorDG2){
-      ctx.strokeStyle=ACCENT;
-      ctx.lineWidth=1;
-      ctx.setLineDash([4,6]);
-      ctx.globalAlpha=0.3;
+    const anchor=pts.find(p=>p.type==='anchor');
+    if(lastDG1&&anchor){
+      ctx.strokeStyle=color;ctx.lineWidth=1;ctx.setLineDash([4,5]);ctx.globalAlpha=0.3;
       ctx.beginPath();
       ctx.moveTo(sx(lastDG1.slot),sy(lastDG1.z));
-      ctx.lineTo(sx(anchorDG2.slot),sy(anchorDG2.z));
+      ctx.lineTo(sx(anchor.slot),sy(anchor.z));
       ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.globalAlpha=1;
+      ctx.setLineDash([]);ctx.globalAlpha=1;
     }
 
-    const dg2played=pts.filter(p=>p.dg===2&&p.type!=='pending'&&p.type!=='anchor'&&p.type!=='spielfrei');
-    if(anchorDG2&&dg2played.length>0){
-      // inkl. spielfrei für Linienkontinuität
-      const dg2line=pts.filter(p=>p.dg===2&&p.type!=='pending'&&p.type!=='anchor');
-      drawLine([anchorDG2,...dg2line]);
+    // DG2 Segmente
+    if(anchor){
+      const dg2all=pts.filter(p=>p.dg===2&&p.type!=='anchor');
+      const segments=[];
+      let seg=[anchor];
+      for(const p of dg2all){
+        if(p.type==='pending'){
+          if(seg&&seg.length>1)segments.push(seg);
+          seg=null;
+        } else {
+          if(seg===null)segments.push([p]);
+          else seg.push(p);
+        }
+      }
+      if(seg&&seg.length>1)segments.push(seg);
+      segments.forEach(s=>drawSegment(s,color));
     }
+
+    // Dots
+    pts.forEach(p=>{
+      if(p.type==='start'||p.type==='anchor'||p.type==='spielfrei')return;
+      const x=sx(p.slot),y=sy(p.z);
+      if(p.type==='pending'){
+        ctx.strokeStyle=color;ctx.lineWidth=1.2;ctx.globalAlpha=0.45;
+        ctx.beginPath();
+        ctx.moveTo(x,y-5);ctx.lineTo(x+5,y);ctx.lineTo(x,y+5);ctx.lineTo(x-5,y);ctx.closePath();
+        ctx.stroke();
+        ctx.globalAlpha=1;
+        return;
+      }
+      const col=COL[p.type];
+      ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);
+      ctx.fillStyle='#0d0f14';ctx.fill();
+      ctx.strokeStyle=col;ctx.lineWidth=1.8;ctx.stroke();
+      ctx.beginPath();ctx.arc(x,y,2,0,Math.PI*2);
+      ctx.fillStyle=col;ctx.fill();
+    });
 
     // End-Label
-    const lastPt=pts.filter(p=>p.type!=='pending'&&p.type!=='anchor'&&p.type!=='start').slice(-1)[0];
-    if(lastPt&&lastPt.z!==undefined){
-      ctx.fillStyle=ACCENT;
-      ctx.font='bold 10px IBM Plex Mono,monospace';
+    const lastPt=pts.filter(p=>p.type!=='pending'&&p.type!=='anchor'&&p.type!=='start'&&p.type!=='spielfrei').slice(-1)[0];
+    if(lastPt){
+      ctx.fillStyle=color;
+      ctx.font='bold 9px IBM Plex Mono,monospace';
       ctx.textAlign='left';
-      ctx.fillText(label+' '+lastPt.z.toFixed(1),sx(lastPt.slot)+6,sy(lastPt.z)+4);
+      ctx.fillText(label+': '+lastPt.z.toFixed(1),sx(lastPt.slot)+6,sy(lastPt.z)+4);
     }
   });
 }
 
-new ResizeObserver(()=>{render();}).observe(canvas);
-window.addEventListener('resize',()=>{render();});
+let rafId=null;
+new ResizeObserver(()=>{
+  if(rafId)cancelAnimationFrame(rafId);
+  rafId=requestAnimationFrame(()=>{render();rafId=null;});
+}).observe(canvas);
 </script>
 </body>
 </html>

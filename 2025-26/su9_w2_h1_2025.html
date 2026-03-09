@@ -163,7 +163,7 @@ function render(){
     ctx.strokeStyle=col;ctx.lineWidth=2;ctx.stroke();
     ctx.beginPath();ctx.arc(x,y,2.5,0,Math.PI*2);ctx.fillStyle=col;ctx.fill();
     ctx.fillStyle=col;ctx.font='8px IBM Plex Mono,monospace';ctx.textAlign='center';
-    ctx.fillText((p.d>0?'+':'')+p.d.toFixed(1),x,y-9);
+    ctx.fillStyle='#9ca3af';ctx.fillText(p.z.toFixed(1),x,y-9);
     ctx.fillStyle='#3a3f55';ctx.font='7px IBM Plex Mono,monospace';
     ctx.fillText(p.a+':'+p.b,x,H-PAD.bottom+26);
     ctx.fillText(p.opp,x,H-PAD.bottom+36);
@@ -175,8 +175,11 @@ function render(){
     ctx.fillText(lastPt.z.toFixed(1),sx(lastPt.slot)+8,sy(lastPt.z)+4);
   }
 }
-new ResizeObserver(()=>{render();}).observe(canvas);
-window.addEventListener('resize',()=>{render();});
+let rafId=null;
+new ResizeObserver(()=>{
+  if(rafId)cancelAnimationFrame(rafId);
+  rafId=requestAnimationFrame(()=>{render();rafId=null;});
+}).observe(canvas);
 </script>
 </body>
 </html>

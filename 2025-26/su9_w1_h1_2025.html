@@ -196,7 +196,7 @@ function render(){
     let seg=[anchorDG2];
     for(const p of dg2all){
       if(p.type==='pending'){
-        if(seg.length>1)segments.push(seg);
+        if(seg&&seg.length>1)segments.push(seg);
         seg=null; // nach Lücke: kein Anschluss mehr
       } else {
         if(seg===null){
@@ -213,7 +213,6 @@ function render(){
 
     segments.forEach(s=>{
       if(s.length===1){
-        // Isolierter Punkt: nur Dot, keine Linie — wird unten in Dots-Section gerendert
         return;
       }
       ctx.strokeStyle=ACCENT;
@@ -226,8 +225,9 @@ function render(){
         if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
       });
       ctx.stroke();
-      ctx.shadowBlur=0;
     });
+    ctx.shadowBlur=0;
+    ctx.shadowColor='transparent';
   }
 
   // Dots
@@ -238,7 +238,7 @@ function render(){
     if(p.type==='pending'){
       // Raute
       ctx.strokeStyle='#3b82f6';
-      ctx.fillStyle='transparent';
+      ctx.fillStyle='rgba(0,0,0,0)';
       ctx.lineWidth=1.5;
       ctx.globalAlpha=0.5;
       ctx.beginPath();
@@ -265,12 +265,11 @@ function render(){
     ctx.arc(x,y,2.5,0,Math.PI*2);
     ctx.fillStyle=col;
     ctx.fill();
-    // Delta Label (oben)
-    ctx.fillStyle=col;
+    // Z-Wert Label (oben)
+    ctx.fillStyle='#9ca3af';
     ctx.font='8px IBM Plex Mono,monospace';
     ctx.textAlign='center';
-    const dstr=(p.d>0?'+':'')+p.d.toFixed(1);
-    ctx.fillText(dstr,x,y-9);
+    ctx.fillText(p.z.toFixed(1),x,y-9);
     // Ergebnis unter X-Achse
     ctx.fillStyle='#3a3f55';
     ctx.font='7px IBM Plex Mono,monospace';
@@ -288,8 +287,11 @@ function render(){
   }
 }
 
-new ResizeObserver(()=>{render();}).observe(canvas);
-window.addEventListener('resize',()=>{render();});
+let rafId=null;
+new ResizeObserver(()=>{
+  if(rafId)cancelAnimationFrame(rafId);
+  rafId=requestAnimationFrame(()=>{render();rafId=null;});
+}).observe(canvas);
 </script>
 </body>
 </html>
