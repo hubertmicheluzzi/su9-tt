@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SU9 Gesamt 2025/26</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d0f14;color:#e8eaf0;font-family:'IBM Plex Sans',sans-serif;padding:20px;min-height:100vh;display:flex;align-items:flex-start;justify-content:center}
+.card{background:#141720;border-radius:12px;padding:22px 26px;max-width:900px;width:100%}
+.title{font-family:'Bebas Neue',sans-serif;font-size:2.3rem;color:#fff;letter-spacing:2px;line-height:1}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
+.leg{display:flex;align-items:center;gap:6px}
+.leg-dot{width:10px;height:10px;border-radius:50%}
+.period{color:#555;font-size:0.73rem;margin-top:6px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.5px}
+.chart-wrap{margin-top:18px}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="title">SU9 MANNSCHAFTEN 2025/26</div>
+  <div class="legend">
+    <div class="leg"><div class="leg-dot" style="background:#3b82f6"></div><span style="color:#3b82f6">W1 · WTTV 3.Kl.B</span></div>
+    <div class="leg"><div class="leg-dot" style="background:#ff3d2e"></div><span style="color:#ff3d2e">W2 · WTTV Gr.Ib</span></div>
+    <div class="leg"><div class="leg-dot" style="background:#ff9500"></div><span style="color:#ff9500">V1 · VÖB 2.Kl.</span></div>
+    <div class="leg"><div class="leg-dot" style="background:#a855f7"></div><span style="color:#a855f7">V2 · VÖB 3.Kl.</span></div>
+  </div>
+  <div class="period">Saison 2025/26 &nbsp;·&nbsp; Halbzeit-Stand</div>
+  <div class="chart-wrap">
+    <canvas id="c" style="width:100%;border-radius:6px"></canvas>
+  </div>
+</div>
+<script>
+// Combined: Alle 4 Teams auf gleichem X-Achsen-Schema
+// X-Schema: DG1 Slots 0–11, DG2 Slots 12–23 (SEP 0.8)
+// WTTV-Teams (W1,W2): nur 9 Runden → Slots 1–9 / 13–21
+// VÖB-Teams (V1,V2): 11 Runden → Slots 1–11 / 13–23
+
+function delta(a,b){
+  if(a===null)return null;
+  if(a>b)return 2+(a-b)/10;
+  if(a===b)return 1;
+  return (a-b)/10;
+}
+
+function buildPts(rounds, dg2Offset){
+  let z=0;
+  const pts=[{slot:0,z:0,type:'start',dg:1}];
+  let dg2Added=false;
+  for(let i=0;i<rounds.length;i++){
+    const rd=rounds[i];
+    if(rd.dg===2&&!dg2Added){
+      pts.push({slot:dg2Offset,z:z,type:'anchor',dg:2});
+      dg2Added=true;
+    }
+    const slot=rd.dg===1?rd.r:(dg2Offset+rd.r);
+    if(rd.sf){
+      pts.push({slot,z,d:0,type:'spielfrei',dg:rd.dg,r:rd.r});
+    } else {
+      const d=delta(rd.a,rd.b);
+      if(d!==null){
+        z=Math.round((z+d)*10)/10;
+        pts.push({slot,z,d,type:rd.a>rd.b?'win':rd.a===rd.b?'draw':'loss',a:rd.a,b:rd.b,dg:rd.dg,r:rd.r});
+      } else {
+        pts.push({slot,z,d:null,type:'pending',dg:rd.dg,r:rd.r});
+      }
+    }
+  }
+  return pts;
+}
+
+// W1: DG2-Anker bei Slot 12 (WTTV hat 9 Runden, Slots 1-9 / 13-21)
+const w1rounds=[
+  {dg:1,r:1,a:3,b:6},{dg:1,r:2,a:6,b:4},{dg:1,r:3,a:6,b:3},{dg:1,r:4,a:6,b:3},
+  {dg:1,r:5,a:4,b:6},{dg:1,r:6,a:6,b:4},{dg:1,r:7,a:1,b:6},{dg:1,r:8,a:1,b:6},{dg:1,r:9,a:5,b:5},
+  {dg:2,r:1,a:3,b:6},{dg:2,r:2,a:5,b:5},{dg:2,r:3,a:1,b:6},{dg:2,r:4,a:5,b:5},
+  {dg:2,r:5,a:null,b:null},{dg:2,r:6,a:6,b:2},
+  {dg:2,r:7,a:null,b:null},{dg:2,r:8,a:null,b:null},{dg:2,r:9,a:null,b:null},
+];
+const w2rounds=[
+  {dg:1,r:1,a:6,b:2},{dg:1,r:2,a:3,b:6},{dg:1,r:3,a:1,b:6},{dg:1,r:4,a:5,b:5},
+  {dg:1,r:5,a:1,b:6},{dg:1,r:6,a:4,b:6},{dg:1,r:7,a:3,b:6},{dg:1,r:8,a:3,b:6},{dg:1,r:9,a:6,b:2},
+  {dg:2,r:1,a:3,b:6},{dg:2,r:2,a:2,b:6},{dg:2,r:3,a:2,b:6},
+  {dg:2,r:4,a:null,b:null},{dg:2,r:5,a:5,b:5},
+  {dg:2,r:6,a:null,b:null},{dg:2,r:7,a:null,b:null},{dg:2,r:8,a:null,b:null},{dg:2,r:9,a:null,b:null},
+];
+const v1rounds=[
+  {dg:1,r:1,a:null,b:null,sf:true},{dg:1,r:2,a:4,b:6},{dg:1,r:3,a:4,b:6},{dg:1,r:4,a:6,b:2},
+  {dg:1,r:5,a:null,b:null,sf:true},{dg:1,r:6,a:0,b:7},{dg:1,r:7,a:6,b:4},{dg:1,r:8,a:6,b:3},
+  {dg:1,r:9,a:6,b:2},{dg:1,r:10,a:6,b:1},{dg:1,r:11,a:5,b:5},
+  {dg:2,r:1,a:null,b:null,sf:true},{dg:2,r:2,a:6,b:1},{dg:2,r:3,a:6,b:2},{dg:2,r:4,a:7,b:0},
+  {dg:2,r:5,a:null,b:null},{dg:2,r:6,a:null,b:null},{dg:2,r:7,a:null,b:null},
+  {dg:2,r:8,a:null,b:null},{dg:2,r:9,a:null,b:null},{dg:2,r:10,a:null,b:null},{dg:2,r:11,a:null,b:null},
+];
+const v2rounds=[
+  {dg:1,r:1,a:6,b:2},{dg:1,r:2,a:3,b:6},{dg:1,r:3,a:null,b:null,sf:true},{dg:1,r:4,a:2,b:6},
+  {dg:1,r:5,a:6,b:2},{dg:1,r:6,a:1,b:6},{dg:1,r:7,a:0,b:7},{dg:1,r:8,a:1,b:6},
+  {dg:1,r:9,a:null,b:null,sf:true},{dg:1,r:10,a:7,b:0},{dg:1,r:11,a:6,b:2},
+  {dg:2,r:1,a:5,b:5},{dg:2,r:2,a:1,b:6},{dg:2,r:3,a:null,b:null,sf:true},{dg:2,r:4,a:3,b:6},
+  {dg:2,r:5,a:0,b:7},{dg:2,r:6,a:2,b:6},
+  {dg:2,r:7,a:null,b:null},{dg:2,r:8,a:null,b:null},{dg:2,r:9,a:null,b:null,sf:true},
+  {dg:2,r:10,a:null,b:null},{dg:2,r:11,a:null,b:null},
+];
+
+const teams=[
+  {pts:buildPts(w1rounds,12),color:'#3b82f6',label:'W1'},
+  {pts:buildPts(w2rounds,12),color:'#ff3d2e',label:'W2'},
+  {pts:buildPts(v1rounds,12),color:'#ff9500',label:'V1'},
+  {pts:buildPts(v2rounds,12),color:'#a855f7',label:'V2'},
+];
+
+const canvas=document.getElementById('c');
+function render(){
+  const W=canvas.offsetWidth||820;
+  const H=Math.round(W*0.5);
+  canvas.width=W*2; canvas.height=H*2;
+  canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');
+  ctx.scale(2,2);
+  const PAD={top:30,right:88,bottom:38,left:52};
+  const cw=W-PAD.left-PAD.right;
+  const ch=H-PAD.top-PAD.bottom;
+
+  ctx.fillStyle='#141720';
+  ctx.fillRect(0,0,W,H);
+
+  const TOTAL_SLOTS=24.8;
+  const SEP_GAP=0.8;
+  function sx(slot){
+    const s=slot>=12?slot+SEP_GAP:slot;
+    return PAD.left+s*(cw/TOTAL_SLOTS);
+  }
+
+  // Z range über alle Teams
+  const allZ=teams.flatMap(t=>t.pts.map(p=>p.z));
+  const zMax=Math.max(...allZ)+1.5;
+  const zMin=Math.min(...allZ)-1;
+  const zRange=zMax-zMin;
+  function sy(z){return PAD.top+(1-(z-zMin)/zRange)*ch;}
+
+  // Gitter
+  ctx.strokeStyle='#1e2130';
+  ctx.lineWidth=0.5;
+  for(let zg=Math.floor(zMin);zg<=Math.ceil(zMax);zg+=2){
+    const y=sy(zg);
+    ctx.beginPath();ctx.moveTo(PAD.left,y);ctx.lineTo(W-PAD.right,y);ctx.stroke();
+    ctx.fillStyle='#3a3f55';
+    ctx.font='9px IBM Plex Mono,monospace';
+    ctx.textAlign='right';
+    ctx.fillText(zg,PAD.left-5,y+3);
+  }
+  ctx.strokeStyle='#2a2d3a';
+  ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PAD.left,sy(0));ctx.lineTo(W-PAD.right,sy(0));ctx.stroke();
+
+  // Separator
+  const xsep=PAD.left+12.4*(cw/TOTAL_SLOTS);
+  ctx.strokeStyle='rgba(255,255,255,0.1)';
+  ctx.lineWidth=1;
+  ctx.setLineDash([3,5]);
+  ctx.beginPath();ctx.moveTo(xsep,PAD.top-10);ctx.lineTo(xsep,H-PAD.bottom+5);ctx.stroke();
+  ctx.setLineDash([]);
+
+  // DG Labels
+  ctx.fillStyle='#2e3347';
+  ctx.font='9px IBM Plex Mono,monospace';
+  ctx.textAlign='center';
+  ctx.fillText('Durchgang 1',PAD.left+6*(cw/TOTAL_SLOTS),PAD.top-14);
+  ctx.fillText('Durchgang 2',PAD.left+18.4*(cw/TOTAL_SLOTS),PAD.top-14);
+
+  // Runden-Labels (nur R1-R9 für WTTV, R1-R11 für VÖB, gemeinsam)
+  ctx.fillStyle='#2e3347';
+  ctx.font='8px IBM Plex Mono,monospace';
+  ctx.textAlign='center';
+  for(let s=1;s<=11;s++){
+    ctx.fillText('R'+s,sx(s),H-PAD.bottom+14);
+  }
+  for(let s=13;s<=23;s++){
+    ctx.fillText('R'+(s-12),sx(s),H-PAD.bottom+14);
+  }
+
+  // Jedes Team rendern
+  teams.forEach(team=>{
+    const {pts,color,label}=team;
+    const ACCENT=color;
+
+    // Linien zeichnen (nur gespielte Punkte verbinden)
+    function drawLine(seg){
+      if(seg.length<2)return;
+      ctx.strokeStyle=ACCENT;
+      ctx.lineWidth=2;
+      ctx.shadowColor=ACCENT;
+      ctx.shadowBlur=6;
+      ctx.beginPath();
+      seg.forEach((p,i)=>{
+        const x=sx(p.slot),y=sy(p.z);
+        if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+      });
+      ctx.stroke();
+      ctx.shadowBlur=0;
+    }
+
+    const dg1line=pts.filter(p=>(p.dg===1||p.slot===0)&&p.type!=='pending');
+    drawLine(dg1line);
+
+    const lastDG1=dg1line[dg1line.length-1];
+    const anchorDG2=pts.find(p=>p.type==='anchor');
+    if(lastDG1&&anchorDG2){
+      ctx.strokeStyle=ACCENT;
+      ctx.lineWidth=1;
+      ctx.setLineDash([4,6]);
+      ctx.globalAlpha=0.3;
+      ctx.beginPath();
+      ctx.moveTo(sx(lastDG1.slot),sy(lastDG1.z));
+      ctx.lineTo(sx(anchorDG2.slot),sy(anchorDG2.z));
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.globalAlpha=1;
+    }
+
+    const dg2played=pts.filter(p=>p.dg===2&&p.type!=='pending'&&p.type!=='anchor'&&p.type!=='spielfrei');
+    if(anchorDG2&&dg2played.length>0){
+      // inkl. spielfrei für Linienkontinuität
+      const dg2line=pts.filter(p=>p.dg===2&&p.type!=='pending'&&p.type!=='anchor');
+      drawLine([anchorDG2,...dg2line]);
+    }
+
+    // End-Label
+    const lastPt=pts.filter(p=>p.type!=='pending'&&p.type!=='anchor'&&p.type!=='start').slice(-1)[0];
+    if(lastPt&&lastPt.z!==undefined){
+      ctx.fillStyle=ACCENT;
+      ctx.font='bold 10px IBM Plex Mono,monospace';
+      ctx.textAlign='left';
+      ctx.fillText(label+' '+lastPt.z.toFixed(1),sx(lastPt.slot)+6,sy(lastPt.z)+4);
+    }
+  });
+}
+
+window.addEventListener('load',()=>{render();});
+window.addEventListener('resize',()=>{render();});
+</script>
+</body>
+</html>

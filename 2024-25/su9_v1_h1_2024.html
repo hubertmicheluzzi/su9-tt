@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SU9 · V1 · H1 · 2024/25</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap');
+
+  :root {
+    --bg:        #0d0f14;
+    --panel:     #141720;
+    --border:    #252a38;
+    --accent:    #ff3d2e;
+    --accent2:   #ff9500;
+    --gold:      #f5c842;
+    --text:      #e8eaf0;
+    --muted:     #6b7280;
+    --grid:      #1e2333;
+    --positive:  #22c55e;
+    --negative:  #ef4444;
+    --neutral:   #60a5fa;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    min-height: 100vh;
+    padding: 24px 16px 40px;
+  }
+
+  .card {
+    max-width: 780px;
+    margin: 0 auto;
+    background: var(--panel);
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #1a0a08 0%, #0d1220 100%);
+    border-bottom: 3px solid var(--accent);
+    padding: 28px 28px 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,61,46,.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .club-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.9rem, 7vw, 3.2rem);
+    color: var(--text);
+    letter-spacing: 0.08em;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  .players-line {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: clamp(.78rem, 2.2vw, .92rem);
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 7px;
+  }
+  .pl-stamp { color: var(--accent); }
+  .pl-guest { color: var(--text); }
+
+  .period-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: clamp(.68rem, 1.8vw, .78rem);
+    color: var(--muted);
+    letter-spacing: .06em;
+  }
+
+  /* ── CHART AREA ── */
+  .chart-section {
+    padding: 24px 20px 28px;
+  }
+
+  .chart-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .chart-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  svg#chart {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 12px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .footer-note {
+    font-size: .65rem;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: .06em;
+  }
+  .legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: .65rem;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .legend-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .legend-line {
+    width: 14px; height: 2px; border-radius: 1px;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="club-title">SU9 VÖB 3.KL MS 2024/25</div>
+    <div class="players-line">
+      <span class="pl-stamp">Bary, Branko, Adi, Johannes, Cyril</span>
+      &nbsp;
+      <span class="pl-guest">(Hubert, Heinz, Fabian, Hannes)</span>
+    </div>
+    <div class="period-line">Sept. 2024 – Mai 2025</div>
+  </div>
+
+  <!-- CHART -->
+  <div class="chart-section">
+    <div class="chart-title">Wertungspunkte-Verlauf · kumuliert</div>
+    <div class="chart-wrap">
+      <svg id="chart" viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg">
+      </svg>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#ff3d2e"></div>
+        <span>Sieg (+2 +A−B/10)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#60a5fa"></div>
+        <span>Unentschieden (+1)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#6b7280"></div>
+        <span>Niederlage (A−B/10)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-line" style="background:#ff9500; border-top: 2px dashed #ff9500; background:none; border-bottom:none; border-left:none; border-right:none; width:16px;"></div>
+        <span>Spielfrei (0)</span>
+      </div>
+    </div>
+    <div class="footer-note">SU9Ana · VÖB · V1 H1 · 2024/25</div>
+  </div>
+
+</div>
+
+<script>
+// ── DATA ──
+// Each entry: { rnd (1–22), label, A, B, spielfrei }
+// Rounds 1–11 = Dg1, Rounds 12–22 = Dg2
+// 'A' = SU9 Spielpunkte, 'B' = Gegner Spielpunkte
+const rounds = [
+  // Dg1
+  { rnd:1,  label:'D1·R1',  A:5, B:5, sf:false },   // 5:5 LENZ2
+  { rnd:2,  label:'D1·R2',  A:2, B:6, sf:false },   // 2:6 KSVUW2
+  { rnd:3,  label:'D1·R3',  A:0, B:0, sf:true  },   // Spielfrei
+  { rnd:4,  label:'D1·R4',  A:1, B:6, sf:false },   // 1:6 WILI6
+  { rnd:5,  label:'D1·R5',  A:2, B:6, sf:false },   // 2:6 OLY4
+  { rnd:6,  label:'D1·R6',  A:3, B:6, sf:false },   // 3:6 KAI1
+  { rnd:7,  label:'D1·R7',  A:6, B:2, sf:false },   // 6:2 POST2
+  { rnd:8,  label:'D1·R8',  A:5, B:5, sf:false },   // 5:5 SKH5
+  { rnd:9,  label:'D1·R9',  A:6, B:3, sf:false },   // 6:3 WILI5
+  { rnd:10, label:'D1·R10', A:6, B:2, sf:false },   // 6:2 BTTC3
+  { rnd:11, label:'D1·R11', A:1, B:6, sf:false },   // 1:6 BBSV2
+  // Dg2
+  { rnd:12, label:'D2·R1',  A:0, B:7, sf:false },   // 0:7 LENZ2
+  { rnd:13, label:'D2·R2',  A:6, B:3, sf:false },   // 6:3 KSVUW2
+  { rnd:14, label:'D2·R3',  A:0, B:0, sf:true  },   // Spielfrei
+  { rnd:15, label:'D2·R4',  A:7, B:0, sf:false },   // 7:0 WILI6 (MuBA)
+  { rnd:16, label:'D2·R5',  A:6, B:2, sf:false },   // 6:2 OLY4
+  { rnd:17, label:'D2·R6',  A:6, B:2, sf:false },   // 6:2 KAI1
+  { rnd:18, label:'D2·R7',  A:0, B:7, sf:false },   // 0:7 POST2
+  { rnd:19, label:'D2·R8',  A:1, B:6, sf:false },   // 1:6 SKH5
+  { rnd:20, label:'D2·R9',  A:1, B:6, sf:false },   // 1:6 WILI5
+  { rnd:21, label:'D2·R10', A:2, B:6, sf:false },   // 2:6 BTTC3
+  { rnd:22, label:'D2·R11', A:2, B:6, sf:false },   // 2:6 BBSV2
+];
+
+// Compute cumulative Z
+function calcDelta(d) {
+  if (d.sf) return 0;
+  if (d.A > d.B) return 2 + (d.A - d.B) / 10;
+  if (d.A === d.B) return 1;
+  return (d.A - d.B) / 10; // negative
+}
+
+let cum = 0;
+const points = [{ rnd: 0, z: 0, sf: false, delta: 0 }];
+for (const d of rounds) {
+  const delta = calcDelta(d);
+  cum = Math.round((cum + delta) * 1000) / 1000;
+  points.push({ rnd: d.rnd, label: d.label, z: cum, sf: d.sf, delta });
+}
+
+// ── SVG CHART ──
+const svg = document.getElementById('chart');
+const W = 680, H = 300;
+const PAD = { top: 18, right: 24, bottom: 52, left: 46 };
+const CW = W - PAD.left - PAD.right;
+const CH = H - PAD.top - PAD.bottom;
+
+const zVals = points.map(p => p.z);
+const zMin = Math.min(...zVals);
+const zMax = Math.max(...zVals);
+const zPad = 0.8;
+const yMin = Math.floor(zMin - zPad);
+const yMax = Math.ceil(zMax + zPad);
+const nRounds = rounds.length;
+
+function xPos(rnd) { return PAD.left + (rnd / nRounds) * CW; }
+function yPos(z)   { return PAD.top + (1 - (z - yMin) / (yMax - yMin)) * CH; }
+
+// colors
+const C = {
+  bg:      '#0d0f14',
+  grid:    '#1e2333',
+  axis:    '#3a4155',
+  label:   '#6b7280',
+  line:    '#ff3d2e',
+  dot_win: '#22c55e',
+  dot_neu: '#60a5fa',
+  dot_los: '#ef4444',
+  dot_sf:  '#ff9500',
+  zero:    '#374151',
+  dg_sep:  '#252a38',
+};
+
+let out = '';
+
+// BG
+out += `<rect width="${W}" height="${H}" fill="${C.bg}" rx="2"/>`;
+
+// Clip
+out += `<defs>
+  <clipPath id="cp"><rect x="${PAD.left}" y="${PAD.top}" width="${CW}" height="${CH}"/></clipPath>
+</defs>`;
+
+// Horizontal grid lines + Y labels
+const yTicks = [];
+for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
+  if ((yMax - yMin) > 12 && y % 2 !== 0) continue; // thin out if big range
+  yTicks.push(y);
+}
+
+for (const yt of yTicks) {
+  const yp = yPos(yt);
+  const isZero = yt === 0;
+  out += `<line x1="${PAD.left}" y1="${yp}" x2="${PAD.left + CW}" y2="${yp}"
+    stroke="${isZero ? C.zero : C.grid}" stroke-width="${isZero ? 1.5 : 0.7}"
+    stroke-dasharray="${isZero ? '4,3' : 'none'}"/>`;
+  out += `<text x="${PAD.left - 7}" y="${yp + 4}" text-anchor="end"
+    font-family="IBM Plex Mono, monospace" font-size="9" fill="${isZero ? '#9ca3af' : C.label}">${yt}</text>`;
+}
+
+// Dg separator (between round 11 and 12)
+const xSep = xPos(11);
+out += `<line x1="${xSep}" y1="${PAD.top}" x2="${xSep}" y2="${PAD.top + CH}"
+  stroke="${C.dg_sep}" stroke-width="1.2" stroke-dasharray="5,4" clip-path="url(#cp)"/>`;
+
+// Dg labels
+out += `<text x="${PAD.left + CW * 0.25}" y="${PAD.top - 6}" text-anchor="middle"
+  font-family="IBM Plex Mono, monospace" font-size="9" fill="#4b5563" letter-spacing="1">DURCHGANG 1</text>`;
+out += `<text x="${PAD.left + CW * 0.75}" y="${PAD.top - 6}" text-anchor="middle"
+  font-family="IBM Plex Mono, monospace" font-size="9" fill="#4b5563" letter-spacing="1">DURCHGANG 2</text>`;
+
+// X-axis round ticks + labels
+for (let i = 1; i <= nRounds; i++) {
+  const xp = xPos(i);
+  const rd = rounds[i - 1];
+  const rLabel = `R${rd.rnd <= 11 ? rd.rnd : rd.rnd - 11}`;
+  out += `<line x1="${xp}" y1="${PAD.top + CH}" x2="${xp}" y2="${PAD.top + CH + 5}"
+    stroke="${C.axis}" stroke-width="0.8"/>`;
+  out += `<text x="${xp}" y="${PAD.top + CH + 16}" text-anchor="middle"
+    font-family="IBM Plex Mono, monospace" font-size="8.5" fill="${C.label}">${rLabel}</text>`;
+}
+
+// Y-axis line
+out += `<line x1="${PAD.left}" y1="${PAD.top}" x2="${PAD.left}" y2="${PAD.top + CH}"
+  stroke="${C.axis}" stroke-width="1"/>`;
+// X-axis line
+out += `<line x1="${PAD.left}" y1="${PAD.top + CH}" x2="${PAD.left + CW}" y2="${PAD.top + CH}"
+  stroke="${C.axis}" stroke-width="1"/>`;
+
+// Y axis label
+out += `<text transform="rotate(-90)" x="${-(PAD.top + CH/2)}" y="12" text-anchor="middle"
+  font-family="IBM Plex Mono, monospace" font-size="9" fill="${C.label}" letter-spacing="1">WERTUNG</text>`;
+// X axis label
+out += `<text x="${PAD.left + CW / 2}" y="${H - 4}" text-anchor="middle"
+  font-family="IBM Plex Mono, monospace" font-size="9" fill="${C.label}" letter-spacing="1">RUNDE</text>`;
+
+// Build polyline path, skip spielfrei markers
+// Line: always connect, but spielfrei points get no dot
+let pathD = '';
+for (let i = 0; i < points.length; i++) {
+  const p = points[i];
+  const xp = xPos(p.rnd);
+  const yp = yPos(p.z);
+  pathD += (i === 0 ? 'M' : 'L') + `${xp},${yp} `;
+}
+
+// Shadow/glow
+out += `<path d="${pathD.trim()}" fill="none"
+  stroke="#ff3d2e" stroke-width="5" stroke-opacity="0.12"
+  stroke-linejoin="round" stroke-linecap="round" clip-path="url(#cp)"/>`;
+// Main line
+out += `<path d="${pathD.trim()}" fill="none"
+  stroke="${C.line}" stroke-width="2.5"
+  stroke-linejoin="round" stroke-linecap="round" clip-path="url(#cp)"/>`;
+
+// Dots
+for (let i = 1; i < points.length; i++) {
+  const p = points[i];
+  const xp = xPos(p.rnd);
+  const yp = yPos(p.z);
+
+  if (p.sf) {
+    // Spielfrei: hollow diamond
+    const s = 5;
+    out += `<polygon points="${xp},${yp-s} ${xp+s},${yp} ${xp},${yp+s} ${xp-s},${yp}"
+      fill="${C.bg}" stroke="${C.dot_sf}" stroke-width="1.5"/>`;
+  } else {
+    const delta = p.delta;
+    const col = delta > 1 ? C.dot_win : (delta === 1 ? C.dot_neu : C.dot_los);
+    // Circle with inner highlight
+    out += `<circle cx="${xp}" cy="${yp}" r="5" fill="${C.bg}" stroke="${col}" stroke-width="2"/>`;
+    out += `<circle cx="${xp}" cy="${yp}" r="2.5" fill="${col}"/>`;
+  }
+
+  // Z value above/below dot
+  const textY = p.z >= points[i-1].z ? yp - 10 : yp + 18;
+  if (i > 0) {
+    out += `<text x="${xp}" y="${textY}" text-anchor="middle"
+      font-family="IBM Plex Mono, monospace" font-size="8" fill="#9ca3af">${p.z.toFixed(1)}</text>`;
+  }
+}
+
+svg.innerHTML = out;
+</script>
+</body>
+</html>

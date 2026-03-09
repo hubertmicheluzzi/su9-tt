@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SU9 V2 2025/26</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d0f14;color:#e8eaf0;font-family:'IBM Plex Sans',sans-serif;padding:20px;min-height:100vh;display:flex;align-items:flex-start;justify-content:center}
+.card{background:#141720;border-radius:12px;padding:22px 26px;max-width:820px;width:100%}
+.title{font-family:'Bebas Neue',sans-serif;font-size:2.3rem;color:#fff;letter-spacing:2px;line-height:1}
+.players{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;margin-top:6px;line-height:1.4}
+.stamp{color:#a855f7}
+.guest{color:#555}
+.period{color:#555;font-size:0.73rem;margin-top:4px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.5px}
+.chart-wrap{margin-top:18px}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="title">SU9 VÖB 3.KL. MS 2025/26</div>
+  <div class="players">
+    <span class="stamp">Johannes · Branko · Adi · Cyril · Hannes</span><span class="guest"> (Fabian · Ai-Mei)</span>
+  </div>
+  <div class="period">Sept. 2025 – Apr. 2026 &nbsp;·&nbsp; VÖB 3. Klasse</div>
+  <div class="chart-wrap">
+    <canvas id="c" style="width:100%;border-radius:6px"></canvas>
+  </div>
+</div>
+<script>
+// V2 2025/26: VÖB 3.Kl., max=7, 2pts/win
+// Spielfrei: D1R3, D1R9, D2R3, D2R9
+const rounds = [
+  // DG1
+  {dg:1,r:1, a:6,b:2,opp:'SKH4'},
+  {dg:1,r:2, a:3,b:6,opp:'HGÖI3'},
+  {dg:1,r:3, a:null,b:null,opp:'Spielfrei',sf:true},
+  {dg:1,r:4, a:2,b:6,opp:'POST3'},
+  {dg:1,r:5, a:6,b:2,opp:'OLY3'},
+  {dg:1,r:6, a:1,b:6,opp:'BBSV1'},
+  {dg:1,r:7, a:0,b:7,opp:'SKH5'},
+  {dg:1,r:8, a:1,b:6,opp:'WILI7'},
+  {dg:1,r:9, a:null,b:null,opp:'Spielfrei',sf:true},
+  {dg:1,r:10,a:7,b:0,opp:'WILI6'},
+  {dg:1,r:11,a:6,b:2,opp:'LENZ2'},
+  // DG2
+  {dg:2,r:1, a:5,b:5,opp:'SKH4'},
+  {dg:2,r:2, a:1,b:6,opp:'HGÖI3'},
+  {dg:2,r:3, a:null,b:null,opp:'Spielfrei',sf:true},
+  {dg:2,r:4, a:3,b:6,opp:'POST3'},
+  {dg:2,r:5, a:0,b:7,opp:'OLY3'},
+  {dg:2,r:6, a:2,b:6,opp:'BBSV1'},
+  {dg:2,r:7, a:null,b:null,opp:'SKH5'},
+  {dg:2,r:8, a:null,b:null,opp:'WILI7'},
+  {dg:2,r:9, a:null,b:null,opp:'Spielfrei',sf:true},
+  {dg:2,r:10,a:null,b:null,opp:'WILI6'},
+  {dg:2,r:11,a:null,b:null,opp:'LENZ2'},
+];
+
+function delta(a,b){
+  if(a===null)return null;
+  if(a>b)return 2+(a-b)/10;
+  if(a===b)return 1;
+  return (a-b)/10;
+}
+
+let z=0;
+const pts=[{slot:0,z:0,type:'start',dg:1}];
+let dg2AnchorAdded=false;
+for(let i=0;i<rounds.length;i++){
+  const rd=rounds[i];
+  if(rd.dg===2&&!dg2AnchorAdded){
+    pts.push({slot:12,z:z,type:'anchor',dg:2});
+    dg2AnchorAdded=true;
+  }
+  const slot=rd.dg===1?rd.r:(12+rd.r);
+  if(rd.sf){
+    pts.push({slot,z,d:0,type:'spielfrei',opp:'Spielfrei',dg:rd.dg,r:rd.r});
+  } else {
+    const d=delta(rd.a,rd.b);
+    if(d!==null){
+      z=Math.round((z+d)*10)/10;
+      pts.push({slot,z,d,type:rd.a>rd.b?'win':rd.a===rd.b?'draw':'loss',opp:rd.opp,a:rd.a,b:rd.b,dg:rd.dg,r:rd.r});
+    } else {
+      pts.push({slot,z,d:null,type:'pending',opp:rd.opp,dg:rd.dg,r:rd.r});
+    }
+  }
+}
+
+const canvas=document.getElementById('c');
+function render(){
+  const W=canvas.offsetWidth||760;
+  const H=Math.round(W*0.48);
+  canvas.width=W*2; canvas.height=H*2;
+  canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');
+  ctx.scale(2,2);
+  const PAD={top:28,right:80,bottom:55,left:52};
+  const cw=W-PAD.left-PAD.right;
+  const ch=H-PAD.top-PAD.bottom;
+
+  ctx.fillStyle='#141720';
+  ctx.fillRect(0,0,W,H);
+
+  const TOTAL_SLOTS=24.8;
+  const SEP_GAP=0.8;
+  function sx(slot){
+    const s=slot>=12?slot+SEP_GAP:slot;
+    return PAD.left+s*(cw/TOTAL_SLOTS);
+  }
+
+  const zMax=Math.max(...pts.map(p=>p.z))+1.5;
+  const zMin=-2;
+  const zRange=zMax-zMin;
+  function sy(z){return PAD.top+(1-(z-zMin)/zRange)*ch;}
+
+  // Gitter
+  ctx.strokeStyle='#1e2130';
+  ctx.lineWidth=0.5;
+  for(let zg=-2;zg<=Math.ceil(zMax);zg+=2){
+    const y=sy(zg);
+    ctx.beginPath();ctx.moveTo(PAD.left,y);ctx.lineTo(W-PAD.right,y);ctx.stroke();
+    ctx.fillStyle='#3a3f55';
+    ctx.font='9px IBM Plex Mono,monospace';
+    ctx.textAlign='right';
+    ctx.fillText(zg,PAD.left-5,y+3);
+  }
+  ctx.strokeStyle='#2a2d3a';
+  ctx.lineWidth=1;
+  const y0=sy(0);
+  ctx.beginPath();ctx.moveTo(PAD.left,y0);ctx.lineTo(W-PAD.right,y0);ctx.stroke();
+
+  // Separator
+  const xsep=PAD.left+12.4*(cw/TOTAL_SLOTS);
+  ctx.strokeStyle='rgba(168,85,247,0.25)';
+  ctx.lineWidth=1;
+  ctx.setLineDash([3,5]);
+  ctx.beginPath();ctx.moveTo(xsep,PAD.top-10);ctx.lineTo(xsep,H-PAD.bottom+10);ctx.stroke();
+  ctx.setLineDash([]);
+
+  // DG Labels
+  ctx.fillStyle='#2e3347';
+  ctx.font='9px IBM Plex Mono,monospace';
+  ctx.textAlign='center';
+  ctx.fillText('Durchgang 1',PAD.left+6*(cw/TOTAL_SLOTS),PAD.top-12);
+  ctx.fillText('Durchgang 2',PAD.left+18.4*(cw/TOTAL_SLOTS),PAD.top-12);
+
+  // X Labels
+  ctx.fillStyle='#3a3f55';
+  ctx.font='8px IBM Plex Mono,monospace';
+  ctx.textAlign='center';
+  for(let s=0;s<=11;s++){
+    const lbl=s===0?'0':'R'+s;
+    ctx.fillText(lbl,sx(s),H-PAD.bottom+14);
+  }
+  for(let s=12;s<=23;s++){
+    const lbl=s===12?'0':'R'+(s-12);
+    ctx.fillText(lbl,sx(s),H-PAD.bottom+14);
+  }
+
+  const ACCENT='#a855f7';
+
+  // DG1 Linie
+  const dg1pts=pts.filter(p=>p.dg===1||p.slot===0);
+  const dg1line=dg1pts.filter(p=>p.type!=='pending');
+  ctx.strokeStyle=ACCENT;
+  ctx.lineWidth=2.5;
+  ctx.shadowColor=ACCENT;
+  ctx.shadowBlur=8;
+  ctx.beginPath();
+  dg1line.forEach((p,i)=>{
+    const x=sx(p.slot),y=sy(p.z);
+    if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  ctx.shadowBlur=0;
+
+  // DG1→DG2 Brücke
+  const lastDG1=dg1line[dg1line.length-1];
+  const anchorDG2=pts.find(p=>p.type==='anchor');
+  if(lastDG1&&anchorDG2){
+    ctx.strokeStyle=ACCENT;
+    ctx.lineWidth=1;
+    ctx.setLineDash([4,5]);
+    ctx.globalAlpha=0.3;
+    ctx.beginPath();
+    ctx.moveTo(sx(lastDG1.slot),sy(lastDG1.z));
+    ctx.lineTo(sx(anchorDG2.slot),sy(anchorDG2.z));
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.globalAlpha=1;
+  }
+
+  // DG2 Linie
+  const dg2pts=pts.filter(p=>p.dg===2&&p.type!=='pending'&&p.type!=='anchor');
+  if(anchorDG2&&dg2pts.length>0){
+    const seg=[anchorDG2,...dg2pts];
+    ctx.strokeStyle=ACCENT;
+    ctx.lineWidth=2.5;
+    ctx.shadowColor=ACCENT;
+    ctx.shadowBlur=8;
+    ctx.beginPath();
+    seg.forEach((p,i)=>{
+      const x=sx(p.slot),y=sy(p.z);
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+    ctx.shadowBlur=0;
+  }
+
+  // Dots
+  const COL={win:'#22c55e',draw:'#60a5fa',loss:'#ef4444'};
+  pts.forEach(p=>{
+    if(p.type==='start'||p.type==='anchor')return;
+    const x=sx(p.slot),y=sy(p.z);
+
+    if(p.type==='spielfrei'){
+      ctx.strokeStyle='#2e3347';
+      ctx.lineWidth=1;
+      ctx.globalAlpha=0.6;
+      ctx.beginPath();ctx.moveTo(x-4,y);ctx.lineTo(x+4,y);ctx.stroke();
+      ctx.globalAlpha=1;
+      ctx.fillStyle='#2e3347';
+      ctx.font='7px IBM Plex Mono,monospace';
+      ctx.textAlign='center';
+      ctx.fillText('sf',x,H-PAD.bottom+26);
+      return;
+    }
+
+    if(p.type==='pending'){
+      ctx.strokeStyle=ACCENT;
+      ctx.lineWidth=1.5;
+      ctx.globalAlpha=0.5;
+      ctx.beginPath();
+      ctx.moveTo(x,y-6);ctx.lineTo(x+6,y);ctx.lineTo(x,y+6);ctx.lineTo(x-6,y);ctx.closePath();
+      ctx.stroke();
+      ctx.globalAlpha=1;
+      ctx.fillStyle='#3a3f55';
+      ctx.font='7px IBM Plex Mono,monospace';
+      ctx.textAlign='center';
+      ctx.fillText('–',x,H-PAD.bottom+26);
+      ctx.fillText(p.opp,x,H-PAD.bottom+36);
+      return;
+    }
+
+    const col=COL[p.type];
+    ctx.beginPath();
+    ctx.arc(x,y,4.5,0,Math.PI*2);
+    ctx.fillStyle='#141720';ctx.fill();
+    ctx.strokeStyle=col;ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(x,y,2.5,0,Math.PI*2);
+    ctx.fillStyle=col;ctx.fill();
+
+    ctx.fillStyle=col;
+    ctx.font='8px IBM Plex Mono,monospace';
+    ctx.textAlign='center';
+    const dstr=(p.d>0?'+':'')+p.d.toFixed(1);
+    ctx.fillText(dstr,x,y-9);
+
+    ctx.fillStyle='#3a3f55';
+    ctx.font='7px IBM Plex Mono,monospace';
+    ctx.fillText(p.a+':'+p.b,x,H-PAD.bottom+26);
+    ctx.fillText(p.opp,x,H-PAD.bottom+36);
+  });
+
+  // End-Label
+  const lastPt=pts.filter(p=>p.type!=='pending'&&p.type!=='anchor'&&p.type!=='start'&&p.z!==undefined).slice(-1)[0];
+  if(lastPt){
+    ctx.fillStyle=ACCENT;
+    ctx.font='bold 11px IBM Plex Mono,monospace';
+    ctx.textAlign='left';
+    ctx.fillText(lastPt.z.toFixed(1),sx(lastPt.slot)+8,sy(lastPt.z)+4);
+  }
+}
+
+window.addEventListener('load',()=>{render();});
+window.addEventListener('resize',()=>{render();});
+</script>
+</body>
+</html>
