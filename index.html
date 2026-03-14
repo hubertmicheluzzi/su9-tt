@@ -66,6 +66,7 @@
   }
   .tab:hover { color: var(--bright); background: var(--bg2); }
   .tab.active { background: var(--bg); border-bottom: 1px solid var(--bg); color: var(--bright); }
+  .tab[data-id="combined"] { border-top: 2px solid var(--ar); }
   .tab[data-id="w1"] { border-top: 2px solid var(--w1); }
   .tab[data-id="w2"] { border-top: 2px solid var(--w2); }
   .tab[data-id="v1"] { border-top: 2px solid var(--v1); }
@@ -163,9 +164,10 @@
     <span class="live-tag"><span class="live-dot"></span>Live</span>
   </div>
   <div class="tabs">
+    <div class="tab active" data-id="combined">Übersicht</div>
     <div class="tab" data-id="w1">W1·3b.Kl</div>
     <div class="tab" data-id="w2">W2·Gr.Ib</div>
-    <div class="tab active" data-id="v1">V1·2.Kl</div>
+    <div class="tab" data-id="v1">V1·2.Kl</div>
     <div class="tab" data-id="v2">V2·3.Kl</div>
     <div class="tab" data-id="ar">Archiv</div>
     <div class="tab" data-id="re">Regeln</div>
@@ -177,9 +179,10 @@
 </div>
 
 <div id="content">
+  <iframe class="pane active" data-id="combined" src="2025-26/su9_combined_h1_2025.html"></iframe>
   <iframe class="pane"        data-id="w1" src="LIVE/SU9Ana_W1.html"></iframe>
   <iframe class="pane"        data-id="w2" src="LIVE/SU9Ana_W2.html"></iframe>
-  <iframe class="pane active" data-id="v1" src="LIVE/SU9Ana_V1.html"></iframe>
+  <iframe class="pane"        data-id="v1" src="LIVE/SU9Ana_V1.html"></iframe>
   <iframe class="pane"        data-id="v2" src="LIVE/SU9Ana_V2.html"></iframe>
   <div class="pane ar-pane" data-id="ar">
     <div class="ar-buttons" id="ar-buttons">
