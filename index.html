@@ -198,6 +198,7 @@
 
 <script>
   const subtitles = {
+    combined: 'SU9 · Saison 2025/26 · Alle Mannschaften',
     w1: 'WTTV · 3. Klasse B · SU9·1 · Rang 8/10 · 13 Punkte',
     w2: 'WTTV · Gruppe Ib · SU9·2 · Rang 9/10 · 7 Punkte',
     v1: 'VÖB · 2. Klasse · SU9·1 · Rang 3/10 · 25 Punkte',
@@ -212,7 +213,7 @@
     d.toLocaleDateString('de-AT', {day:'2-digit', month:'2-digit', year:'numeric'});
 
   // Default subtitle
-  document.getElementById('subtitle-text').textContent = subtitles['v1'];
+  document.getElementById('subtitle-text').textContent = subtitles['combined'];
 
   // Tab switching
   document.querySelectorAll('.tab').forEach(tab => {
