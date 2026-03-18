@@ -11,7 +11,7 @@
     --accent:#ff3d2e; --text:#e8eaf0; --muted:#6b7280; --grid:#1e2333;
   }
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',sans-serif; min-height:100vh; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',sans-serif; padding:0; }
   .card { width:100%; background:var(--panel); overflow:hidden; }
   .header {
     background:linear-gradient(135deg,#1a0a08 0%,#0d1220 100%);
@@ -30,13 +30,13 @@
   .team-label { font-family:'IBM Plex Mono',monospace; font-size:clamp(.54rem,1.4vw,.62rem); font-weight:600; letter-spacing:.12em; text-transform:uppercase; }
   .pl-guest { color:#9ca3af; }
   .period-line { font-family:'IBM Plex Mono',monospace; font-size:clamp(.54rem,1.4vw,.62rem); color:var(--muted); letter-spacing:.06em; margin-top:2px; }
-  .chart-section { padding:4px 0 4px; }
+  .chart-section { padding:2px 0 0; }
   .chart-title { font-family:'IBM Plex Mono',monospace; font-size:.60rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; padding-left:8px; }
   canvas { display:block; width:100%; border-radius:4px; }
-  .footer { border-top:1px solid var(--border); padding:12px 28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
-  .footer-note { font-size:.65rem; color:var(--muted); font-family:'IBM Plex Mono',monospace; letter-spacing:.06em; }
-  .legend { display:flex; gap:18px; flex-wrap:wrap; align-items:center; }
-  .legend-item { display:flex; align-items:center; gap:6px; font-size:.65rem; color:var(--muted); font-family:'IBM Plex Mono',monospace; }
+  .footer { border-top:1px solid var(--border); padding:6px 8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; }
+  .footer-note { font-size:.58rem; color:var(--muted); font-family:'IBM Plex Mono',monospace; letter-spacing:.06em; }
+  .legend { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .legend-item { display:flex; align-items:center; gap:4px; font-size:.58rem; color:var(--muted); font-family:'IBM Plex Mono',monospace; }
   .legend-line { width:22px; height:3px; border-radius:2px; flex-shrink:0; }
 </style>
 </head>
