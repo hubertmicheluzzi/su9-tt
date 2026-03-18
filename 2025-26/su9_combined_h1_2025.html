@@ -11,12 +11,12 @@
     --accent:#ff3d2e; --text:#e8eaf0; --muted:#6b7280; --grid:#1e2333;
   }
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',sans-serif; min-height:100vh; padding:24px 16px 40px; }
-  .card { max-width:860px; margin:0 auto; background:var(--panel); overflow:hidden; }
+  body { background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',sans-serif; min-height:100vh; padding:0; }
+  .card { width:100%; background:var(--panel); overflow:hidden; }
   .header {
     background:linear-gradient(135deg,#1a0a08 0%,#0d1220 100%);
     border-bottom:3px solid var(--accent);
-    padding:28px 28px 22px; position:relative; overflow:hidden;
+    padding:10px 12px 8px; position:relative; overflow:hidden;
   }
   .header::before {
     content:''; position:absolute; top:-40px; right:-40px;
@@ -24,14 +24,14 @@
     background:radial-gradient(circle,rgba(255,61,46,.12) 0%,transparent 70%);
     pointer-events:none;
   }
-  .club-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.9rem,7vw,3.2rem); color:var(--text); letter-spacing:.08em; line-height:1; margin-bottom:12px; }
-  .teams-grid { display:flex; flex-direction:column; gap:4px; margin-bottom:10px; }
-  .team-players { font-family:'IBM Plex Sans',sans-serif; font-size:clamp(.72rem,2vw,.84rem); font-weight:400; line-height:1.4; }
-  .team-label { font-family:'IBM Plex Mono',monospace; font-size:clamp(.62rem,1.6vw,.72rem); font-weight:600; letter-spacing:.12em; text-transform:uppercase; }
+  .club-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.4rem,5vw,2.2rem); color:var(--text); letter-spacing:.08em; line-height:1; margin-bottom:6px; }
+  .teams-grid { display:flex; flex-direction:column; gap:2px; margin-bottom:6px; }
+  .team-players { font-family:'IBM Plex Sans',sans-serif; font-size:clamp(.60rem,1.6vw,.70rem); font-weight:400; line-height:1.3; }
+  .team-label { font-family:'IBM Plex Mono',monospace; font-size:clamp(.54rem,1.4vw,.62rem); font-weight:600; letter-spacing:.12em; text-transform:uppercase; }
   .pl-guest { color:#9ca3af; }
-  .period-line { font-family:'IBM Plex Mono',monospace; font-size:clamp(.62rem,1.6vw,.72rem); color:var(--muted); letter-spacing:.06em; margin-top:4px; }
-  .chart-section { padding:20px 20px 24px; }
-  .chart-title { font-family:'IBM Plex Mono',monospace; font-size:.68rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
+  .period-line { font-family:'IBM Plex Mono',monospace; font-size:clamp(.54rem,1.4vw,.62rem); color:var(--muted); letter-spacing:.06em; margin-top:2px; }
+  .chart-section { padding:4px 0 4px; }
+  .chart-title { font-family:'IBM Plex Mono',monospace; font-size:.60rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; padding-left:8px; }
   canvas { display:block; width:100%; border-radius:4px; }
   .footer { border-top:1px solid var(--border); padding:12px 28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
   .footer-note { font-size:.65rem; color:var(--muted); font-family:'IBM Plex Mono',monospace; letter-spacing:.06em; }
@@ -62,7 +62,7 @@
   </div>
 
   <div class="chart-section">
-    <div class="chart-title">Wertungspunkte-Verlauf · kumuliert · alle Teams</div>
+    <div class="chart-title">Verlauf · Mannschaften</div>
     <canvas id="c"></canvas>
   </div>
 
@@ -162,7 +162,7 @@ function render(){
   const ctx=canvas.getContext('2d');
   ctx.scale(2,2);
 
-  const PAD={top:28,right:70,bottom:52,left:50};
+  const PAD={top:22,right:70,bottom:52,left:8};
   const cw=W-PAD.left-PAD.right;
   const ch=H-PAD.top-PAD.bottom;
 
@@ -192,21 +192,10 @@ function render(){
     if(isZero)ctx.setLineDash([4,3]);
     ctx.beginPath();ctx.moveTo(PAD.left,y);ctx.lineTo(W-PAD.right,y);ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle=isZero?'#9ca3af':'#6b7280';
-    ctx.font='9px IBM Plex Mono,monospace';
-    ctx.textAlign='right';
-    ctx.fillText(zg,PAD.left-6,y+3.5);
+    // Y-Zahlen ausgeblendet
   }
 
-  // Y-Label
-  ctx.save();
-  ctx.translate(12,PAD.top+ch/2);
-  ctx.rotate(-Math.PI/2);
-  ctx.fillStyle='#6b7280';
-  ctx.font='9px IBM Plex Mono,monospace';
-  ctx.textAlign='center';
-  ctx.fillText('WERTUNG',0,0);
-  ctx.restore();
+  // Y-Label ausgeblendet
 
   // Separator
   const xSep=(sx(11)+sx(12))/2;
