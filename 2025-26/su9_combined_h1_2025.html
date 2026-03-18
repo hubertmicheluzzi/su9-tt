@@ -156,13 +156,13 @@ const canvas=document.getElementById('c');
 
 function render(){
   const W=canvas.offsetWidth||820;
-  const H=Math.round(W*0.48);
+  const H=Math.round(W*0.96);
   canvas.width=W*2; canvas.height=H*2;
   canvas.style.height=H+'px';
   const ctx=canvas.getContext('2d');
   ctx.scale(2,2);
 
-  const PAD={top:22,right:40,bottom:52,left:8};
+  const PAD={top:22,right:44,bottom:52,left:4};
   const cw=W-PAD.left-PAD.right;
   const ch=H-PAD.top-PAD.bottom;
 
